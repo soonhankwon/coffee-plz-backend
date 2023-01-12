@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend;
+package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.SignupRequestDto;
 import com.soonhankwon.coffeeplzbackend.entity.User;

@@ -1,8 +1,13 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
 
+import lombok.Builder;
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Builder
+@Getter
 @Entity
 public class Order extends BaseTimeEntity {
     @Id

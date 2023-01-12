@@ -9,6 +9,8 @@ public class MenuOption {
     private Long id;
 
     @Column(nullable = false)
-    private int price;
+    private String name;
 
+    @Column(nullable = false)
+    private int price;
 }

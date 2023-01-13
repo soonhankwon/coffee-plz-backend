@@ -28,11 +28,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Long point = 0L;
 
-    public void chargeUserPoint(Long point) {
-        this.point = point;
-    }
-
-    public void afterPaymentUserPoint(Long point) {
+    public void setUserPoint(Long point) {
         this.point = point;
     }
 }

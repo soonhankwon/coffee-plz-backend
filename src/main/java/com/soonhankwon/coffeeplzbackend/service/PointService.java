@@ -15,7 +15,7 @@ public class PointService {
 
     public String chargePoint(String loginId, Long chargePoint) {
         User user = userRepository.findByLoginId(loginId);
-        user.chargeUserPoint(user.getPoint() + chargePoint);
+        user.setUserPoint(user.getPoint() + chargePoint);
         userRepository.save(user);
         return "Success";
     }

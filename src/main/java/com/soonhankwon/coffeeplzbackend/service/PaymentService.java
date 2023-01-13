@@ -21,7 +21,7 @@ public class PaymentService {
             userPoint = user.getPoint() - order.getTotalPrice();
         else
             throw new RuntimeException("포인트가 부족합니다.");
-        user.afterPaymentUserPoint(userPoint);
+        user.setUserPoint(userPoint);
         return "Success";
     }
 }

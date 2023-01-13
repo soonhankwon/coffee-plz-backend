@@ -41,9 +41,24 @@ class MenuControllerTest {
         given(menuService.findAllMenu()).willReturn(menu);
 
         //then
-        mvc.perform(get("/api/menu"))
+        mvc.perform(get("/menu"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Americano")))
                 .andExpect(content().string(containsString("CafeLatte")));
+    }
+
+    @Test
+    @DisplayName("커피 메뉴 조회 테스트")
+    void findMenu() throws Exception {
+        //given
+        Menu menu = Menu.builder().id(1L).name("Americano").price(3000L).build();
+        menuRepository.save(menu);
+
+        given(menuService.findMenu(menu.getId())).willReturn(menu);
+        //then
+        mvc.perform(get("/menu/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Americano")));
+
     }
 }

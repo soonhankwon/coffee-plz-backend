@@ -29,7 +29,7 @@ class PointServiceTest {
                 .loginId("soonhan")
                 .email("soonable@gmail.com")
                 .password("1234")
-                .point(0L).build();
+                .point(10000L).build();
 
         userRepository.save(user);
         when(userRepository.findByLoginId(any())).thenReturn(user);
@@ -38,7 +38,7 @@ class PointServiceTest {
         String result = pointService.chargePoint("soonhan",10000L);
 
         //then
-        assertThat(user.getPoint(), equalTo(10000L));
+        assertThat(user.getPoint(), equalTo(20000L));
         assertThat(result, equalTo("Success"));
     }
 }

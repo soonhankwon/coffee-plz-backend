@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,5 +41,20 @@ class MenuServiceTest {
         assertThat(result, equalTo(menu));
         assertThat(result.get(0).getName(), equalTo("Espresso"));
         assertThat(result.get(1).getName(), equalTo("Americano"));
+    }
+
+    @Test
+    void findMenu() {
+        //given
+        Menu menu = Menu.builder().id(1L).name("Americano").price(3000L).build();
+        menuRepository.save(menu);
+        when(menuRepository.findById(1L)).thenReturn(Optional.of(menu));
+
+        //when
+        Menu result = menuService.findMenu(1L);
+
+        //then
+        verify(menuRepository, times(1)).findById(any());
+        assertThat(result, equalTo(menu));
     }
 }

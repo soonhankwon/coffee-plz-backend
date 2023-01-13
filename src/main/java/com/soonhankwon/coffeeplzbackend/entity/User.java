@@ -32,10 +32,7 @@ public class User extends BaseTimeEntity {
         this.point = point;
     }
 
-    public void deductUserPoint(Long userPoint, Long paymentPoint) {
-        if (userPoint >= paymentPoint)
-            this.point = userPoint - paymentPoint;
-        else
-            throw new RuntimeException("포인트가 부족합니다.");
+    public void afterPaymentUserPoint(Long point) {
+        this.point = point;
     }
 }

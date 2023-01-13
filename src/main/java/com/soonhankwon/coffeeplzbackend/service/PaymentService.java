@@ -16,8 +16,12 @@ public class PaymentService {
     public String paymentProcessing(Long orderId, Long userId) {
         Order order = orderRepository.findById(orderId).orElseThrow(NullPointerException::new);
         User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
-
-        user.deductUserPoint(user.getPoint(),order.getTotalPrice());
+        long userPoint;
+        if (user.getPoint() >= order.getTotalPrice())
+            userPoint = user.getPoint() - order.getTotalPrice();
+        else
+            throw new RuntimeException("포인트가 부족합니다.");
+        user.afterPaymentUserPoint(userPoint);
         return "Success";
     }
 }

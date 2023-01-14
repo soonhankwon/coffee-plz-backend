@@ -1,6 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
 
+import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,4 +33,12 @@ public class Order extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String orderState;
+
+    public Order(OrderRequestDto orderRequestDto) {
+        this.type = orderRequestDto.getType();
+        this.totalPrice = orderRequestDto.getTotalPrice();
+        this.address = orderRequestDto.getAddress();
+        this.requirement = orderRequestDto.getRequirement();
+        this.orderState = orderRequestDto.getOrderState();
+    }
 }

@@ -16,16 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
 
     public List<OrderResponseDto> findAllOrder() {
         List<Order> list = orderRepository.findAll();
         return list.stream().map(OrderResponseDto::new).collect(Collectors.toList());
     }
 
-    public String orderProcessing(String loginId, OrderRequestDto orderRequestDto) {
-        User user = userRepository.findByLoginId(loginId);
-
-        return "주문완료";
+    public OrderResponseDto orderProcessing(OrderRequestDto orderRequestDto) {
+        Order order = new Order(orderRequestDto);
+        orderRepository.save(order);
+        return new OrderResponseDto(order);
     }
 }

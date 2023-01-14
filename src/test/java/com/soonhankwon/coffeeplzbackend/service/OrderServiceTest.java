@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
@@ -11,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,5 +42,22 @@ class OrderServiceTest {
         verify(orderRepository, times(1)).findAll();
         assertThat(result.get(0).getOrderId(), equalTo(1L));
         assertThat(result.get(1).getType(), equalTo("배달"));
+    }
+
+    @Test
+    void orderProcessing() {
+        OrderRequestDto orderRequestDto = OrderRequestDto.builder().type("매장수령")
+                .totalPrice(15000L)
+                .address("서현로 777").build();
+
+        Order order = new Order(orderRequestDto);
+        when(orderRepository.save(any())).thenReturn(order);
+
+        //when
+        OrderResponseDto result = orderService.orderProcessing(orderRequestDto);
+
+        //then
+        assertThat(result.getTotalPrice(), equalTo(15000L));
+        assertThat(result.getAddress(), equalTo("서현로 777"));
     }
 }

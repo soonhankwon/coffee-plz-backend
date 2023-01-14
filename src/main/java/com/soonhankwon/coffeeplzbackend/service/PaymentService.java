@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
@@ -13,7 +14,7 @@ public class PaymentService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
 
-    public String paymentProcessing(Long orderId, Long userId) {
+    public PaymentResponseDto paymentProcessing(Long orderId, Long userId) {
         Order order = orderRepository.findById(orderId).orElseThrow(NullPointerException::new);
         User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
         long userPoint;
@@ -22,6 +23,6 @@ public class PaymentService {
         else
             throw new RuntimeException("포인트가 부족합니다.");
         user.setUserPoint(userPoint);
-        return "Success";
+        return new PaymentResponseDto("결제완료");
     }
 }

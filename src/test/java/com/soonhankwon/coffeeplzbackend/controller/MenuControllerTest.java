@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
+import com.soonhankwon.coffeeplzbackend.dto.MenuResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Menu;
 import com.soonhankwon.coffeeplzbackend.repository.MenuRepository;
 import com.soonhankwon.coffeeplzbackend.service.MenuService;
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
@@ -37,8 +39,9 @@ class MenuControllerTest {
         List<Menu> menu = new ArrayList<>();
         menu.add(Menu.builder().name("Americano").price(3000L).build());
         menu.add(Menu.builder().name("CafeLatte").price(3000L).build());
+        List<MenuResponseDto> list = menu.stream().map(MenuResponseDto::new).collect(Collectors.toList());
 
-        given(menuService.findAllMenu()).willReturn(menu);
+        given(menuService.findAllMenu()).willReturn(list);
 
         //then
         mvc.perform(get("/menu"))

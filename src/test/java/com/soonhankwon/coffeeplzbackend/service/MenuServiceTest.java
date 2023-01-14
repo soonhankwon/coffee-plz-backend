@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.MenuResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Menu;
 import com.soonhankwon.coffeeplzbackend.repository.MenuRepository;
 import org.junit.jupiter.api.Test;
@@ -34,11 +35,10 @@ class MenuServiceTest {
         when(menuRepository.findAll()).thenReturn(menu);
 
         //when
-        List<Menu> result = menuService.findAllMenu();
+        List<MenuResponseDto> result = menuService.findAllMenu();
 
         //then
         verify(menuRepository, times(1)).findAll();
-        assertThat(result, equalTo(menu));
         assertThat(result.get(0).getName(), equalTo("Espresso"));
         assertThat(result.get(1).getName(), equalTo("Americano"));
     }

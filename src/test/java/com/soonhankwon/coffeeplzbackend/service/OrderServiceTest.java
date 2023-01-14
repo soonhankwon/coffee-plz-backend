@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,11 @@ class OrderServiceTest {
         when(orderRepository.findAll()).thenReturn(order);
 
         //when
-        List<Order> result = orderService.findAllOrder();
+        List<OrderResponseDto> result = orderService.findAllOrder();
 
         //then
         verify(orderRepository, times(1)).findAll();
-        assertThat(result, equalTo(order));
-        assertThat(result.get(0).getId(), equalTo(1L));
+        assertThat(result.get(0).getOrderId(), equalTo(1L));
         assertThat(result.get(1).getType(), equalTo("배달"));
     }
 }

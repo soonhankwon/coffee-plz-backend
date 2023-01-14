@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.SignupRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.Test;

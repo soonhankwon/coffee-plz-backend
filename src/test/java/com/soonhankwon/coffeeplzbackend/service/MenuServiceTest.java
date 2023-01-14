@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.MenuResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.MenuResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Menu;
 import com.soonhankwon.coffeeplzbackend.repository.MenuRepository;
 import org.junit.jupiter.api.Test;

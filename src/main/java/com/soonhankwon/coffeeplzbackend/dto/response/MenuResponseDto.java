@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.dto;
+package com.soonhankwon.coffeeplzbackend.dto.response;
 
 import com.soonhankwon.coffeeplzbackend.entity.Menu;
 import lombok.AccessLevel;

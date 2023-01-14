@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.dto;
+package com.soonhankwon.coffeeplzbackend.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

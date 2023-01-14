@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.PointRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -35,10 +36,10 @@ class PointServiceTest {
         when(userRepository.findByLoginId(any())).thenReturn(user);
 
         //when
-        String result = pointService.chargePoint("soonhan",10000L);
+        PointResponseDto result = pointService.chargePoint("soonhan",10000L);
 
         //then
         assertThat(user.getPoint(), equalTo(20000L));
-        assertThat(result, equalTo("Success"));
+        assertThat(result.getMessage(), equalTo("포인트 충전 완료"));
     }
 }

@@ -1,6 +1,8 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.UserResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -34,7 +36,7 @@ public class UserServiceTest {
         when(userRepository.save(any())).thenReturn(user);
 
         //when
-        String result = userService.signupUser(new SignupRequestDto
+        GlobalResponseDto result = userService.signupUser(new SignupRequestDto
                 ("soonhan", "soonable@gmail.com", "1234", 0L));
         //then
         verify(userRepository, times(1)).save(any());
@@ -52,11 +54,11 @@ public class UserServiceTest {
         when(userRepository.findByLoginId("soonhan")).thenReturn(user);
 
         //when
-        User result = userService.findUser("soonhan");
+        UserResponseDto result = userService.findUser("soonhan");
 
         //then
         verify(userRepository, times(1)).findByLoginId(any());
-        assertThat(result, equalTo(user));
+        assertThat(result.getLoginId(), equalTo(user.getLoginId()));
     }
 
     @Test
@@ -69,10 +71,10 @@ public class UserServiceTest {
         when(userRepository.findAll()).thenReturn(users);
 
         //when
-        List<User> result = userService.findAllUsers();
+        List<UserResponseDto> result = userService.findAllUsers();
 
         //then
         verify(userRepository, times(1)).findAll();
-        assertThat(result, equalTo(users));
+        assertThat(result.get(0).getLoginId(), equalTo(users.get(0).getLoginId()));
     }
 }

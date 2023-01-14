@@ -19,8 +19,8 @@ public class MenuService {
         return list.stream().map(MenuResponseDto::new).collect(Collectors.toList());
     }
 
-    public Menu findMenu(Long id) {
-
-        return menuRepository.findById(id).orElseThrow(NullPointerException::new);
+    public MenuResponseDto findMenu(Long id) {
+        Menu menu = menuRepository.findById(id).orElseThrow(NullPointerException::new);
+        return new MenuResponseDto(menu);
     }
 }

@@ -22,8 +22,8 @@ public class MenuController {
         return ResponseEntity.status(200).body(menuService.findAllMenu());
     }
     @GetMapping("/menu/{id}")
-    public ResponseEntity<Menu> findMenu(@PathVariable Long id) {
-        return ResponseEntity.ok(menuService.findMenu(id));
+    public ResponseEntity<MenuResponseDto> findMenu(@PathVariable Long id) {
+        return ResponseEntity.status(200).body(menuService.findMenu(id));
     }
 
 

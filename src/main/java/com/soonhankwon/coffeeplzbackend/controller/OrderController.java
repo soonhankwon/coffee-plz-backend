@@ -1,7 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
-import com.soonhankwon.coffeeplzbackend.entity.Menu;
-import com.soonhankwon.coffeeplzbackend.entity.Order;
+import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.OrderService;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -13,11 +12,11 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@Api(tags = "주문 조회 API")
+@Api(tags = "주문 API")
 public class OrderController {
     private final OrderService orderService;
-    @GetMapping("/order/")
-    public ResponseEntity<List<Order>> findAllOrder() {
-        return ResponseEntity.ok(orderService.findAllOrder());
+    @GetMapping("/order")
+    public ResponseEntity<List<OrderResponseDto>> findAllOrder() {
+        return ResponseEntity.status(200).body(orderService.findAllOrder());
     }
 }

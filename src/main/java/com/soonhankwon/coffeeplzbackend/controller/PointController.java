@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
+import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
 import com.soonhankwon.coffeeplzbackend.service.PointService;
 import io.swagger.annotations.Api;
@@ -15,7 +16,7 @@ public class PointController {
     private final PointService pointService;
 
     @PatchMapping("/user/point")
-    public ResponseEntity<String> chargePoint(String loginId, Long chargePoint) {
-        return ResponseEntity.ok(pointService.chargePoint(loginId, chargePoint));
+    public ResponseEntity<PointResponseDto> chargePoint(String loginId, Long chargePoint) {
+        return ResponseEntity.status(200).body(pointService.chargePoint(loginId, chargePoint));
     }
 }

@@ -56,8 +56,9 @@ class MenuControllerTest {
         //given
         Menu menu = Menu.builder().id(1L).name("Americano").price(3000L).build();
         menuRepository.save(menu);
+        MenuResponseDto result = new MenuResponseDto(menu);
 
-        given(menuService.findMenu(menu.getId())).willReturn(menu);
+        given(menuService.findMenu(menu.getId())).willReturn(result);
         //then
         mvc.perform(get("/menu/1"))
                 .andExpect(status().isOk())

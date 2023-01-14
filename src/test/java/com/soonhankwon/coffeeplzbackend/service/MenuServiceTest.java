@@ -51,10 +51,10 @@ class MenuServiceTest {
         when(menuRepository.findById(1L)).thenReturn(Optional.of(menu));
 
         //when
-        Menu result = menuService.findMenu(1L);
+        MenuResponseDto result = menuService.findMenu(1L);
 
         //then
         verify(menuRepository, times(1)).findById(any());
-        assertThat(result, equalTo(menu));
+        assertThat(result.getName(), equalTo(menu.getName()));
     }
 }

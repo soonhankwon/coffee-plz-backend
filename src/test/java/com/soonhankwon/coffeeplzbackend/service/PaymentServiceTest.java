@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
@@ -46,11 +47,11 @@ class PaymentServiceTest {
         when(orderRepository.findById(any())).thenReturn(Optional.of(order));
 
         //when
-        String result = paymentService.paymentProcessing(1L,1L);
+        PaymentResponseDto result = paymentService.paymentProcessing(1L,1L);
 
         //then
         assertThat(user.getPoint(), equalTo(10000L));
         assertThat(order.getType(), equalTo("TakeOut"));
-        assertThat(result, equalTo("Success"));
+        assertThat(result.getMessage(), equalTo("결제완료"));
     }
 }

@@ -1,10 +1,11 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
-import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -27,6 +28,13 @@ public class User extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Long point = 0L;
+
+    public User(String loginId, String password, String email, Long point) {
+        this.loginId = loginId;
+        this.password = password;
+        this.email = email;
+        this.point = point;
+    }
 
     public void setUserPoint(Long point) {
         this.point = point;

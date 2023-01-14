@@ -3,7 +3,6 @@ package com.soonhankwon.coffeeplzbackend.service;
 import com.soonhankwon.coffeeplzbackend.dto.SignupRequestDto;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
-import com.soonhankwon.coffeeplzbackend.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,23 +28,21 @@ public class UserServiceTest {
     @Test
     public void saveNewUser() {
         //given
-        SignupRequestDto signupRequestDto = SignupRequestDto.builder()
-                .loginId("soonhan")
-                .email("soonable@gmail.com")
-                .password("1234")
-                .point(0L).build();
+        SignupRequestDto signupRequestDto = new SignupRequestDto("soonhan", "soonable@gmail.com", "1234", 0L);
 
         User user = userRepository.findByLoginId(signupRequestDto.getLoginId());
         when(userRepository.save(any())).thenReturn(user);
 
         //when
-        String result = userService.signupUser(SignupRequestDto.builder().loginId("soonhan").build());
+        String result = userService.signupUser(new SignupRequestDto
+                ("soonhan", "soonable@gmail.com", "1234", 0L));
         //then
         verify(userRepository, times(1)).save(any());
-        assertThat(result, equalTo("success"));
+        assertThat(result, equalTo("Success"));
     }
 
-    @Test void findUser() {
+    @Test
+    void findUser() {
         //given
         User user = User.builder().id(1L)
                 .loginId("soonhan")
@@ -76,6 +73,6 @@ public class UserServiceTest {
 
         //then
         verify(userRepository, times(1)).findAll();
-        assertThat(result,equalTo(users));
+        assertThat(result, equalTo(users));
     }
 }

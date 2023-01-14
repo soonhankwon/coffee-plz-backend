@@ -8,4 +8,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByLoginId(String loginId);
     List<User> findAll();
+    boolean existsByLoginId(String loginId);
 }

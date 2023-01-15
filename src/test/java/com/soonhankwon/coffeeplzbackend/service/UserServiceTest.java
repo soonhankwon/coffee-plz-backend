@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -51,13 +52,13 @@ public class UserServiceTest {
                 .email("soonable@gmail.com")
                 .password("1234")
                 .point(0L).build();
-        when(userRepository.findByLoginId("soonhan")).thenReturn(user);
+        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
 
         //when
-        UserResponseDto result = userService.findUser("soonhan");
+        UserResponseDto result = userService.findUser(1L);
 
         //then
-        verify(userRepository, times(1)).findByLoginId(any());
+        verify(userRepository, times(1)).findById(any());
         assertThat(result.getLoginId(), equalTo(user.getLoginId()));
     }
 

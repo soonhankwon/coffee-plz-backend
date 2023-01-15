@@ -26,8 +26,8 @@ public class UserService {
         return new GlobalResponseDto("Success");
     }
 
-    public UserResponseDto findUser(String loginId) {
-        User user = userRepository.findByLoginId(loginId);
+    public UserResponseDto findUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(NullPointerException::new);;
         return new UserResponseDto(user);
     }
 

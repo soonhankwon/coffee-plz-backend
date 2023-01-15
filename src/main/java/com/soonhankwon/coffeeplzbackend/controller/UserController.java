@@ -1,7 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
-import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.UserResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.UserService;
 import io.swagger.annotations.Api;
@@ -21,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/user/find")
-    public ResponseEntity<UserResponseDto> findUser(@RequestParam String loginId) {
-        return ResponseEntity.status(200).body(userService.findUser(loginId));
+    public ResponseEntity<UserResponseDto> findUser(@PathVariable Long id) {
+        return ResponseEntity.status(200).body(userService.findUser(id));
     }
 
     @PostMapping("/user/signup")

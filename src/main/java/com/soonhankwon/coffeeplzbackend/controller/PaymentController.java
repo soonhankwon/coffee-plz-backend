@@ -2,7 +2,6 @@ package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.PaymentService;
-import com.soonhankwon.coffeeplzbackend.service.PointService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

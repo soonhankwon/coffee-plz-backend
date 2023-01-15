@@ -1,7 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
-import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
 import com.soonhankwon.coffeeplzbackend.service.PointService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;

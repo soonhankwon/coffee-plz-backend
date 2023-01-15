@@ -1,14 +1,12 @@
 package com.soonhankwon.coffeeplzbackend.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
 public class OrderRequestDto {
-    private String type;
+    private OrderType type;
 
     private Long totalPrice;
 
@@ -17,4 +15,8 @@ public class OrderRequestDto {
     private String requirement;
 
     private String orderState;
+
+    public enum OrderType {
+        TAKEOUT, DELIVERY
+    }
 }

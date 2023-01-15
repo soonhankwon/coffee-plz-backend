@@ -14,13 +14,17 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@TableGenerator(
+        name = "ORDER_SEQ_GENERATOR",
+        table = "MY_SEQUENCES",
+        pkColumnValue = "ORDER_SEQ", allocationSize = 50)
 public class Order extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ORDER_SEQ_GENERATOR")
     private Long id;
 
-    @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private OrderRequestDto.OrderType type;
 
     @Column(nullable = false)
     private Long totalPrice;
@@ -40,5 +44,8 @@ public class Order extends BaseTimeEntity {
         this.address = orderRequestDto.getAddress();
         this.requirement = orderRequestDto.getRequirement();
         this.orderState = orderRequestDto.getOrderState();
+    }
+    public enum OrderType {
+        TAKEOUT, DELIVERY
     }
 }

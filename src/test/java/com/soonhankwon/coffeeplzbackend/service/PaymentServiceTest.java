@@ -40,7 +40,7 @@ class PaymentServiceTest {
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
         Order order = Order.builder().id(1L)
-                .type("TakeOut")
+                .orderType(Order.OrderType.TAKEOUT)
                 .totalPrice(10000L).build();
         orderRepository.save(order);
         when(orderRepository.findById(any())).thenReturn(Optional.of(order));
@@ -50,7 +50,7 @@ class PaymentServiceTest {
 
         //then
         assertThat(user.getPoint(), equalTo(10000L));
-        assertThat(order.getType(), equalTo("TakeOut"));
+        assertThat(order.getOrderType(), equalTo(Order.OrderType.TAKEOUT));
         assertThat(result.getMessage(), equalTo("결제완료"));
     }
 }

@@ -30,8 +30,8 @@ class OrderServiceTest {
     void findAllOrder() {
         //given
         List<Order> order =
-                Arrays.asList(Order.builder().id(1L).type("매장수령").totalPrice(12000L).build(),
-                        Order.builder().id(2L).type("배달").totalPrice(9000L).build());
+                Arrays.asList(Order.builder().id(1L).orderType(Order.OrderType.TAKEOUT).totalPrice(12000L).build(),
+                        Order.builder().id(2L).orderType(Order.OrderType.DELIVERY).totalPrice(9000L).build());
 
         when(orderRepository.findAll()).thenReturn(order);
 
@@ -41,12 +41,12 @@ class OrderServiceTest {
         //then
         verify(orderRepository, times(1)).findAll();
         assertThat(result.get(0).getOrderId(), equalTo(1L));
-        assertThat(result.get(1).getType(), equalTo("배달"));
+        assertThat(result.get(1).getType(), equalTo(Order.OrderType.DELIVERY));
     }
 
     @Test
     void orderProcessing() {
-        OrderRequestDto orderRequestDto = OrderRequestDto.builder().type("매장수령")
+        OrderRequestDto orderRequestDto = OrderRequestDto.builder().orderType(Order.OrderType.DELIVERY)
                 .totalPrice(15000L)
                 .address("서현로 777").build();
 

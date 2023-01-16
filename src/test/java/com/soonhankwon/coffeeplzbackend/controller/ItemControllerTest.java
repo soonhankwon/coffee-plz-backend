@@ -1,9 +1,9 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
-import com.soonhankwon.coffeeplzbackend.dto.response.MenuResponseDto;
-import com.soonhankwon.coffeeplzbackend.entity.Menu;
-import com.soonhankwon.coffeeplzbackend.repository.MenuRepository;
-import com.soonhankwon.coffeeplzbackend.service.MenuService;
+import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
+import com.soonhankwon.coffeeplzbackend.entity.Item;
+import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
+import com.soonhankwon.coffeeplzbackend.service.ItemService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -22,29 +22,29 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(MenuController.class)
-class MenuControllerTest {
+@WebMvcTest(ItemController.class)
+class ItemControllerTest {
     @Autowired
     MockMvc mvc;
 
     @Mock
-    MenuRepository menuRepository;
+    ItemRepository itemRepository;
 
     @MockBean
-    MenuService menuService;
+    ItemService itemService;
 
     @Test
     @DisplayName("커피 메뉴 목록 조회 테스트")
-    void findAllMenu() throws Exception {
-        List<Menu> menu = new ArrayList<>();
-        menu.add(Menu.builder().name("Americano").price(3000L).build());
-        menu.add(Menu.builder().name("CafeLatte").price(3000L).build());
-        List<MenuResponseDto> list = menu.stream().map(MenuResponseDto::new).collect(Collectors.toList());
+    void findAllItem() throws Exception {
+        List<Item> item = new ArrayList<>();
+        item.add(Item.builder().name("Americano").price(3000L).build());
+        item.add(Item.builder().name("CafeLatte").price(3000L).build());
+        List<ItemResponseDto> list = item.stream().map(ItemResponseDto::new).collect(Collectors.toList());
 
-        given(menuService.findAllMenu()).willReturn(list);
+        given(itemService.findAllItem()).willReturn(list);
 
         //then
-        mvc.perform(get("/menu"))
+        mvc.perform(get("/item"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Americano")))
                 .andExpect(content().string(containsString("CafeLatte")));
@@ -52,15 +52,15 @@ class MenuControllerTest {
 
     @Test
     @DisplayName("커피 메뉴 조회 테스트")
-    void findMenu() throws Exception {
+    void findItem() throws Exception {
         //given
-        Menu menu = Menu.builder().id(1L).name("Americano").price(3000L).build();
-        menuRepository.save(menu);
-        MenuResponseDto result = new MenuResponseDto(menu);
+        Item item = Item.builder().id(1L).name("Americano").price(3000L).build();
+        itemRepository.save(item);
+        ItemResponseDto result = new ItemResponseDto(item);
 
-        given(menuService.findMenu(menu.getId())).willReturn(result);
+        given(itemService.findItem(item.getId())).willReturn(result);
         //then
-        mvc.perform(get("/menu/1"))
+        mvc.perform(get("/item/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Americano")));
 

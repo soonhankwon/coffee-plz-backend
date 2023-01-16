@@ -14,38 +14,38 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@TableGenerator(
-        name = "ORDER_SEQ_GENERATOR",
-        table = "MY_SEQUENCES",
-        pkColumnValue = "ORDER_SEQ", allocationSize = 50)
+@Table(name = "order")
 public class Order extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ORDER_SEQ_GENERATOR")
+    @Column(name = "order_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderRequestDto.OrderType type;
+    private OrderType orderType;
 
-    @Column(nullable = false)
+    @Column(name = "total_price", nullable = false)
     private Long totalPrice;
 
-    @Column
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column
+    @Column(name = "requirement", nullable = false)
     private String requirement;
 
-    @Column(nullable = false)
+    @Column(name = "order_state", nullable = false)
     private String orderState;
 
+    public enum OrderType {
+        TAKEOUT, DELIVERY
+    }
+
     public Order(OrderRequestDto orderRequestDto) {
-        this.type = orderRequestDto.getType();
+        this.orderType = orderRequestDto.getOrderType();
         this.totalPrice = orderRequestDto.getTotalPrice();
         this.address = orderRequestDto.getAddress();
         this.requirement = orderRequestDto.getRequirement();
         this.orderState = orderRequestDto.getOrderState();
-    }
-    public enum OrderType {
-        TAKEOUT, DELIVERY
     }
 }

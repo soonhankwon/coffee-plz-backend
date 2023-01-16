@@ -12,14 +12,22 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Entity
-public class Menu {
+@Table(name = "item")
+public class Item {
     @Id
+    @Column(name = "item_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "category", nullable = false)
+    private String category;
+
+    @Column(name = "size", nullable = false)
+    private String size;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "price", nullable = false)
     private Long price;
 }

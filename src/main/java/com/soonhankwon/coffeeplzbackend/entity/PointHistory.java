@@ -8,10 +8,14 @@ public class PointHistory extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String type;
+    @Column(name = "type", nullable = false)
+    @Enumerated
+    private PointType pointType;
 
-    @Column(nullable = false)
+    @Column(name = "point", nullable = false)
     private Long point;
 
+    public enum PointType {
+        CHARGE, USAGE
+    }
 }

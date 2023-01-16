@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class OrderResponseDto {
     private Long orderId;
-    private String type;
+    private Order.OrderType type;
 
     private Long totalPrice;
 
@@ -21,7 +21,7 @@ public class OrderResponseDto {
 
     public OrderResponseDto (Order order) {
         this.orderId = order.getId();
-        this.type = order.getType();
+        this.type = order.getOrderType();
         this.totalPrice = order.getTotalPrice();
         this.address = order.getAddress();
         this.requirement = order.getRequirement();

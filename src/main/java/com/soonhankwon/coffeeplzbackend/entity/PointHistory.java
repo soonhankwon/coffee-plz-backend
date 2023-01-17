@@ -8,6 +8,10 @@ public class PointHistory extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "type", nullable = false)
     @Enumerated
     private PointType pointType;

@@ -21,6 +21,10 @@ public class Order extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderType orderType;

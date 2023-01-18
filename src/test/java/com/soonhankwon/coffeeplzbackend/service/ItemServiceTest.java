@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
@@ -56,5 +57,26 @@ class ItemServiceTest {
         //then
         verify(itemRepository, times(1)).findById(any());
         assertThat(result.getName(), equalTo(item.getName()));
+    }
+
+    @Test
+    void addItem() {
+        //given
+        ItemRequestDto itemRequestDto = new ItemRequestDto("Americano","Small", 2500L);
+        Item item = Item.builder().id(1L)
+                .name(itemRequestDto.getName())
+                .size(itemRequestDto.getSize())
+                .price(itemRequestDto.getPrice())
+                .build();
+
+        when(itemRepository.save(any())).thenReturn(item);
+
+        //when
+        ItemResponseDto result = itemService.addItem(itemRequestDto);
+
+        //then
+        assertThat(result.getName(), equalTo("Americano"));
+        assertThat(result.getSize(), equalTo("Small"));
+        assertThat(result.getPrice(), equalTo(2500L));
     }
 }

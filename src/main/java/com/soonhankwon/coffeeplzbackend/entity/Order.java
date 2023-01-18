@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -15,9 +17,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "order")
-public class Order extends BaseTimeEntity {
+public class Order {
     @Id
-    @Column(name = "order_id", nullable = false)
+    @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -32,24 +34,16 @@ public class Order extends BaseTimeEntity {
     @Column(name = "total_price", nullable = false)
     private Long totalPrice;
 
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "requirement", nullable = false)
-    private String requirement;
-
-    @Column(name = "order_state", nullable = false)
-    private String orderState;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     public enum OrderType {
-        TAKEOUT, DELIVERY
+        TAKEOUT, STORE
     }
 
     public Order(OrderRequestDto orderRequestDto) {
         this.orderType = orderRequestDto.getOrderType();
-        this.totalPrice = orderRequestDto.getTotalPrice();
-        this.address = orderRequestDto.getAddress();
-        this.requirement = orderRequestDto.getRequirement();
-        this.orderState = orderRequestDto.getOrderState();
+        this.totalPrice = orderRequestDto.getOrderPrice();
+        this.status = orderRequestDto.getStatus();
     }
 }

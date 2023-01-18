@@ -1,9 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -19,14 +16,11 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "category", nullable = false)
-    private String category;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "size", nullable = false)
     private String size;
-
-    @Column(name = "name", nullable = false)
-    private String name;
 
     @Column(name = "price", nullable = false)
     private Long price;

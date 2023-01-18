@@ -1,12 +1,19 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "order_item")
 public class OrderItem {
     @Id
-    @Column(name = "oreder_item_id")
+    @Column(name = "order_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -15,24 +22,13 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "item_option_id")
-    private ItemOption itemOption;
+    @JoinColumn(name = "item_id")
+    private Item item;
 
-    @Column(name = "item_id", nullable = false)
-    private Long itemId;
+    @Column(name = "order_price", nullable = false)
+    private Long orderPrice;
 
-    @Column(name = "item_category", nullable = false)
-    private String itemCategory;
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
-    @Column(name = "item_name", nullable = false)
-    private String itemName;
-
-    @Column(name = "item_price", nullable = false)
-    private Long itemPrice;
-
-    @Column(name = "item_size", nullable = false)
-    private Long item_size;
-
-    @Column(name = "item_quantity", nullable = false)
-    private Integer item_quantity;
 }

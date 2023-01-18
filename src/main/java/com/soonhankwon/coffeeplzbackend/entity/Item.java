@@ -1,6 +1,9 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -24,4 +27,10 @@ public class Item {
 
     @Column(name = "price", nullable = false)
     private Long price;
+
+    public void updateItem(String name, Long price, String size) {
+        this.name = name;
+        this.price = price;
+        this.size = size;
+    }
 }

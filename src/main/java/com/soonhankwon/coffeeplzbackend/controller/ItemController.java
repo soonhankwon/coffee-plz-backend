@@ -1,15 +1,13 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.ItemService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,13 +20,23 @@ public class ItemController {
     public ResponseEntity<List<ItemResponseDto>> findAllItem() {
         return ResponseEntity.status(200).body(itemService.findAllItem());
     }
-    @GetMapping("/item/{id}")
-    public ResponseEntity<ItemResponseDto> findItem(@PathVariable Long id) {
-        return ResponseEntity.status(200).body(itemService.findItem(id));
+    @GetMapping("/item/{itemId}")
+    public ResponseEntity<ItemResponseDto> findItem(@PathVariable Long itemId) {
+        return ResponseEntity.status(200).body(itemService.findItem(itemId));
     }
 
     @PostMapping("/item/add")
     public ResponseEntity<ItemResponseDto> addItem(ItemRequestDto itemRequestDto) {
         return ResponseEntity.status(200).body(itemService.addItem(itemRequestDto));
+    }
+
+    @PatchMapping("/item/{itemId}")
+    public ResponseEntity<ItemResponseDto> updateItem(@PathVariable Long itemId, ItemRequestDto itemRequestDto) {
+        return ResponseEntity.status(200).body(itemService.updateItem(itemId, itemRequestDto));
+    }
+
+    @DeleteMapping("/item/delete/{itemId}")
+    public ResponseEntity<GlobalResponseDto> deleteItem(@PathVariable Long itemId) {
+        return ResponseEntity.status(200).body(itemService.deleteItem(itemId));
     }
 }

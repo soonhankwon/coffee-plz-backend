@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
@@ -21,6 +22,15 @@ public class ItemService {
 
     public ItemResponseDto findItem(Long id) {
         Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
+        return new ItemResponseDto(item);
+    }
+
+    public ItemResponseDto addItem(ItemRequestDto itemRequestDto) {
+        Item item = Item.builder().name(itemRequestDto.getName())
+                .price(itemRequestDto.getPrice())
+                .size(itemRequestDto.getSize())
+                .build();
+        itemRepository.save(item);
         return new ItemResponseDto(item);
     }
 }

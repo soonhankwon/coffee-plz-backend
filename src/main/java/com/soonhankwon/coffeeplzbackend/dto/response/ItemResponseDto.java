@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class ItemResponseDto {
     private String name;
-
+    private String size;
     private Long price;
 
     public ItemResponseDto(Item item) {
         this.name = item.getName();
+        this.size = item.getSize();
         this.price = item.getPrice();
     }
 }

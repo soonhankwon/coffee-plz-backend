@@ -51,6 +51,7 @@ class PaymentServiceTest {
         //then
         assertThat(user.getPoint(), equalTo(10000L));
         assertThat(order.getOrderType(), equalTo(Order.OrderType.TAKEOUT));
+        assertThat(order.getStatus(), equalTo("결제완료"));
         assertThat(result.getMessage(), equalTo("결제완료"));
     }
 }

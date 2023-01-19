@@ -31,17 +31,17 @@ public class UserServiceTest {
     @Test
     public void saveNewUser() {
         //given
-        SignupRequestDto signupRequestDto = new SignupRequestDto("soonhan", "soonable@gmail.com", "1234", 0L);
+        SignupRequestDto signupRequestDto = new SignupRequestDto("soonhan", "soonable@gmail.com", "1234");
 
         User user = userRepository.findByLoginId(signupRequestDto.getLoginId());
         when(userRepository.save(any())).thenReturn(user);
 
         //when
         GlobalResponseDto result = userService.signupUser(new SignupRequestDto
-                ("soonhan", "soonable@gmail.com", "1234", 0L));
+                ("soonhan", "soonable@gmail.com", "1234"));
         //then
         verify(userRepository, times(1)).save(any());
-        assertThat(result, equalTo("Success"));
+        assertThat(result.getMessage(), equalTo("Success"));
     }
 
     @Test

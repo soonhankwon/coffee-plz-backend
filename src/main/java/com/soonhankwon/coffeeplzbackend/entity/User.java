@@ -18,16 +18,16 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login_id", nullable = false)
+    @Column(name = "login_id")
     private String loginId;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "point", nullable = false)
+    @Column(name = "point")
     private Long point;
 
     public User(String loginId, String password, String email, Long point) {

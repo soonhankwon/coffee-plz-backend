@@ -21,7 +21,7 @@ public class PointHistory extends BaseTimeEntity {
     private User user;
 
     @Column(name = "type", nullable = false)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private PointType pointType;
 
     @Column(name = "point", nullable = false)

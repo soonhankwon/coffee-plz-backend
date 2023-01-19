@@ -1,13 +1,17 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
+import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
 import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -18,6 +22,8 @@ import static org.mockito.Mockito.when;
 class PointServiceTest {
     @Mock
     UserRepository userRepository;
+    @Mock
+    PointHistoryRepository pointHistoryRepository;
 
     @InjectMocks
     PointService pointService;
@@ -31,14 +37,15 @@ class PointServiceTest {
                 .password("1234")
                 .point(10000L).build();
 
-        userRepository.save(user);
-        when(userRepository.findByLoginId(any())).thenReturn(user);
-
+        when(userRepository.findById(any())).thenReturn(Optional.ofNullable(user));
+        PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.CHARGE, 10000L);
         //when
-        PointResponseDto result = pointService.chargePoint("soonhan",10000L);
+        PointResponseDto result = pointService.chargePoint(1L,10000L);
 
         //then
+        assert user != null;
         assertThat(user.getPoint(), equalTo(20000L));
+        assertThat(pointHistory.getPoint(), equalTo(10000L));
         assertThat(result.getMessage(), equalTo("포인트 충전 완료"));
     }
 }

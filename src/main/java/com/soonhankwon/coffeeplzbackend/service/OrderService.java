@@ -1,18 +1,20 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.request.OrderItemRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
+import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
+import com.soonhankwon.coffeeplzbackend.repository.OrderItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public List<OrderResponseDto> findAllOrder() {
         List<Order> list = orderRepository.findAll();
@@ -30,13 +33,17 @@ public class OrderService {
 
     public OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
         User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
-        List<OrderItemRequestDto> orderItemList = new LinkedList<>();
-        for (OrderRequestDto i : orderRequestDto) {
-            Item item = getItem(i.getItemId());
-            orderItemList.add(new OrderItemRequestDto(item.getId(), item.getPrice(), i.getCount()));
+
+        List<OrderItemDto> orderItemList = new ArrayList<>();
+        for (OrderRequestDto dto : orderRequestDto) {
+            Item item = getItem(dto.getItemId());
+            orderItemList.add(new OrderItemDto(item, dto.getOrderItemPrice(), dto.getQuantity()));
         }
+
         long totalPrice = 0;
-        for(OrderItemRequestDto j : orderItemList) totalPrice += j.getOrderPrice() * j.getCount();
+        for(OrderItemDto j : orderItemList) {
+            totalPrice += j.getOrderItemPrice() * j.getQuantity();
+        }
 
         if(user.getPoint() < totalPrice)
             throw new RuntimeException("포인트가 부족합니다.");
@@ -48,6 +55,15 @@ public class OrderService {
                 .build();
 
         orderRepository.save(order);
+
+        for(OrderItemDto dto : orderItemList) {
+            OrderItem orderItem = OrderItem.builder().order(order)
+                    .item(dto.getItem())
+                    .orderItemPrice(dto.getOrderItemPrice())
+                    .quantity(dto.getQuantity())
+                    .build();
+            orderItemRepository.save(orderItem);
+        }
 
         return new OrderResponseDto(order);
     }

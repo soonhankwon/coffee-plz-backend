@@ -1,8 +1,10 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
+import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 
@@ -25,8 +27,8 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @Column(name = "order_price", nullable = false)
-    private Long orderPrice;
+    @Column(name = "order_item_price", nullable = false)
+    private Long orderItemPrice;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;

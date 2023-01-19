@@ -1,20 +1,23 @@
 package com.soonhankwon.coffeeplzbackend.dto.request;
 
 import com.soonhankwon.coffeeplzbackend.entity.Order;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Builder
+
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderRequestDto {
     private Order.OrderType orderType;
 
-    private Long totalPrice;
+    private String status;
 
-    private String address;
+    private Long itemId;
 
-    private String requirement;
+    private Long orderItemPrice;
 
-    private String orderState;
+    private Integer quantity;
 
 }

@@ -10,21 +10,12 @@ import lombok.NoArgsConstructor;
 public class OrderResponseDto {
     private Long orderId;
     private Order.OrderType type;
-
     private Long totalPrice;
-
-    private String address;
-
-    private String requirement;
-
-    private String orderState;
-
+    private String status;
     public OrderResponseDto (Order order) {
-        this.orderId = order.getId();
+        this.orderId = order.getOrderId();
         this.type = order.getOrderType();
         this.totalPrice = order.getTotalPrice();
-        this.address = order.getAddress();
-        this.requirement = order.getRequirement();
-        this.orderState = order.getOrderState();
+        this.status = order.getStatus();
     }
 }

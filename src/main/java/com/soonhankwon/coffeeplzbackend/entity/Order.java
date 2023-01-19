@@ -37,4 +37,7 @@ public class Order extends BaseTimeEntity {
     public enum OrderType {
         TAKEOUT, STORE
     }
+    public void setOrderStatus(String status) {
+        this.status = status;
+    }
 }

@@ -2,6 +2,7 @@ package com.soonhankwon.coffeeplzbackend.dto.request;
 
 import com.soonhankwon.coffeeplzbackend.entity.Order;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrderRequestDto {
     private Order.OrderType orderType;
 

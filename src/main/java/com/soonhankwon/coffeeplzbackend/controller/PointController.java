@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class PointController {
     private final PointService pointService;
 
-    @PatchMapping("/user/point")
-    public ResponseEntity<PointResponseDto> chargePoint(String loginId, Long chargePoint) {
-        return ResponseEntity.status(200).body(pointService.chargePoint(loginId, chargePoint));
+    @PatchMapping("/user/point/{id}")
+    public ResponseEntity<PointResponseDto> chargePoint(@PathVariable Long id, Long chargePoint) {
+        return ResponseEntity.status(200).body(pointService.chargePoint(id, chargePoint));
     }
 }

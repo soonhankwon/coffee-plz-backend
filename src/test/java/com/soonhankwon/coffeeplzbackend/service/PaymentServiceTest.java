@@ -39,7 +39,7 @@ class PaymentServiceTest {
         userRepository.save(user);
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
-        Order order = Order.builder().id(1L)
+        Order order = Order.builder().orderId(1L)
                 .orderType(Order.OrderType.TAKEOUT)
                 .totalPrice(10000L).build();
         orderRepository.save(order);

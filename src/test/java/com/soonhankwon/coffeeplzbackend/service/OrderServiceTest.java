@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.request.OrderItemRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
@@ -8,8 +8,10 @@ import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
+import com.soonhankwon.coffeeplzbackend.repository.OrderItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +19,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,17 +37,25 @@ class OrderServiceTest {
     @Mock
     ItemRepository itemRepository;
     @Mock
+    static
     UserRepository userRepository;
+    @Mock
+    OrderItemRepository orderItemRepository;
 
     @InjectMocks
     OrderService orderService;
+
+    @BeforeAll
+    static void beforeAll() {
+
+    }
 
     @Test
     void findAllOrder() {
         //given
         List<Order> order =
-                Arrays.asList(Order.builder().id(1L).orderType(Order.OrderType.TAKEOUT).totalPrice(12000L).build(),
-                        Order.builder().id(2L).orderType(Order.OrderType.TAKEOUT).totalPrice(9000L).build());
+                Arrays.asList(Order.builder().orderId(1L).orderType(Order.OrderType.TAKEOUT).totalPrice(12000L).build(),
+                        Order.builder().orderId(2L).orderType(Order.OrderType.TAKEOUT).totalPrice(9000L).build());
 
         when(orderRepository.findAll()).thenReturn(order);
 
@@ -59,28 +70,43 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("주문 프로세스 테스트")
-    public void testOrderProcessing() {
-        //given
+    void testOrderProcessing_whenUserHasEnoughPoints() {
+        // Given
         Long userId = 1L;
-        Long itemId = 2L;
-        List<OrderRequestDto> orderRequestDto = new LinkedList<>();
-        orderRequestDto.add(new OrderRequestDto(itemId, 1, Order.OrderType.TAKEOUT));
-
-        User user = User.builder().id(userId).loginId("soonable").point(10000L).password("1234").build();
+        User user = new User();
+        user.setUserPoint(10000L);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        Item item = Item.builder().id(2L).name("Americano").price(2000L).size("M").build();
-        when(itemRepository.findById(itemId)).thenReturn(Optional.of(item));
+        List<OrderRequestDto> orderRequestDtoList = new ArrayList<>();
+        OrderRequestDto orderRequestDto = OrderRequestDto.builder()
+                .orderType(Order.OrderType.TAKEOUT)
+                .status("READY")
+                .itemId(1L)
+                .orderItemPrice(2000L)
+                .quantity(2).build();
+        orderRequestDtoList.add(orderRequestDto);
 
-        Order order = Order.builder().id(1L).totalPrice(2000L).orderType(Order.OrderType.TAKEOUT).status("주문완료").user(user).build();
-        when(orderRepository.save(any())).thenReturn(order);
+        Item item = Item.builder()
+                .id(1L)
+                .name("Americano")
+                .price(2000L)
+                .size("S").build();
+        when(itemRepository.findById(1L)).thenReturn(Optional.of((item)));
 
-        //when
-        OrderResponseDto response = orderService.orderProcessing(userId, orderRequestDto);
+        long totalPrice = 0;
+        totalPrice += orderRequestDto.getOrderItemPrice() * orderRequestDto.getQuantity();
 
-        //then
-        assertEquals(2000L, response.getTotalPrice());
-        assertEquals(Order.OrderType.TAKEOUT, response.getType());
-        assertEquals("주문완료", response.getStatus());
+        Order order = Order.builder().orderId(1L).orderType(orderRequestDto.getOrderType())
+                .totalPrice(totalPrice).status("주문완료").user(user).build();
+
+        // When
+        OrderResponseDto orderResponseDto = orderService.orderProcessing(userId, orderRequestDtoList);
+
+        // Then
+        verify(userRepository, times(1)).findById(userId);
+        verify(orderRepository, times(1)).save(any(Order.class));
+        verify(orderItemRepository, times(1)).save(any(OrderItem.class));
+        assertNotNull(orderResponseDto);
+        assertEquals(4000L, order.getTotalPrice());
     }
 }

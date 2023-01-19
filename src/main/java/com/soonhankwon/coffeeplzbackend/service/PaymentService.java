@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Service
 public class PaymentService {
@@ -18,6 +20,9 @@ public class PaymentService {
     @Transactional
     public PaymentResponseDto paymentProcessing(Long orderId, Long userId) {
         Order order = orderRepository.findById(orderId).orElseThrow(NullPointerException::new);
+        if(!Objects.equals(order.getStatus(), "주문완료")) {
+            throw new RuntimeException("결제가 불가능한 주문건 입니다.");
+        }
         User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
         long userPoint;
         if (user.getPoint() >= order.getTotalPrice())

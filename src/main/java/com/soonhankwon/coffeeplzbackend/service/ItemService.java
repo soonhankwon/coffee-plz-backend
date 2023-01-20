@@ -50,5 +50,10 @@ public class ItemService {
         itemRepository.delete(item);
         return new GlobalResponseDto("삭제 완료");
     }
+
+    public List<ItemResponseDto> favoriteItems() {
+        List<Item> itemIds = itemRepository.findAll();
+        return null;
+    }
 }
 

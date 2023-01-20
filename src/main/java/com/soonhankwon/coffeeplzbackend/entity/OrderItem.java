@@ -1,14 +1,13 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
-import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Entity

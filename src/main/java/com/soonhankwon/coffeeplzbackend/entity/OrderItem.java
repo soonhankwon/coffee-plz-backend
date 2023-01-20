@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "order_item")
-public class OrderItem {
+public class OrderItem extends BaseTimeEntity {
     @Id
     @Column(name = "order_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

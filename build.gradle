@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.7'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.soonhankwon'
@@ -31,9 +32,33 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
+    //querydsl 추가
+    implementation "com.querydsl:querydsl-jpa:5.0.0"
+    implementation "com.querydsl:querydsl-apt:5.0.0"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
+//querydsl 추가 끝

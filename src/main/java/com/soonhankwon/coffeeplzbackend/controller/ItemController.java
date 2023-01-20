@@ -24,6 +24,10 @@ public class ItemController {
     public ResponseEntity<ItemResponseDto> findItem(@PathVariable Long itemId) {
         return ResponseEntity.status(200).body(itemService.findItem(itemId));
     }
+    @GetMapping("/item/favorite")
+    public ResponseEntity<?> favoriteItems() {
+        return ResponseEntity.status(200).body(itemService.favoriteItems());
+    }
 
     @PostMapping("/item/add")
     public ResponseEntity<ItemResponseDto> addItem(ItemRequestDto itemRequestDto) {

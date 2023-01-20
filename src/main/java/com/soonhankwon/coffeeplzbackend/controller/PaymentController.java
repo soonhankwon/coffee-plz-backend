@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
     private final PaymentService paymentService;
     @PatchMapping("/user/orderPayment")
-    public ResponseEntity<PaymentResponseDto> orderPayment(Long userId, Long orderId) {
-        return ResponseEntity.status(200).body(paymentService.paymentProcessing(userId, orderId));
+    public ResponseEntity<PaymentResponseDto> orderPayment(Long userId) {
+        return ResponseEntity.status(200).body(paymentService.paymentProcessing(userId));
     }
 }

@@ -19,8 +19,8 @@ public class PaymentService {
     private final PointHistoryRepository pointHistoryRepository;
 
     @Transactional
-    public PaymentResponseDto paymentProcessing(Long userId, Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(NullPointerException::new);
+    public PaymentResponseDto paymentProcessing(Long userId) {
+        Order order = orderRepository.findByUserId(userId).orElseThrow(NullPointerException::new);
         if(!order.getStatus().equals("주문완료")) {
             throw new RuntimeException("결제가 불가능한 주문건 입니다.");
         }

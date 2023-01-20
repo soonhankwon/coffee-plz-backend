@@ -28,9 +28,6 @@ class PaymentServiceTest {
     @Mock
     OrderRepository orderRepository;
 
-    @Mock
-    PointHistoryRepository pointHistoryRepository;
-
     @InjectMocks
     PaymentService paymentService;
 
@@ -55,7 +52,7 @@ class PaymentServiceTest {
         PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice());
 
         //when
-        PaymentResponseDto result = paymentService.paymentProcessing(1L, 1L);
+        PaymentResponseDto result = paymentService.paymentProcessing(1L);
 
         //then
         assertThat(user.getPoint(), equalTo(10000L));
@@ -77,16 +74,16 @@ class PaymentServiceTest {
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
         // Act and Assert
-        assertThrows(RuntimeException.class, () -> paymentService.paymentProcessing(1L, userId));
+        assertThrows(RuntimeException.class, () -> paymentService.paymentProcessing(userId));
     }
 
     @Test
     void payment_throwsExceptionWhenOrderDoesNotExist() {
         // Arrange
-        Long orderId = 1L;
-        when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
+        Long userId = 1L;
+        when(orderRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
         // Act and Assert
-        assertThrows(NullPointerException.class, () -> paymentService.paymentProcessing(1L, 1L));
+        assertThrows(NullPointerException.class, () -> paymentService.paymentProcessing(1L));
     }
 }

@@ -8,6 +8,9 @@ import com.soonhankwon.coffeeplzbackend.entity.Item;
 import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,9 +57,17 @@ public class ItemService {
         return new GlobalResponseDto("삭제 완료");
     }
 
+    @Cacheable(value="item", cacheManager = "cacheManager")
     public List<FavoriteItemResponseDto> favoriteItems() {
+        System.out.println("cache ignore");
         List<String> list = customItemRepository.favoriteItems();
         return list.stream().map(FavoriteItemResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    @CacheEvict(value = "item", allEntries = true)
+    public void deleteCache() {
+        favoriteItems();
     }
 }
 

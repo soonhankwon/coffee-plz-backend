@@ -1,6 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.FavoriteItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.ItemService;
@@ -25,7 +26,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemService.findItem(itemId));
     }
     @GetMapping("/item/favorite")
-    public ResponseEntity<?> favoriteItems() {
+    public ResponseEntity<List<FavoriteItemResponseDto>> favoriteItems() {
         return ResponseEntity.status(200).body(itemService.favoriteItems());
     }
 

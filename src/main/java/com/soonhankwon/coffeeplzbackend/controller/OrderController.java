@@ -3,7 +3,7 @@ package com.soonhankwon.coffeeplzbackend.controller;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.OrderService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@Api(tags = "주문 API")
+@Tag(name = "주문 API")
 public class OrderController {
     private final OrderService orderService;
     @PostMapping("/order/{id}")

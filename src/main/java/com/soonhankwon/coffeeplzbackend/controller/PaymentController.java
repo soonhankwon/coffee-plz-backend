@@ -2,14 +2,14 @@ package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.PaymentService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@Api(tags = "결제 API")
+@Tag(name = "결제 API")
 @RestController
 public class PaymentController {
     private final PaymentService paymentService;

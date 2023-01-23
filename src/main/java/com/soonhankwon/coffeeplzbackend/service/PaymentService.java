@@ -21,7 +21,7 @@ public class PaymentService {
     @Transactional
     public PaymentResponseDto paymentProcessing(Long userId) {
         Order order = orderRepository.findByUserId(userId).orElseThrow(NullPointerException::new);
-        if(!order.getStatus().equals("주문완료")) {
+        if(!order.getStatus().equals(Order.OrderStatus.ORDERED)) {
             throw new RuntimeException("결제가 불가능한 주문건 입니다.");
         }
         User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
@@ -35,7 +35,7 @@ public class PaymentService {
         PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.USAGE,order.getTotalPrice());
         pointHistoryRepository.save(pointHistory);
 
-        order.setOrderStatus("결제완료");
+        order.setOrderStatus(Order.OrderStatus.PAID);
         return new PaymentResponseDto("결제완료");
     }
 }

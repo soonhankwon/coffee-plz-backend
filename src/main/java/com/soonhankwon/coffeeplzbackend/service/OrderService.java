@@ -37,20 +37,16 @@ public class OrderService {
         List<OrderItemDto> orderItemList = new ArrayList<>();
         for (OrderRequestDto dto : orderRequestDto) {
             Item item = getItem(dto.getItemId());
-            orderItemList.add(new OrderItemDto(item, dto.getOrderItemPrice(), dto.getQuantity()));
+            orderItemList.add(new OrderItemDto(item, dto.getOrderItemPrice(),dto.getItemSize(),dto.getQuantity()));
         }
 
-        long totalPrice = 0;
-        for(OrderItemDto j : orderItemList) {
-            totalPrice += j.getOrderItemPrice() * j.getQuantity();
-        }
-
+        long totalPrice = getTotalPrice(orderItemList);
         if(user.getPoint() < totalPrice)
             throw new RuntimeException("포인트가 부족합니다.");
 
         Order order = Order.builder().orderType(orderRequestDto.get(0).getOrderType())
                 .totalPrice(totalPrice)
-                .status("주문완료")
+                .status(Order.OrderStatus.ORDERED)
                 .user(user)
                 .build();
 
@@ -60,6 +56,7 @@ public class OrderService {
             OrderItem orderItem = OrderItem.builder().order(order)
                     .item(dto.getItem())
                     .orderItemPrice(dto.getOrderItemPrice())
+                    .itemSize(dto.getItemSize())
                     .quantity(dto.getQuantity())
                     .build();
             orderItemRepository.save(orderItem);
@@ -71,5 +68,19 @@ public class OrderService {
     private Item getItem(Long itemId) {
         return itemRepository.findById(itemId).orElseThrow(()
                 -> new NullPointerException("NO ITEM"));
+    }
+
+    private Long getTotalPrice (List<OrderItemDto> orderItemDtoList) {
+        long totalPrice = 0;
+        for(OrderItemDto dto : orderItemDtoList) {
+            if(dto.getItemSize() == OrderItem.ItemSize.M) {
+                totalPrice += dto.getOrderItemPrice() * dto.getQuantity() + 500L;
+            } else if (dto.getItemSize() == OrderItem.ItemSize.L) {
+                totalPrice += dto.getOrderItemPrice() * dto.getQuantity() + 1000L;
+            } else {
+                totalPrice += dto.getOrderItemPrice() * dto.getQuantity();
+            }
+        }
+        return totalPrice;
     }
 }

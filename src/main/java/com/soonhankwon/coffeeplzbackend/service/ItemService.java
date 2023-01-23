@@ -1,7 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
-import com.soonhankwon.coffeeplzbackend.dto.response.FavoriteItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
@@ -14,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +37,6 @@ public class ItemService {
     public ItemResponseDto addItem(ItemRequestDto itemRequestDto) {
         Item item = Item.builder().name(itemRequestDto.getName())
                 .price(itemRequestDto.getPrice())
-                .size(itemRequestDto.getSize())
                 .build();
         itemRepository.save(item);
         return new ItemResponseDto(item);
@@ -58,10 +57,15 @@ public class ItemService {
     }
 
     @Cacheable(value="item", cacheManager = "cacheManager")
-    public List<FavoriteItemResponseDto> favoriteItems() {
+    public List<ItemResponseDto> favoriteItems() {
         System.out.println("cache ignore");
-        List<String> list = customItemRepository.favoriteItems();
-        return list.stream().map(FavoriteItemResponseDto::new).collect(Collectors.toList());
+        List<Long> ids = customItemRepository.favoriteItems();
+        List<ItemResponseDto> list = new ArrayList<>();
+        for(Long id : ids) {
+            Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
+            list.add(new ItemResponseDto(item));
+        }
+        return list;
     }
 
     @Scheduled(cron = "0 0 0 * * ?")

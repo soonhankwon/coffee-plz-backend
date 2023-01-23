@@ -11,7 +11,7 @@ public class OrderResponseDto {
     private Long orderId;
     private Order.OrderType type;
     private Long totalPrice;
-    private String status;
+    private Order.OrderStatus status;
     public OrderResponseDto (Order order) {
         this.orderId = order.getOrderId();
         this.type = order.getOrderType();

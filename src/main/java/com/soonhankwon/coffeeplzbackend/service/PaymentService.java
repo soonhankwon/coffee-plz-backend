@@ -20,10 +20,7 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponseDto paymentProcessing(Long userId) {
-        Order order = orderRepository.findByUserId(userId).orElseThrow(NullPointerException::new);
-        if(!order.getStatus().equals(Order.OrderStatus.ORDERED)) {
-            throw new RuntimeException("결제가 불가능한 주문건 입니다.");
-        }
+        Order order = orderRepository.findByUserIdAndStatus(userId,Order.OrderStatus.ORDERED).orElseThrow(NullPointerException::new);
         User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
         long userPoint;
         if (user.getPoint() >= order.getTotalPrice())

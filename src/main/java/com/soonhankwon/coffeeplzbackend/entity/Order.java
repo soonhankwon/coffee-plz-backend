@@ -29,12 +29,18 @@ public class Order extends BaseTimeEntity {
     private Long totalPrice;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     public enum OrderType {
         TAKEOUT, STORE
     }
-    public void setOrderStatus(String status) {
+
+    public enum OrderStatus {
+        READY, ORDERED, PAID
+    }
+
+    public void setOrderStatus(OrderStatus status) {
         this.status = status;
     }
 }

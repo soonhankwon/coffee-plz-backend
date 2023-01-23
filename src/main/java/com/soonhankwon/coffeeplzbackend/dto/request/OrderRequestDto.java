@@ -1,6 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.dto.request;
 
 import com.soonhankwon.coffeeplzbackend.entity.Order;
+import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,8 @@ public class OrderRequestDto {
     private String status;
 
     private Long itemId;
+
+    private OrderItem.ItemSize itemSize;
 
     private Long orderItemPrice;
 

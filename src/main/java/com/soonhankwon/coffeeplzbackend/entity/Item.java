@@ -19,15 +19,11 @@ public class Item {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "size", nullable = false)
-    private String size;
-
     @Column(name = "price", nullable = false)
     private Long price;
 
     public void updateItem(String name, Long price, String size) {
         this.name = name;
         this.price = price;
-        this.size = size;
     }
 }

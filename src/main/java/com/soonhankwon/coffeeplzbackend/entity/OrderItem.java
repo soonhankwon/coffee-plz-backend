@@ -26,10 +26,17 @@ public class OrderItem extends BaseTimeEntity {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    @Column(name = "item_size", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ItemSize itemSize;
+
     @Column(name = "order_item_price", nullable = false)
     private Long orderItemPrice;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    public enum ItemSize {
+        S, M, L
+    }
 }

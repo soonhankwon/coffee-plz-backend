@@ -73,7 +73,7 @@ class OrderServiceTest {
     void testOrderProcessing_whenUserHasEnoughPoints() {
         // Given
         Long userId = 1L;
-        User user = new User();
+        User user = User.builder().loginId("soonhan").build();
         user.setUserPoint(10000L);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 

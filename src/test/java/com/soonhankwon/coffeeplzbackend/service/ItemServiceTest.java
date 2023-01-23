@@ -50,36 +50,26 @@ class ItemServiceTest {
     void findItem() {
         //given
         Item item = Item.builder().id(1L).name("Americano").price(3000L).build();
-        itemRepository.save(item);
         when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
 
         //when
         ItemResponseDto result = itemService.findItem(1L);
 
         //then
-        verify(itemRepository, times(1)).findById(any());
         assertThat(result.getName(), equalTo(item.getName()));
     }
 
     @Test
     void addItem() {
         //given
-        ItemRequestDto itemRequestDto = new ItemRequestDto("Americano", "Small", 2500L);
-        Item item = Item.builder().id(1L)
-                .name(itemRequestDto.getName())
-                .size(itemRequestDto.getSize())
-                .price(itemRequestDto.getPrice())
-                .build();
-
-        when(itemRepository.save(any())).thenReturn(item);
+        ItemRequestDto itemRequestDto = new ItemRequestDto("Americano", 3000L);
 
         //when
         ItemResponseDto result = itemService.addItem(itemRequestDto);
 
         //then
         assertThat(result.getName(), equalTo("Americano"));
-        assertThat(result.getSize(), equalTo("Small"));
-        assertThat(result.getPrice(), equalTo(2500L));
+        assertThat(result.getPrice(), equalTo(3000L));
     }
 
     @Test
@@ -87,20 +77,20 @@ class ItemServiceTest {
     void updateItem() {
         //given
         Long id = 1L;
-        String name = "Espresso";
+        String name1 = "Espresso";
         String name2 = "Americano";
-        String size = "Small";
-        Long price = 3000L;
-        ItemRequestDto itemRequestDto = new ItemRequestDto(name, size, price);
-        Item item = new Item(id, name2, size, price);
+        Long price1 = 2500L;
+        Long price2 = 3000L;
+
+        Item item = new Item(id, name1, price1);
+        ItemRequestDto itemRequestDto = new ItemRequestDto(name2, price2);
         when(itemRepository.findById(id)).thenReturn(Optional.of(item));
 
         //when
         ItemResponseDto result = itemService.updateItem(id, itemRequestDto);
 
         //then
-        assertThat(result.getName(), equalTo("Espresso"));
-        assertThat(result.getSize(), equalTo("Small"));
+        assertThat(result.getName(), equalTo("Americano"));
         assertThat(result.getPrice(), equalTo(3000L));
 
     }
@@ -111,15 +101,15 @@ class ItemServiceTest {
         //given
         Long id = 1L;
         String name = "Americano";
-        String size = "Small";
         Long price = 3000L;
-        Item item = new Item(id, name, size, price);
+        Item item = new Item(id, name, price);
         when(itemRepository.findById(id)).thenReturn(Optional.of(item));
 
         //when
         GlobalResponseDto result = itemService.deleteItem(id);
 
         //then
+        verify(itemRepository, times(1)).delete(item);
         assertThat(result.getMessage(), equalTo("삭제 완료"));
     }
 }

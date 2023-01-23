@@ -45,7 +45,7 @@ public class ItemService {
     @Transactional
     public ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto) {
         Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
-        item.updateItem(itemRequestDto.getName(), itemRequestDto.getPrice(), itemRequestDto.getSize());
+        item.updateItem(itemRequestDto.getName(), itemRequestDto.getPrice());
         return new ItemResponseDto(item);
     }
 

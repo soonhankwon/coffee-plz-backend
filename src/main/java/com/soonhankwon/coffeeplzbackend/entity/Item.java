@@ -22,7 +22,7 @@ public class Item {
     @Column(name = "price", nullable = false)
     private Long price;
 
-    public void updateItem(String name, Long price, String size) {
+    public void updateItem(String name, Long price) {
         this.name = name;
         this.price = price;
     }

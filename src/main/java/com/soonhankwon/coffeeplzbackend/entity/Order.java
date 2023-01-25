@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "`order`")
+@Table(name = "`order`", indexes = @Index(name = "idx_user_id", columnList = "user_id"))
 public class Order extends BaseTimeEntity {
     @Id
     @Column(name = "order_id")
@@ -21,7 +21,7 @@ public class Order extends BaseTimeEntity {
     private Long version;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
     @Column(name = "type", nullable = false)

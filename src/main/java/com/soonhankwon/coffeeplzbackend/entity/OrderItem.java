@@ -11,7 +11,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_item", indexes = {
+        @Index(name = "idx_order_id", columnList = "order_id"),
+        @Index(name = "idx_item_id", columnList = "item_id")})
 public class OrderItem extends BaseTimeEntity {
     @Id
     @Column(name = "order_item_id")
@@ -19,11 +21,11 @@ public class OrderItem extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Item item;
 
     @Column(name = "item_size", nullable = false)

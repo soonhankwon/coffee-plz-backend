@@ -11,14 +11,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Entity
-@Table(name = "point_history")
+@Table(name = "point_history", indexes = @Index(name = "idx_user_id", columnList = "user_id"))
 public class PointHistory extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
     @Column(name = "type", nullable = false)

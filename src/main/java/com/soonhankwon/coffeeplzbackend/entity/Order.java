@@ -17,6 +17,9 @@ public class Order extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
+    @Version
+    private Long version;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

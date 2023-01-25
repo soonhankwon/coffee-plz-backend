@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class OrderRequestDto {
     private Order.OrderType orderType;
 
-    private String status;
+    private Order.OrderStatus orderStatus;
 
     private Long itemId;
 

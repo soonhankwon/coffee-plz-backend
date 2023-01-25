@@ -10,3 +10,4 @@ http://localhost:8080/swagger-ui/index.html
 - MySQL
 - QueryDsl
 - Redis
+- Redisson

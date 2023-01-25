@@ -18,9 +18,12 @@ public class PointService {
     @Transactional
     public PointResponseDto chargePoint(Long id, Long chargePoint) {
         User user = userRepository.findById(id).orElseThrow(NullPointerException::new);
-        PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.CHARGE, chargePoint);
-        pointHistoryRepository.save(pointHistory);
+        createPointHistory(user, PointHistory.PointType.CHARGE, chargePoint);
         user.setUserPoint(user.getPoint() + chargePoint);
         return new PointResponseDto("포인트 충전 완료");
+    }
+    public void createPointHistory(User user, PointHistory.PointType type, Long point) {
+        PointHistory pointHistory = new PointHistory(user, type, point);
+        pointHistoryRepository.save(pointHistory);
     }
 }

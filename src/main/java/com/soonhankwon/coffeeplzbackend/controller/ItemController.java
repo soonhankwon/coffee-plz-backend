@@ -28,6 +28,10 @@ public class ItemController {
     public ResponseEntity<List<ItemResponseDto>> favoriteItems() {
         return ResponseEntity.status(200).body(itemService.favoriteItems());
     }
+    @GetMapping("/item/favorite/test")
+    public void favoriteItemsTest() {
+        itemService.updateFavoriteItems();
+    }
 
     @PostMapping("/item/add")
     public ResponseEntity<ItemResponseDto> addItem(ItemRequestDto itemRequestDto) {

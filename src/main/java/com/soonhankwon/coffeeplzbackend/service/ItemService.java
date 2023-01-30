@@ -8,7 +8,6 @@ import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.cache.annotation.CacheEvict;
@@ -82,20 +81,20 @@ public class ItemService {
         String worker = Thread.currentThread().getName();
 
         try {
-            if (!lock.tryLock(1, 1, TimeUnit.SECONDS))
-                return;
+            boolean available = lock.tryLock(1, 10, TimeUnit.SECONDS);
+            if (!available) {
+                throw new RuntimeException("Lock 을 획득하지 못했습니다.");
+            }
             log.info("현재 {}서버에서 업데이트 중입니다.", worker);
             favoriteItems();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
-            if (lock != null && lock.isLocked()) {
-                lock.unlock();
-            }
+            lock.unlock();
         }
     }
 
-    @Scheduled(cron = "59 59 23 * * ?")
+    @Scheduled(cron = "55 59 23 * * ?")
     @CacheEvict(value = "item", allEntries = true)
     public void deleteCache() {
         favoriteItems();

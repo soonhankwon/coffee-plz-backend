@@ -37,6 +37,7 @@ dependencies {
     //querydsl 추가
     implementation "com.querydsl:querydsl-jpa:5.0.0"
     implementation "com.querydsl:querydsl-apt:5.0.0"
+
     //Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // redisson
@@ -47,23 +48,29 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-//querydsl 추가 시작
+// querydsl
 def querydslDir = "$buildDir/generated/querydsl"
 
-querydsl {
+querydsl { // querydsl
     jpa = true
     querydslSourcesDir = querydslDir
 }
-sourceSets {
+
+sourceSets { // querydsl
     main.java.srcDir querydslDir
 }
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-configurations {
+
+configurations { // querydsl
     compileOnly {
         extendsFrom annotationProcessor
     }
     querydsl.extendsFrom compileClasspath
 }
-//querydsl 추가 끝
+
+compileQuerydsl { // querydsl
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+jar {
+    enabled = false
+}

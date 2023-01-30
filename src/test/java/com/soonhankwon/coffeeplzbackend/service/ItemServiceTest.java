@@ -4,17 +4,24 @@ import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
+import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,7 +31,18 @@ import static org.mockito.Mockito.*;
 class ItemServiceTest {
     @Mock
     ItemRepository itemRepository;
+    @Mock
+    CustomItemRepository customItemRepository;
 
+    @Mock
+    private RedissonClient redissonClient;
+
+    @Mock
+    private RLock lock;
+
+    @Mock
+    private Logger log;
+    @Spy
     @InjectMocks
     ItemService itemService;
 
@@ -111,5 +129,27 @@ class ItemServiceTest {
         //then
         verify(itemRepository, times(1)).delete(item);
         assertThat(result.getMessage(), equalTo("삭제 완료"));
+    }
+
+    @Test
+    void testUpdateFavoriteItems() throws InterruptedException {
+        // given
+        when(redissonClient.getLock("favoriteItemLock")).thenReturn(lock);
+        when(lock.tryLock(1, 1, TimeUnit.SECONDS)).thenReturn(true);
+        List<Long> ids = Arrays.asList(1L,2L,3L);
+        List<Item> list = Arrays.asList(Item.builder().id(1L).price(2000L).name("Americano").build(),
+                Item.builder().id(2L).price(2500L).name("Latte").build(),
+                Item.builder().id(1L).price(2000L).name("Americano").build());
+
+        // when
+        when(customItemRepository.favoriteItems()).thenReturn(ids);
+        when(itemRepository.findById(1L)).thenReturn(Optional.ofNullable(list.get(0)));
+        when(itemRepository.findById(2L)).thenReturn(Optional.ofNullable(list.get(1)));
+        when(itemRepository.findById(3L)).thenReturn(Optional.ofNullable(list.get(2)));
+        itemService.updateFavoriteItems();
+
+        // then
+//        verify(lock).unlock();
+        verify(itemService).favoriteItems();
     }
 }

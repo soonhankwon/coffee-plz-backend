@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
+import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +21,11 @@ public class OrderItem extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Item item;
 
@@ -37,6 +38,14 @@ public class OrderItem extends BaseTimeEntity {
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
+    public OrderItem(OrderItemDto orderItemDto, Order order) {
+        this.orderItemPrice = orderItemDto.getOrderItemPrice();
+        this.itemSize = orderItemDto.getItemSize();
+        this.quantity = orderItemDto.getQuantity();
+        this.item = orderItemDto.getItem();
+        this.order = order;
+    }
 
     public enum ItemSize {
         S, M, L

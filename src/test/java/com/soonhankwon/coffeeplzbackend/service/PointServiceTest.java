@@ -15,7 +15,6 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,13 +36,12 @@ class PointServiceTest {
                 .password("1234")
                 .point(10000L).build();
 
-        when(userRepository.findById(any())).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.CHARGE, 10000L);
         //when
         PointResponseDto result = pointService.chargePoint(1L,10000L);
 
         //then
-        assert user != null;
         assertThat(user.getPoint(), equalTo(20000L));
         assertThat(pointHistory.getPoint(), equalTo(10000L));
         assertThat(result.getMessage(), equalTo("포인트 충전 완료"));

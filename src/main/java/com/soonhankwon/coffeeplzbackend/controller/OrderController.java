@@ -20,7 +20,7 @@ public class OrderController {
         return ResponseEntity.status(200).body(orderService.orderProcessing(id, orderRequestDto));
     }
     @GetMapping("/order/find")
-    public ResponseEntity<List<OrderResponseDto>> findAllOrder() {
-        return ResponseEntity.status(200).body(orderService.findAllOrder());
+    public ResponseEntity<List<OrderResponseDto>> findAllOrders() {
+        return ResponseEntity.status(200).body(orderService.findAllOrders());
     }
 }

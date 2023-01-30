@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAll();
     Optional<Order> findByUserIdAndStatus(Long userId, Order.OrderStatus type);
+    boolean existsByUserIdAndStatus(Long userId, Order.OrderStatus type);
 }

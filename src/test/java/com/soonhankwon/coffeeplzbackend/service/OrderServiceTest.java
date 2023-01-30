@@ -51,7 +51,7 @@ class OrderServiceTest {
     }
 
     @Test
-    void findAllOrder() {
+    void findAllOrders() {
         //given
         List<Order> order =
                 Arrays.asList(Order.builder().orderId(1L).orderType(Order.OrderType.TAKEOUT).totalPrice(12000L).build(),
@@ -60,7 +60,7 @@ class OrderServiceTest {
         when(orderRepository.findAll()).thenReturn(order);
 
         //when
-        List<OrderResponseDto> result = orderService.findAllOrder();
+        List<OrderResponseDto> result = orderService.findAllOrders();
 
         //then
         verify(orderRepository, times(1)).findAll();
@@ -80,7 +80,7 @@ class OrderServiceTest {
         List<OrderRequestDto> orderRequestDtoList = new ArrayList<>();
         OrderRequestDto orderRequestDto = OrderRequestDto.builder()
                 .orderType(Order.OrderType.TAKEOUT)
-                .status("READY")
+                .orderStatus(Order.OrderStatus.READY)
                 .itemId(1L)
                 .orderItemPrice(2000L)
                 .quantity(2).build();
@@ -90,14 +90,14 @@ class OrderServiceTest {
                 .id(1L)
                 .name("Americano")
                 .price(2000L)
-                .size("S").build();
+                .build();
         when(itemRepository.findById(1L)).thenReturn(Optional.of((item)));
 
         long totalPrice = 0;
         totalPrice += orderRequestDto.getOrderItemPrice() * orderRequestDto.getQuantity();
 
         Order order = Order.builder().orderId(1L).orderType(orderRequestDto.getOrderType())
-                .totalPrice(totalPrice).status("주문완료").user(user).build();
+                .totalPrice(totalPrice).status(Order.OrderStatus.ORDERED).user(user).build();
 
         // When
         OrderResponseDto orderResponseDto = orderService.orderProcessing(userId, orderRequestDtoList);

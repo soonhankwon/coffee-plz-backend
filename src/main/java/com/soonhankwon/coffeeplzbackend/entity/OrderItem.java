@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -54,7 +53,7 @@ public class OrderItem extends BaseTimeEntity {
     }
 
     public static Long calculatePrice(OrderRequestDto orderRequestDto) {
-        Long price = 0L;
+        long price;
         switch (orderRequestDto.getItemSize()) {
             case M:
                 price = orderRequestDto.getOrderItemPrice() + 500L;

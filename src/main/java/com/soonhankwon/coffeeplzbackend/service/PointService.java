@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.soonhankwon.coffeeplzbackend.entity.PointHistory.createPointHistory;
+
 @AllArgsConstructor
 @Service
 public class PointService {
@@ -18,12 +20,8 @@ public class PointService {
     @Transactional
     public PointResponseDto chargePoint(Long id, Long chargePoint) {
         User user = userRepository.findById(id).orElseThrow(NullPointerException::new);
-        createPointHistory(user, PointHistory.PointType.CHARGE, chargePoint);
+        pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.CHARGE, chargePoint));
         user.setUserPoint(user.getPoint() + chargePoint);
         return new PointResponseDto("포인트 충전 완료");
-    }
-    public void createPointHistory(User user, PointHistory.PointType type, Long point) {
-        PointHistory pointHistory = new PointHistory(user, type, point);
-        pointHistoryRepository.save(pointHistory);
     }
 }

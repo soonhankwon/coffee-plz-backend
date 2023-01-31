@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.soonhankwon.coffeeplzbackend.entity.PointHistory.createPointHistory;
+
 @RequiredArgsConstructor
 @Service
 public class PaymentService {
@@ -29,9 +31,7 @@ public class PaymentService {
             throw new RuntimeException("포인트가 부족합니다.");
 
         user.setUserPoint(userPoint);
-        PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.USAGE,order.getTotalPrice());
-        pointHistoryRepository.save(pointHistory);
-
+        pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.USAGE,order.getTotalPrice()));
         order.setOrderStatus(Order.OrderStatus.PAID);
         return new PaymentResponseDto("결제완료");
     }

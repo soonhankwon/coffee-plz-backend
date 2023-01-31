@@ -36,4 +36,7 @@ public class PointHistory extends BaseTimeEntity {
         this.pointType = type;
         this.point = point;
     }
+    public static PointHistory createPointHistory(User user, PointHistory.PointType type, Long point) {
+        return new PointHistory(user, type, point);
+    }
 }

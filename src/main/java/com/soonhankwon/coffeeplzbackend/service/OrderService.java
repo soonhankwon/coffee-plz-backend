@@ -5,6 +5,7 @@ import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
+import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
@@ -39,7 +40,8 @@ public class OrderService {
         List<OrderItemDto> orderItemList = new ArrayList<>();
         for (OrderRequestDto dto : orderRequestDto) {
             Item item = getItem(dto.getItemId());
-            orderItemList.add(new OrderItemDto(item, dto.getOrderItemPrice(), dto.getItemSize(), dto.getQuantity()));
+            Long price = OrderItem.calculatePrice(dto);
+            orderItemList.add(new OrderItemDto(item, price, dto.getItemSize(), dto.getQuantity()));
         }
 
         long totalPrice = Order.calculateTotalPrice(orderItemList);

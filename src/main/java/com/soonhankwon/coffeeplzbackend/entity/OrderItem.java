@@ -1,12 +1,14 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
+import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -49,5 +51,21 @@ public class OrderItem extends BaseTimeEntity {
 
     public enum ItemSize {
         S, M, L
+    }
+
+    public static Long calculatePrice(OrderRequestDto orderRequestDto) {
+        Long price = 0L;
+        switch (orderRequestDto.getItemSize()) {
+            case M:
+                price = orderRequestDto.getOrderItemPrice() + 500L;
+                break;
+            case L:
+                price = orderRequestDto.getOrderItemPrice() + 1000L;
+                break;
+            default:
+                price = orderRequestDto.getOrderItemPrice();
+                break;
+        }
+        return price;
     }
 }

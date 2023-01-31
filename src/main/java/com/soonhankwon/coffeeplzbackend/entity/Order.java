@@ -53,6 +53,7 @@ public class Order extends BaseTimeEntity {
     public void setOrderStatus(OrderStatus status) {
         this.status = status;
     }
+
     public static Order createOrder(User user, List<OrderRequestDto> orderRequests, long totalPrice, List<OrderItemDto> orderItemDtoList) {
         Order order = new Order();
         order.orderType = orderRequests.get(0).getOrderType();
@@ -60,26 +61,16 @@ public class Order extends BaseTimeEntity {
         order.status = Order.OrderStatus.ORDERED;
         order.user = user;
         order.orderItems = new ArrayList<>();
-        for(OrderItemDto orderItemDto : orderItemDtoList) {
+        for (OrderItemDto orderItemDto : orderItemDtoList) {
             order.orderItems.add(new OrderItem(orderItemDto, order));
         }
         return order;
     }
 
-    public static Long calculateTotalPrice (List<OrderItemDto> orderItemDtoList) {
-        long totalPrice = 0;
-        for(OrderItemDto dto : orderItemDtoList) {
-            switch (dto.getItemSize()) {
-                case M:
-                    totalPrice += (dto.getOrderItemPrice() + 500L) * dto.getQuantity();
-                    break;
-                case L:
-                    totalPrice += (dto.getOrderItemPrice() + 1000L) * dto.getQuantity();
-                    break;
-                default:
-                    totalPrice += dto.getOrderItemPrice() * dto.getQuantity();
-                    break;
-            }
+    public static Long calculateTotalPrice(List<OrderItemDto> orderItemDtoList) {
+        long totalPrice = 0L;
+        for (OrderItemDto dto : orderItemDtoList) {
+            totalPrice += dto.getOrderItemPrice() * dto.getQuantity();
         }
         return totalPrice;
     }

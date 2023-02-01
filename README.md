@@ -10,9 +10,8 @@ http://localhost:8080/swagger-ui/index.html
 - MySQL
 - QueryDsl
 - Redis
-- Redisson
 - Swagger 3.0
-- JUnit5, Mockito
+- JUnit5
 ---
 ### 구현 기능
 > * 커피 메뉴 목록 조회

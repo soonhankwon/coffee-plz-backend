@@ -25,7 +25,7 @@ public class Order extends BaseTimeEntity {
     private Long version;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

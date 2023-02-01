@@ -18,7 +18,7 @@ public class OrderController {
 
     @PostMapping("/order/{id}")
     public ResponseEntity<OrderResponseDto> orderProcessing(@PathVariable Long id, @RequestBody List<OrderRequestDto> orderRequestDto) {
-        return ResponseEntity.status(200).body(orderService.orderProcessing(id, orderRequestDto));
+        return ResponseEntity.status(200).body(orderService.orderProcessingWithLock(id, orderRequestDto));
     }
 
     @GetMapping("/order/find")

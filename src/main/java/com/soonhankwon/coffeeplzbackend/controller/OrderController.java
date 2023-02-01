@@ -15,10 +15,12 @@ import java.util.List;
 @Tag(name = "주문 API")
 public class OrderController {
     private final OrderService orderService;
+
     @PostMapping("/order/{id}")
     public ResponseEntity<OrderResponseDto> orderProcessing(@PathVariable Long id, @RequestBody List<OrderRequestDto> orderRequestDto) {
         return ResponseEntity.status(200).body(orderService.orderProcessing(id, orderRequestDto));
     }
+
     @GetMapping("/order/find")
     public ResponseEntity<List<OrderResponseDto>> findAllOrders() {
         return ResponseEntity.status(200).body(orderService.findAllOrders());

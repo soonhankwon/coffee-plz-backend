@@ -15,7 +15,7 @@ import java.util.List;
 public class ItemResponseDto {
     private Long itemId;
     private String name;
-    private Long price;
+    private Integer price;
 
     public ItemResponseDto(Item item) {
         this.itemId = item.getId();

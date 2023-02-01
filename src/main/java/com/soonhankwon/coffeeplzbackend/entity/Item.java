@@ -20,9 +20,9 @@ public class Item {
     private String name;
 
     @Column(name = "price", nullable = false)
-    private Long price;
+    private Integer price;
 
-    public void updateItem(String name, Long price) {
+    public void updateItem(String name, Integer price) {
         this.name = name;
         this.price = price;
     }

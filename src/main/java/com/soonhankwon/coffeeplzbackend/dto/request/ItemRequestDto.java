@@ -8,5 +8,5 @@ import lombok.Getter;
 public class ItemRequestDto {
     private String name;
 
-    private Long price;
+    private Integer price;
 }

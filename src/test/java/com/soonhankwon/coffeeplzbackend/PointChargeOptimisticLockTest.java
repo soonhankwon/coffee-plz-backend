@@ -1,12 +1,12 @@
 package com.soonhankwon.coffeeplzbackend;
 
-import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import com.soonhankwon.coffeeplzbackend.service.PointService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,6 +18,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -25,12 +26,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PointChargeOptimisticLockTest {
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Mock
-    PointHistoryRepository pointHistoryRepository;
+    private PointHistoryRepository pointHistoryRepository;
 
     @InjectMocks
-    PointService pointService;
+    private PointService pointService;
+
 
     @Test
     @DisplayName("낙관적 락 포인트 충전 선점 테스트")
@@ -46,18 +48,18 @@ public class PointChargeOptimisticLockTest {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         CountDownLatch countDownLatch = new CountDownLatch(3);
         AtomicInteger failedCounter = new AtomicInteger(0);
-        for (int i = 0; i < 3; i++) {
-            executorService.submit(() -> {
-                try {
-                    pointService.chargePoint(1L, 10000L);
-                } catch (OptimisticLockingFailureException e) {
-                    failedCounter.incrementAndGet();
-                } finally {
-                    countDownLatch.countDown();
+        IntStream.range(0, 3).forEach(i -> executorService.submit(() -> {
+                    try {
+                        pointService.chargePoint(1L, 10000L);
+                    } catch (OptimisticLockingFailureException e) {
+                        failedCounter.incrementAndGet();
+                    } finally {
+                        countDownLatch.countDown();
+                    }
                 }
-            });
-        }
+        ));
         countDownLatch.await();
-        assertEquals(3, failedCounter.get());
+        assert user != null;
+        assertEquals(10000L, user.getPoint());
     }
 }

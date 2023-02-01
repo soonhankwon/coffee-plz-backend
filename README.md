@@ -1,9 +1,9 @@
 # coffee-plz-backend
-> 커피샵 온라인 주문 시스템 **coffee-plz**
+> 커피샵 온라인 주문 시스템 개인 프로젝트 **coffee-plz**
 - [Coffee-Plz Notion Page](https://www.notion.so/coffee-plz-java11-backend-46f6d2efb26f45f39ec42010399f7728)
 
 ## API
-http://localhost:8080/swagger-ui/index.html
+- [Swagger UI](http://localhost:8080/swagger-ui/index.html)
 
 ## STACK
 - Java 11

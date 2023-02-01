@@ -36,7 +36,5 @@ public class DataCollectionService {
         // 요청 후 응답 확인
         log.info(responseEntity.getStatusCode().toString());
         log.info(responseEntity.getBody());
-//        System.out.println(responseEntity.getStatusCode());
-//        System.out.println(responseEntity.getBody());
     }
 }

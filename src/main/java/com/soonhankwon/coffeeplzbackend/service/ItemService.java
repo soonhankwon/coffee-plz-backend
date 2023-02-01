@@ -77,7 +77,7 @@ public class ItemService {
         String worker = Thread.currentThread().getName();
 
         try {
-            boolean available = lock.tryLock(1, 10, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(0, 10, TimeUnit.SECONDS);
             if (!available) {
                 throw new RuntimeException("Lock 을 획득하지 못했습니다.");
             }

@@ -89,7 +89,7 @@ class OrderServiceTest {
         Item item = Item.builder()
                 .id(1L)
                 .name("Americano")
-                .price(2000L)
+                .price(2000)
                 .build();
         when(itemRepository.findById(1L)).thenReturn(Optional.of((item)));
 

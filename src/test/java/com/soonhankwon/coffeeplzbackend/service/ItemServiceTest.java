@@ -17,7 +17,6 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +66,7 @@ class ItemServiceTest {
     @Test
     void findItem() {
         //given
-        Item item = Item.builder().id(1L).name("Americano").price(3000L).build();
+        Item item = Item.builder().id(1L).name("Americano").price(3000).build();
         when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
 
         //when
@@ -80,7 +79,7 @@ class ItemServiceTest {
     @Test
     void addItem() {
         //given
-        ItemRequestDto itemRequestDto = new ItemRequestDto("Americano", 3000L);
+        ItemRequestDto itemRequestDto = new ItemRequestDto("Americano", 3000);
 
         //when
         ItemResponseDto result = itemService.addItem(itemRequestDto);
@@ -97,8 +96,8 @@ class ItemServiceTest {
         Long id = 1L;
         String name1 = "Espresso";
         String name2 = "Americano";
-        Long price1 = 2500L;
-        Long price2 = 3000L;
+        Integer price1 = 2500;
+        Integer price2 = 3000;
 
         Item item = new Item(id, name1, price1);
         ItemRequestDto itemRequestDto = new ItemRequestDto(name2, price2);
@@ -119,7 +118,7 @@ class ItemServiceTest {
         //given
         Long id = 1L;
         String name = "Americano";
-        Long price = 3000L;
+        Integer price = 3000;
         Item item = new Item(id, name, price);
         when(itemRepository.findById(id)).thenReturn(Optional.of(item));
 
@@ -136,10 +135,10 @@ class ItemServiceTest {
         // given
         when(redissonClient.getLock("favoriteItemLock")).thenReturn(lock);
         when(lock.tryLock(1, 1, TimeUnit.SECONDS)).thenReturn(true);
-        List<Long> ids = Arrays.asList(1L,2L,3L);
-        List<Item> list = Arrays.asList(Item.builder().id(1L).price(2000L).name("Americano").build(),
-                Item.builder().id(2L).price(2500L).name("Latte").build(),
-                Item.builder().id(1L).price(2000L).name("Americano").build());
+        List<Long> ids = Arrays.asList(1L, 2L, 3L);
+        List<Item> list = Arrays.asList(Item.builder().id(1L).price(2000).name("Americano").build(),
+                Item.builder().id(2L).price(2500).name("Latte").build(),
+                Item.builder().id(1L).price(2000).name("Americano").build());
 
         // when
         when(customItemRepository.favoriteItems()).thenReturn(ids);

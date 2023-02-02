@@ -37,8 +37,8 @@ class ItemControllerTest {
     @DisplayName("커피 메뉴 목록 조회 테스트")
     void findAllItem() throws Exception {
         List<Item> item = new ArrayList<>();
-        item.add(Item.builder().name("Americano").price(3000L).build());
-        item.add(Item.builder().name("CafeLatte").price(3000L).build());
+        item.add(Item.builder().name("Americano").price(3000).build());
+        item.add(Item.builder().name("CafeLatte").price(3000).build());
         List<ItemResponseDto> list = item.stream().map(ItemResponseDto::new).collect(Collectors.toList());
 
         given(itemService.findAllItem()).willReturn(list);
@@ -54,7 +54,7 @@ class ItemControllerTest {
     @DisplayName("커피 메뉴 조회 테스트")
     void findItem() throws Exception {
         //given
-        Item item = Item.builder().id(1L).name("Americano").price(3000L).build();
+        Item item = Item.builder().id(1L).name("Americano").price(3000).build();
         itemRepository.save(item);
         ItemResponseDto result = new ItemResponseDto(item);
 

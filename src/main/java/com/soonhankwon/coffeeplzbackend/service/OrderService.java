@@ -31,13 +31,13 @@ public class OrderService {
     private final UserRepository userRepository;
     private final DataCollectionService dataCollectionService;
     private final RedissonClient redissonClient;
+    private final TransactionService transactionService;
 
     public List<OrderResponseDto> findAllOrders() {
         return orderRepository.findAll().stream().map(OrderResponseDto::new).collect(Collectors.toList());
     }
     public OrderResponseDto orderProcessingWithLock(Long userId, List<OrderRequestDto> orderRequestDto) {
-        String lockName = "orderProcessLock";
-        RLock lock = redissonClient.getLock(lockName);
+        RLock lock = redissonClient.getLock(String.valueOf(userId));
         String worker = Thread.currentThread().getName();
         OrderResponseDto orderResponseDto;
 
@@ -47,7 +47,7 @@ public class OrderService {
                 throw new RuntimeException("Lock 을 획득하지 못했습니다.");
             }
             log.info("현재 {}서버에서 작업중입니다.", worker);
-            orderResponseDto = orderProcessing(userId, orderRequestDto);
+            orderResponseDto = transactionService.executeAsTransactional(() -> orderProcessing(userId, orderRequestDto));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {

@@ -12,9 +12,11 @@ import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,9 +31,9 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
-    private final DataCollectionService dataCollectionService;
     private final RedissonClient redissonClient;
     private final TransactionService transactionService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public List<OrderResponseDto> findAllOrders() {
         return orderRepository.findAll().stream().map(OrderResponseDto::new).collect(Collectors.toList());
@@ -76,7 +78,7 @@ public class OrderService {
         orderRepository.save(order);
 
         OrderDataCollectionDto orderDataCollectionDto = new OrderDataCollectionDto(userId, itemIds, totalPrice);
-        dataCollectionService.sendOrderData(orderDataCollectionDto);
+        eventPublisher.publishEvent(new OrderEvent(orderDataCollectionDto));
 
         return new OrderResponseDto(order);
     }
@@ -84,5 +86,13 @@ public class OrderService {
     private Item getItem(Long itemId) {
         return itemRepository.findById(itemId).orElseThrow(()
                 -> new NullPointerException("NO ITEM"));
+    }
+
+    public static class OrderEvent {
+        @Getter
+        private final OrderDataCollectionDto orderDataCollectionDto;
+        public OrderEvent(OrderDataCollectionDto orderDataCollectionDto) {
+            this.orderDataCollectionDto = orderDataCollectionDto;
+        }
     }
 }

@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDataCollectionDto {
     private Long userId;
-    private List<Long> itemId;
+    private List<Long> itemIds;
     private Long totalPrice;
 }

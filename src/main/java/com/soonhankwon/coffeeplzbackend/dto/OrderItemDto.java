@@ -4,11 +4,9 @@ import com.soonhankwon.coffeeplzbackend.entity.Item;
 import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
-@Setter
 public class OrderItemDto {
     private Item item;
     private Long orderItemPrice;

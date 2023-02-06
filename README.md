@@ -10,6 +10,7 @@
 - SpringBoot 2.7.7
 - MySQL 8.0.31
 - QueryDsl 5.0.0
+- JPA
 - Redis 7.0.8
 - Redisson 3.19.1
 - Kafka 3.1.2

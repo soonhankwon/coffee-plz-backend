@@ -18,6 +18,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class OrderService {
     private final TransactionService transactionService;
     private final ApplicationEventPublisher eventPublisher;
 
+    @Transactional(readOnly = true)
     public List<OrderResponseDto> findAllOrders() {
         return orderRepository.findAll().stream().map(OrderResponseDto::new).collect(Collectors.toList());
     }

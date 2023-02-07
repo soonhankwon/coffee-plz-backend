@@ -46,7 +46,7 @@
 > * 각 기능별로 Junit5와 Mockito를 사용하여 단위테스트 검증
 
 ### 인기메뉴 조회
-> * QuertDsl을 사용하여 일주일 간의 주문 데이터에서 가장 주문량이 많은 세가지 아이템의 id, name, price 를 조회
+> * QueryDsl을 사용하여 7일간의 주문 데이터에서 가장 주문량이 많은 세가지 아이템의 id, name, price 를 조회
 > * inner_join을 피하기 위해서 item에 있던 size를 order_item 테이블로 이동
 
 <details>
@@ -70,9 +70,11 @@ public List<Long> favoriteItems() {
 </div>
 </details>
  
-> * Redis Cache를 활용한 인기 메뉴 조회를 캐싱
-> * 스케쥴을 활용하여 하루에 한번 인기 메뉴 업데이트
-
+> * Redis를 활용한 인기 메뉴 조회
+> * @Cacheable 어노테이션을 사용하여 인기 메뉴 조회 시 캐싱된 데이터 조회
+> * Redis 서버가 다운되거나, 캐시가 없어졌을 경우 같은 연산을 하여 조회 정보를 리턴하고, 결과를 다시 캐싱
+> * 스케쥴을 활용하여 매일 밤 12시 인기 메뉴 업데이트 & Redis에 캐시 저장
+        
 ## 핵심 문제해결 전략 및 분석
 
 ### 동시성 제어 이슈 

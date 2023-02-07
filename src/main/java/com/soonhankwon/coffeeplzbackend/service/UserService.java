@@ -7,6 +7,7 @@ import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
 
+    @Transactional
     public GlobalResponseDto signupUser(SignupRequestDto signupRequestDto) {
         boolean duplicateCheck = userRepository.existsByLoginId(signupRequestDto.getLoginId());
         if (duplicateCheck) {
@@ -27,12 +29,12 @@ public class UserService {
         }
         return new GlobalResponseDto("Success");
     }
-
+    @Transactional(readOnly = true)
     public UserResponseDto findUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(NullPointerException::new);
         return new UserResponseDto(user);
     }
-
+    @Transactional(readOnly = true)
     public List<UserResponseDto> findAllUsers() {
         List<User> list = userRepository.findAll();
         return list.stream().map(UserResponseDto::new).collect(Collectors.toList());

@@ -5,11 +5,19 @@
 ## 구현 기능
 > * 커피 메뉴 목록 조회
 > * 포인트 충전하기, 포인트 이력 기록
-> * 커피주문 & 결제하기
+> * 커피 주문 & 결제하기
 > * 지난 7일간 인기메뉴 목록 조회
 > * 데이터 수집 플랫폼으로 주문 데이터 실시간 전송
 
 ## ERD
+<details>
+<summary><strong> Diagram </strong></summary>
+<div markdown="1">       
+
+![coffee_plz_erd](https://user-images.githubusercontent.com/113872320/217168702-03d1db0b-3aee-4932-87a7-f73034332697.png)
+
+</div>
+</details>
 
 ## API
 - [Swagger UI](http://localhost:8080/swagger-ui/index.html)

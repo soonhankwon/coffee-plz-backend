@@ -76,7 +76,7 @@ public List<Long> favoriteItems() {
 > * 스케쥴을 활용하여 매일 밤 12시 인기 메뉴 업데이트 & Redis에 캐시 저장
 
 ### 데이터 수집 플랫폼(Mock API)으로 데이터 전송
-> * Application Event Publisher를 사용하여 Event가 발생할 경우 주문 데이터 전송
+> * Application Event Publisher를 사용하여 OrderEvent가 발생할 경우 주문 데이터 전송
 > * Event Listener를 사용하여 주문 트랜잭션 성공 후 비동기로 주문 데이터를 전송하도록 구현
         
 ## 핵심 문제해결 전략 및 분석

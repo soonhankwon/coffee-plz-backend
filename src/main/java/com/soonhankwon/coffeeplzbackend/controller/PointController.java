@@ -2,6 +2,7 @@ package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
 import com.soonhankwon.coffeeplzbackend.service.PointService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ public class PointController {
     private final PointService pointService;
 
     @PatchMapping("/user/point/{id}")
+    @Operation(summary = "포인트 충전")
     public ResponseEntity<PointResponseDto> chargePoint(@PathVariable Long id, Long chargePoint) {
         return ResponseEntity.status(200).body(pointService.chargePoint(id, chargePoint));
     }

@@ -23,7 +23,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemService.findAllItem());
     }
     @GetMapping("/item/{itemId}")
-    @Operation(summary = "단일 메뉴 조회")
+    @Operation(summary = "단일 메뉴 검색")
     public ResponseEntity<ItemResponseDto> findItem(@PathVariable Long itemId) {
         return ResponseEntity.status(200).body(itemService.findItem(itemId));
     }

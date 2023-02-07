@@ -21,6 +21,7 @@
 
 ## API
 - [Swagger UI](http://localhost:8080/swagger-ui/index.html)
+- [상세 API Notion Page](https://amusing-child-e0e.notion.site/Coffee-Plz-API-84a27c008dc943409c70df9d6015275e)
 
 ## TECH STACK
 - Java 11

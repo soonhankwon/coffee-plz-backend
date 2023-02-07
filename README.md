@@ -81,6 +81,7 @@ public List<Long> favoriteItems() {
 > * Event Listener를 사용하여 주문 트랜잭션 성공 후 비동기로 주문 데이터를 전송하도록 구현
 > * Spring @Async를 사용하여 주문 데이터 비동기 처리 후 전송 
 > * 추후 시스템이 실시간으로 대량의 데이터를 처리할 것이라고 예상하여 Kafka 메시지 브로커 적용
+> * OrderEvent가 발생하면 producer가 orderData topic으로 메세지를 브로커에게 push, consumer는 브로커로부터 메세지를 pull
 > * pub/sub 메세징 시스템으로 분산 및 확장성 확보, 높은 처리량과 신뢰성 그리고 높은 데이터량을 처리하도록 설계
 
 ## 핵심 문제해결 전략 및 분석

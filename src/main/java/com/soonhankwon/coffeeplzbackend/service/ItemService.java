@@ -30,11 +30,13 @@ public class ItemService {
     private final FavoriteItemService favoriteItemService;
     private final RedissonClient redissonClient;
 
+    @Transactional(readOnly = true)
     public List<ItemResponseDto> findAllItem() {
         List<Item> list = itemRepository.findAll();
         return list.stream().map(ItemResponseDto::new).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ItemResponseDto findItem(Long id) {
         Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
         return new ItemResponseDto(item);
@@ -70,6 +72,7 @@ public class ItemService {
         return getItemResponseDtoList(customItemRepository, itemRepository);
     }
 
+    @Transactional
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateFavoriteItems() {
         String lockName = "favoriteItemLock";
@@ -82,7 +85,6 @@ public class ItemService {
                 throw new RuntimeException("Lock 을 획득하지 못했습니다.");
             }
             log.info("현재 {}서버에서 업데이트 중입니다.", worker);
-            favoriteItemService.deleteCache();
             favoriteItemService.setFavoriteItemCache();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

@@ -25,9 +25,4 @@ public class FavoriteItemService {
         log.info("put cache");
         return getItemResponseDtoList(customItemRepository, itemRepository);
     }
-
-    @CacheEvict(value = "item", allEntries = true)
-    public void deleteCache() {
-        log.info("delete cache");
-    }
 }

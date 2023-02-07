@@ -21,6 +21,7 @@
 
 ## API
 - [Swagger UI](http://localhost:8080/swagger-ui/index.html)
+- [상세 API Notion Page](https://amusing-child-e0e.notion.site/Coffee-Plz-API-84a27c008dc943409c70df9d6015275e)
 
 ## TECH STACK
 - Java 11
@@ -44,7 +45,31 @@
 ### Unit Test
 > * 각 기능별로 Junit5와 Mockito를 사용하여 단위테스트 검증
 
-### Redis
+### 인기메뉴 조회
+> * QuertDsl을 사용하여 일주일 간의 주문 데이터에서 가장 주문량이 많은 세가지 아이템의 id, name, price 를 조회
+> * inner_join을 피하기 위해서 item에 있던 size를 order_item 테이블로 이동
+
+<details>
+<summary><strong> Code </strong></summary>
+<div markdown="1">       
+
+````java
+public List<Long> favoriteItems() {
+        LocalDate weekBefore = LocalDate.now().minusDays(7);
+        LocalDate yesterday = LocalDate.now();
+
+        return queryFactory.select(orderItem.item.id)
+                .from(orderItem)
+                .where(orderItem.createdAt.between(weekBefore.atStartOfDay(), yesterday.atStartOfDay()))
+                .groupBy(orderItem.item.id)
+                .orderBy(orderItem.quantity.sum().desc())
+                .limit(3)
+                .fetch();
+    }
+````
+</div>
+</details>
+ 
 > * Redis Cache를 활용한 인기 메뉴 조회를 캐싱
 > * 스케쥴을 활용하여 하루에 한번 인기 메뉴 업데이트
 

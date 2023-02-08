@@ -16,7 +16,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class KafkaProducerService {
     private final KafkaTemplate<String, String> kafkaTemplate;
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public OrderDataCollectionDto send(OrderDataCollectionDto orderDataCollectionDto) {
+    public OrderDataCollectionDto sendData(OrderDataCollectionDto orderDataCollectionDto) {
         String topic = "orderData";
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonInString;

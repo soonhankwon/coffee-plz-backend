@@ -15,7 +15,7 @@ public class OrderEventListener {
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(OrderService.OrderEvent event) {
-        kafkaProducerService.send(event.getOrderDataCollectionDto());
+        kafkaProducerService.sendData(event.getOrderDataCollectionDto());
         dataCollectionService.sendOrderData(event.getOrderDataCollectionDto());
     }
 }

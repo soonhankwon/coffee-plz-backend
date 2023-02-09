@@ -1,5 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,8 +24,12 @@ public class Item {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    public void updateItem(String name, Integer price) {
-        this.name = name;
-        this.price = price;
+    public void updateItemWithValidPrice(String name, Integer price) {
+        if (price > 0) {
+            this.name = name;
+            this.price = price;
+        } else {
+            throw new RequestException(ErrorCode.ITEM_UPDATE_PRICE_INVALID);
+        }
     }
 }

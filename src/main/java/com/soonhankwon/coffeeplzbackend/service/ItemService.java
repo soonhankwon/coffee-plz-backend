@@ -40,8 +40,7 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public ItemResponseDto findItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(
-                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
+        Item item = getItemExistsOrThrowException(id);
         return new ItemResponseDto(item);
     }
 
@@ -56,16 +55,14 @@ public class ItemService {
 
     @Transactional
     public ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto) {
-        Item item = itemRepository.findById(id).orElseThrow(
-                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
-        item.updateItem(itemRequestDto.getName(), itemRequestDto.getPrice());
+        Item item = getItemExistsOrThrowException(id);
+        item.updateItemWithValidPrice(itemRequestDto.getName(), itemRequestDto.getPrice());
         return new ItemResponseDto(item);
     }
 
     @Transactional
     public GlobalResponseDto deleteItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(
-                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
+        Item item = getItemExistsOrThrowException(id);
         itemRepository.delete(item);
         return new GlobalResponseDto("삭제완료");
     }
@@ -96,6 +93,11 @@ public class ItemService {
         } finally {
             lock.unlock();
         }
+    }
+
+    private Item getItemExistsOrThrowException(Long itemId) {
+        return itemRepository.findById(itemId).orElseThrow(
+                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
     }
 }
 

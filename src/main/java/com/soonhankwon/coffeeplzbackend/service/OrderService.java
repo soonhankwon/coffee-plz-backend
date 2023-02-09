@@ -62,8 +62,7 @@ public class OrderService {
         return orderResponseDto;
     }
     public OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
+        User user = getUserExistsThrowException(userId);
         boolean previousOrderExists = orderRepository.existsByUserIdAndStatus(userId, Order.OrderStatus.ORDERED);
         if (previousOrderExists) {
             throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
@@ -72,7 +71,7 @@ public class OrderService {
         List<Long> itemIds = new ArrayList<>();
         List<OrderItemDto> orderItemList = new ArrayList<>();
         for (OrderRequestDto dto : orderRequestDto) {
-            Item item = getItem(dto.getItemId());
+            Item item = getItemExistsOrThrowException(dto.getItemId());
             itemIds.add(dto.getItemId());
             Long price = OrderItem.calculatePrice(dto);
             orderItemList.add(new OrderItemDto(item, price, dto.getItemSize(), dto.getQuantity()));
@@ -88,9 +87,13 @@ public class OrderService {
         return new OrderResponseDto(order);
     }
 
-    private Item getItem(Long itemId) {
+    private Item getItemExistsOrThrowException(Long itemId) {
         return itemRepository.findById(itemId).orElseThrow(
-                () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
+                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
+    }
+    private User getUserExistsThrowException(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
     }
 
     public static class OrderEvent {

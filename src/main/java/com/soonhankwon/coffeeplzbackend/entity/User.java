@@ -1,5 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,7 +39,17 @@ public class User extends BaseTimeEntity {
         this.point = point;
     }
 
-    public void setUserPoint(Long point) {
-        this.point = point;
+    public void setUserPointWithValidChargePoint(Long userPoint, Long chargePoint) {
+        if (chargePoint > 0)
+            this.point = userPoint + chargePoint;
+        else
+            throw new RequestException(ErrorCode.POINT_INVALID);
+    }
+
+    public void setUserPointWithSufficientPoint(Long userPoint, Long orderPoint) {
+        if (userPoint >= orderPoint)
+            this.point = userPoint - orderPoint;
+        else
+            throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
     }
 }

@@ -3,6 +3,8 @@ package com.soonhankwon.coffeeplzbackend.service;
 import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
 import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,8 @@ public class PointService {
 
     @Transactional
     public PointResponseDto chargePoint(Long id, Long chargePoint) {
-        User user = userRepository.findById(id).orElseThrow(NullPointerException::new);
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.CHARGE, chargePoint));
         user.setUserPoint(user.getPoint() + chargePoint);
         return new PointResponseDto("포인트 충전 완료");

@@ -4,6 +4,8 @@ import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
 import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -22,13 +24,15 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponseDto paymentProcessing(Long userId) {
-        Order order = orderRepository.findByUserIdAndStatus(userId,Order.OrderStatus.ORDERED).orElseThrow(NullPointerException::new);
-        User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
+        Order order = orderRepository.findByUserIdAndStatus(userId,Order.OrderStatus.ORDERED).orElseThrow(
+                () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         long userPoint;
         if (user.getPoint() >= order.getTotalPrice())
             userPoint = user.getPoint() - order.getTotalPrice();
         else
-            throw new RuntimeException("포인트가 부족합니다.");
+            throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
 
         user.setUserPoint(userPoint);
         pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.USAGE,order.getTotalPrice()));

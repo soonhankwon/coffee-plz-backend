@@ -4,6 +4,8 @@ import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import lombok.AllArgsConstructor;
@@ -38,7 +40,8 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public ItemResponseDto findItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
+        Item item = itemRepository.findById(id).orElseThrow(
+                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
         return new ItemResponseDto(item);
     }
 
@@ -53,16 +56,18 @@ public class ItemService {
 
     @Transactional
     public ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto) {
-        Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
+        Item item = itemRepository.findById(id).orElseThrow(
+                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
         item.updateItem(itemRequestDto.getName(), itemRequestDto.getPrice());
         return new ItemResponseDto(item);
     }
 
     @Transactional
     public GlobalResponseDto deleteItem(Long id) {
-        Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
+        Item item = itemRepository.findById(id).orElseThrow(
+                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
         itemRepository.delete(item);
-        return new GlobalResponseDto("삭제 완료");
+        return new GlobalResponseDto("삭제완료");
     }
 
     @Transactional(readOnly = true)

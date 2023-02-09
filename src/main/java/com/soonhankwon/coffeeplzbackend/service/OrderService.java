@@ -8,6 +8,8 @@ import com.soonhankwon.coffeeplzbackend.entity.Item;
 import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -60,10 +62,11 @@ public class OrderService {
         return orderResponseDto;
     }
     public OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         boolean previousOrderExists = orderRepository.existsByUserIdAndStatus(userId, Order.OrderStatus.ORDERED);
         if (previousOrderExists) {
-            throw new IllegalStateException("이전 주문 결제 후 주문이 가능합니다.");
+            throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
         }
 
         List<Long> itemIds = new ArrayList<>();
@@ -86,8 +89,8 @@ public class OrderService {
     }
 
     private Item getItem(Long itemId) {
-        return itemRepository.findById(itemId).orElseThrow(()
-                -> new NullPointerException("NO ITEM"));
+        return itemRepository.findById(itemId).orElseThrow(
+                () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
     }
 
     public static class OrderEvent {

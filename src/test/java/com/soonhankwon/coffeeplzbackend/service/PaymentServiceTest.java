@@ -5,6 +5,7 @@ import com.soonhankwon.coffeeplzbackend.entity.Order;
 import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
+import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,8 @@ class PaymentServiceTest {
     UserRepository userRepository;
     @Mock
     OrderRepository orderRepository;
+    @Mock
+    PointHistoryRepository pointHistoryRepository;
 
     @InjectMocks
     PaymentService paymentService;
@@ -45,9 +48,7 @@ class PaymentServiceTest {
                 .status(Order.OrderStatus.ORDERED)
                 .totalPrice(10000L).build();
         when(orderRepository.findByUserIdAndStatus(1L, Order.OrderStatus.ORDERED)).thenReturn(Optional.of(order));
-
-        PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice());
-
+        PointHistory pointHistory = PointHistory.createPointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice());
         //when
         PaymentResponseDto result = paymentService.paymentProcessing(1L);
 

@@ -21,8 +21,6 @@ import static org.mockito.Mockito.when;
 class PointServiceTest {
     @Mock
     UserRepository userRepository;
-    @Mock
-    PointHistoryRepository pointHistoryRepository;
 
     @InjectMocks
     PointService pointService;
@@ -37,7 +35,7 @@ class PointServiceTest {
                 .point(10000L).build();
 
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        PointHistory pointHistory = new PointHistory(user, PointHistory.PointType.CHARGE, 10000L);
+        PointHistory pointHistory = PointHistory.createPointHistory(user, PointHistory.PointType.CHARGE, 10000L);
         //when
         PointResponseDto result = pointService.chargePoint(1L,10000L);
 

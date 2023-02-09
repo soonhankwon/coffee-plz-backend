@@ -1,6 +1,5 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.Item;
@@ -73,8 +72,7 @@ class OrderServiceTest {
     void testOrderProcessing_whenUserHasEnoughPoints() {
         // Given
         Long userId = 1L;
-        User user = User.builder().loginId("soonhan").build();
-        user.setUserPoint(10000L);
+        User user = User.builder().loginId("soonhan").point(10000L).build();
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         List<OrderRequestDto> orderRequestDtoList = new ArrayList<>();

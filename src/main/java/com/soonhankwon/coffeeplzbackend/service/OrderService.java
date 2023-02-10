@@ -62,7 +62,7 @@ public class OrderService {
         return orderResponseDto;
     }
     public OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
-        User user = getUserExistsThrowException(userId);
+        User user = getUserExistsOrThrowException(userId);
         boolean previousOrderExists = orderRepository.existsByUserIdAndStatus(userId, Order.OrderStatus.ORDERED);
         if (previousOrderExists) {
             throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
@@ -91,7 +91,7 @@ public class OrderService {
         return itemRepository.findById(itemId).orElseThrow(
                 () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
     }
-    private User getUserExistsThrowException(Long userId) {
+    private User getUserExistsOrThrowException(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
     }

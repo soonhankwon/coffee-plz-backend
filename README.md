@@ -80,7 +80,7 @@
 
 ### 인기메뉴 조회
 > * QueryDsl을 사용하여 7일간의 주문 데이터에서 가장 주문량이 많은 세가지 아이템의 id, name, price 를 조회
-> * inner_join을 피하기 위해서 item에 있던 size를 order_item 테이블로 이동
+> * inner_join을 피하기 위해서 item에 있던 size를 order_item 테이블로 이동하여 쿼리 성능 개선
 
 <details>
 <summary><strong> Code </strong></summary>

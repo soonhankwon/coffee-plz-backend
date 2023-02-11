@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
@@ -16,8 +13,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Service
 public class DataCollectionService {
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+
     public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {
         log.info(Thread.currentThread().getName());
         //헤더 설정

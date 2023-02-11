@@ -7,15 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @RequiredArgsConstructor
 @Slf4j
 @Service
 public class KafkaProducerService {
     private final KafkaTemplate<String, String> kafkaTemplate;
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+
     public OrderDataCollectionDto sendData(OrderDataCollectionDto orderDataCollectionDto) {
         String topic = "orderData";
         ObjectMapper objectMapper = new ObjectMapper();

@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "`order`", indexes = @Index(name = "idx_user_id", columnList = "user_id"))
 public class Order extends BaseTimeEntity {
     @Id

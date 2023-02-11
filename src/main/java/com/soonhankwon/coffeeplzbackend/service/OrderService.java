@@ -68,14 +68,15 @@ public class OrderService {
             throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
         }
 
-        List<Long> itemIds = new ArrayList<>();
-        List<OrderItemDto> orderItemList = new ArrayList<>();
-        for (OrderRequestDto dto : orderRequestDto) {
-            Item item = getItemExistsOrThrowException(dto.getItemId());
-            itemIds.add(dto.getItemId());
-            Long price = OrderItem.calculatePrice(dto);
-            orderItemList.add(new OrderItemDto(item, price, dto.getItemSize(), dto.getQuantity()));
-        }
+        List<Long> itemIds = orderRequestDto.stream()
+                .map(OrderRequestDto::getItemId)
+                .collect(Collectors.toList());
+        List<OrderItemDto> orderItemList = orderRequestDto.stream()
+                .map(dto -> {
+                    Item item = getItemExistsOrThrowException(dto.getItemId());
+                    Long price = OrderItem.calculatePrice(dto);
+                    return new OrderItemDto(item, price, dto.getItemSize(),dto.getQuantity());
+                }).collect(Collectors.toList());
 
         long totalPrice = Order.calculateTotalPrice(orderItemList);
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);

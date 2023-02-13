@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class KafkaProducerService {
+public class KafkaProducerService implements DataTransferService{
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public OrderDataCollectionDto sendData(OrderDataCollectionDto orderDataCollectionDto) {
+    public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {
         String topic = "orderData";
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonInString;
@@ -25,7 +25,5 @@ public class KafkaProducerService {
         }
         kafkaTemplate.send(topic, jsonInString);
         log.info("Kafka Producer sent data from the OrderService : " + orderDataCollectionDto);
-
-        return orderDataCollectionDto;
     }
 }

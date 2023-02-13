@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Service
-public class DataCollectionService {
+public class DirectDataTransferService implements DataTransferService {
 
     public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {
         log.info(Thread.currentThread().getName());

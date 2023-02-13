@@ -10,12 +10,12 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class OrderEventListener {
     private final KafkaProducerService kafkaProducerService;
-    private final DataCollectionService dataCollectionService;
+    private final DirectDataTransferService directDataTransferService;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(OrderService.OrderEvent event) {
-        kafkaProducerService.sendData(event.getOrderDataCollectionDto());
-        dataCollectionService.sendOrderData(event.getOrderDataCollectionDto());
+        kafkaProducerService.sendOrderData(event.getOrderDataCollectionDto());
+        directDataTransferService.sendOrderData(event.getOrderDataCollectionDto());
     }
 }

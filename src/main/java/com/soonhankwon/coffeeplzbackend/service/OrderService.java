@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
+import com.soonhankwon.coffeeplzbackend.dto.DataCollectionDto;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
@@ -10,6 +10,7 @@ import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.factory.DataCollectionDtoFactory;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -22,7 +23,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -37,6 +37,7 @@ public class OrderService {
     private final RedissonClient redissonClient;
     private final TransactionService transactionService;
     private final ApplicationEventPublisher eventPublisher;
+    private final DataCollectionDtoFactory dataCollectionDtoFactory;
 
     @Transactional(readOnly = true)
     public List<OrderResponseDto> findAllOrders() {
@@ -82,8 +83,8 @@ public class OrderService {
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
 
-        OrderDataCollectionDto orderDataCollectionDto = new OrderDataCollectionDto(userId, itemIds, totalPrice);
-        eventPublisher.publishEvent(new OrderEvent(orderDataCollectionDto));
+        DataCollectionDto dataCollectionDto = dataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice);
+        eventPublisher.publishEvent(new OrderEvent(dataCollectionDto));
 
         return new OrderResponseDto(order);
     }
@@ -99,9 +100,9 @@ public class OrderService {
 
     public static class OrderEvent {
         @Getter
-        private final OrderDataCollectionDto orderDataCollectionDto;
-        public OrderEvent(OrderDataCollectionDto orderDataCollectionDto) {
-            this.orderDataCollectionDto = orderDataCollectionDto;
+        private final DataCollectionDto dataCollectionDto;
+        public OrderEvent(DataCollectionDto dataCollectionDto) {
+            this.dataCollectionDto = dataCollectionDto;
         }
     }
 }

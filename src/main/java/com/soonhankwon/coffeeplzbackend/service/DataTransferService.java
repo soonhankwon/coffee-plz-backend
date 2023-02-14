@@ -1,7 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
+import com.soonhankwon.coffeeplzbackend.dto.DataCollectionDto;
 
 public interface DataTransferService {
-    void sendOrderData(OrderDataCollectionDto orderDataCollectionDto);
+    void sendOrderData(DataCollectionDto dataCollectionDto);
 }

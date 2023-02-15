@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.dto.DataCollectionDto;
+import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
@@ -83,8 +83,8 @@ public class OrderService {
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
 
-        DataCollectionDto dataCollectionDto = dataCollectionDtoFactory.createDataCollectionDto(userId, itemIds, totalPrice);
-        eventPublisher.publishEvent(new OrderEvent(dataCollectionDto));
+        OrderDataCollectionDto orderDataCollectionDto = dataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice);
+        eventPublisher.publishEvent(new OrderEvent(orderDataCollectionDto));
 
         return new OrderResponseDto(order);
     }
@@ -100,9 +100,9 @@ public class OrderService {
 
     public static class OrderEvent {
         @Getter
-        private final DataCollectionDto dataCollectionDto;
-        public OrderEvent(DataCollectionDto dataCollectionDto) {
-            this.dataCollectionDto = dataCollectionDto;
+        private final OrderDataCollectionDto orderDataCollectionDto;
+        public OrderEvent(OrderDataCollectionDto orderDataCollectionDto) {
+            this.orderDataCollectionDto = orderDataCollectionDto;
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -11,7 +10,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class OrderEventListener {
     private final KafkaProducerService kafkaProducerService;
 
-    @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(OrderService.OrderEvent event) {
         kafkaProducerService.sendOrderData(event.getOrderDataCollectionDto());

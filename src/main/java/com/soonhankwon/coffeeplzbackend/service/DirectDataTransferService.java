@@ -2,7 +2,7 @@ package com.soonhankwon.coffeeplzbackend.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
+import com.soonhankwon.coffeeplzbackend.dto.DataCollectionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class DirectDataTransferService implements DataTransferService {
 
-    public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {
+    public void sendOrderData(DataCollectionDto dataCollectionDto) {
         log.info(Thread.currentThread().getName());
         //헤더 설정
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -23,7 +23,7 @@ public class DirectDataTransferService implements DataTransferService {
         ObjectMapper objectMapper = new ObjectMapper();
         String orderJson;
         try {
-            orderJson = objectMapper.writeValueAsString(orderDataCollectionDto);
+            orderJson = objectMapper.writeValueAsString(dataCollectionDto);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

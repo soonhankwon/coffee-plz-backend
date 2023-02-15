@@ -13,8 +13,7 @@ public class OrderDataCollectionDto extends DataCollectionDtoFactory {
         this.totalPrice = totalPrice;
     }
 
-    @Override
-    public OrderDataCollectionDto createOrderDataCollectionDto(Long userId, List<Long> itemIds, Long totalPrice) {
+    public static OrderDataCollectionDto createOrderDataCollectionDto(Long userId, List<Long> itemIds, Long totalPrice) {
         return new OrderDataCollectionDto(userId, itemIds, totalPrice);
     }
 }

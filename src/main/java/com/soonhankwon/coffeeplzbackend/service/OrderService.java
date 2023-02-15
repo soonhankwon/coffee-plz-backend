@@ -10,7 +10,6 @@ import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.exception.RequestException;
-import com.soonhankwon.coffeeplzbackend.factory.DataCollectionDtoFactory;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -37,7 +36,6 @@ public class OrderService {
     private final RedissonClient redissonClient;
     private final TransactionService transactionService;
     private final ApplicationEventPublisher eventPublisher;
-    private final DataCollectionDtoFactory dataCollectionDtoFactory;
 
     @Transactional(readOnly = true)
     public List<OrderResponseDto> findAllOrders() {
@@ -83,8 +81,7 @@ public class OrderService {
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
 
-        OrderDataCollectionDto orderDataCollectionDto = dataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice);
-        eventPublisher.publishEvent(new OrderEvent(orderDataCollectionDto));
+        eventPublisher.publishEvent(new OrderEvent(OrderDataCollectionDto.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
 
         return new OrderResponseDto(order);
     }

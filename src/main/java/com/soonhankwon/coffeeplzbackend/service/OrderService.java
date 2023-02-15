@@ -81,9 +81,7 @@ public class OrderService {
         long totalPrice = Order.calculateTotalPrice(orderItemList);
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
-
         eventPublisher.publishEvent(new OrderEvent(DataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
-
         return new OrderResponseDto(order);
     }
 

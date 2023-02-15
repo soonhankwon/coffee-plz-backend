@@ -1,8 +1,11 @@
 package com.soonhankwon.coffeeplzbackend.dto;
 
 import com.soonhankwon.coffeeplzbackend.factory.DataCollectionDtoFactory;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@NoArgsConstructor
 public class OrderDataCollectionDto extends DataCollectionDtoFactory {
     private Long userId;
     private List<Long> itemIds;
@@ -12,7 +15,7 @@ public class OrderDataCollectionDto extends DataCollectionDtoFactory {
         this.itemIds = itemIds;
         this.totalPrice = totalPrice;
     }
-    public static OrderDataCollectionDto createOrderDataDto(Long userId, List<Long> itemIds, Long totalPrice) {
+    public static OrderDataCollectionDto createOrderDataCollectionDto(Long userId, List<Long> itemIds, Long totalPrice) {
         return new OrderDataCollectionDto(userId, itemIds, totalPrice);
     }
 }

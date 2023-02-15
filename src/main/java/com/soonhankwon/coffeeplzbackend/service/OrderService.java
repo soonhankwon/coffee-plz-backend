@@ -10,6 +10,7 @@ import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
 import com.soonhankwon.coffeeplzbackend.entity.User;
 import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.factory.DataCollectionDtoFactory;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -81,7 +82,7 @@ public class OrderService {
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
 
-        eventPublisher.publishEvent(new OrderEvent(OrderDataCollectionDto.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
+        eventPublisher.publishEvent(new OrderEvent(DataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
 
         return new OrderResponseDto(order);
     }

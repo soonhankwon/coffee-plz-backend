@@ -12,8 +12,7 @@ public class OrderDataCollectionDto extends DataCollectionDtoFactory {
         this.itemIds = itemIds;
         this.totalPrice = totalPrice;
     }
-
-    public static OrderDataCollectionDto createOrderDataCollectionDto(Long userId, List<Long> itemIds, Long totalPrice) {
+    public static OrderDataCollectionDto createOrderDataDto(Long userId, List<Long> itemIds, Long totalPrice) {
         return new OrderDataCollectionDto(userId, itemIds, totalPrice);
     }
 }

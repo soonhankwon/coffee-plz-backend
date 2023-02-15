@@ -1,11 +1,8 @@
 package com.soonhankwon.coffeeplzbackend.dto;
 
 import com.soonhankwon.coffeeplzbackend.factory.DataCollectionDtoFactory;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
-@NoArgsConstructor
 public class OrderDataCollectionDto extends DataCollectionDtoFactory {
     private Long userId;
     private List<Long> itemIds;

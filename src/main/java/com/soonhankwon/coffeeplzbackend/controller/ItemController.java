@@ -28,6 +28,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemService.findItem(itemId));
     }
     @GetMapping("/item/favorite")
+    @CrossOrigin(origins = "*")
     @Operation(summary = "7일간 인기메뉴 조회")
     public ResponseEntity<List<ItemResponseDto>> favoriteItems() {
         return ResponseEntity.status(200).body(itemService.favoriteItems());

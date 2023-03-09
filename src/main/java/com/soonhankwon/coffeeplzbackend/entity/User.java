@@ -47,10 +47,10 @@ public class User extends BaseTimeEntity {
             throw new RequestException(ErrorCode.POINT_INVALID);
     }
 
-    public void setUserPointWithSufficientPoint(Long userPoint, Long orderPoint) {
-        if (userPoint >= orderPoint)
-            this.point = userPoint - orderPoint;
-        if (userPoint < orderPoint)
+    public void setUserPointWithSufficientPoint(Long orderPoint) {
+        if (this.point >= orderPoint)
+            this.point -= orderPoint;
+        if (this.point < orderPoint)
             throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
     }
 

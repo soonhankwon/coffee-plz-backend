@@ -28,7 +28,7 @@ public class PaymentService {
                 () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
-        user.setUserPointWithSufficientPoint(user.getPoint(), order.getTotalPrice());
+        user.setUserPointWithSufficientPoint(order.getTotalPrice());
         pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice()));
         order.setOrderStatus(Order.OrderStatus.PAID);
         return new PaymentResponseDto("결제완료");

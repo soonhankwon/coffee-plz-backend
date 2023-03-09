@@ -63,14 +63,12 @@ public class OrderService {
     }
     public OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
         User user = getUserExistsOrThrowException(userId);
-        boolean previousOrderExists = orderRepository.existsByUserIdAndStatus(userId, Order.OrderStatus.ORDERED);
-        if (previousOrderExists) {
-            throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
-        }
+        checkForPreviousOrder(userId);
 
         List<Long> itemIds = orderRequestDto.stream()
                 .map(OrderRequestDto::getItemId)
                 .collect(Collectors.toList());
+
         List<OrderItemDto> orderItemList = orderRequestDto.stream()
                 .map(dto -> {
                     Item item = getItemExistsOrThrowException(dto.getItemId());
@@ -83,6 +81,15 @@ public class OrderService {
         orderRepository.save(order);
         eventPublisher.publishEvent(new OrderEvent(DataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
         return new OrderResponseDto(order);
+    }
+
+    private boolean isPreviousOrderExist(Long userId) {
+        return orderRepository.existsByUserIdAndStatus(userId, Order.OrderStatus.ORDERED);
+    }
+
+    private void checkForPreviousOrder(Long userId) {
+        if(isPreviousOrderExist(userId))
+            throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
     }
 
     private Item getItemExistsOrThrowException(Long itemId) {

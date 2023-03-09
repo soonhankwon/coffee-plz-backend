@@ -9,16 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class UserResponseDto {
     private String loginId;
-
-    private String password;
-
     private String email;
-
     private Long point;
 
     public UserResponseDto(User user) {
         this.loginId = user.getLoginId();
-        this.password = user.getPassword();
         this.email = user.getEmail();
         this.point = user.getPoint();
     }

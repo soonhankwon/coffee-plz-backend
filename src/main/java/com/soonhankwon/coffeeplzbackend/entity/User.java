@@ -63,4 +63,7 @@ public class User extends BaseTimeEntity {
     public String getLoginId() {
         return this.loginId;
     }
+    public String getEmail() {
+        return this.email;
+    }
 }

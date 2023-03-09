@@ -14,8 +14,9 @@ public enum ErrorCode {
     POINT_INSUFFICIENT(HttpStatus.BAD_REQUEST, "포인트가 부족합니다."),
     POINT_INVALID(HttpStatus.BAD_REQUEST, "충전 포인트는 0보다 커야합니다."),
     ITEM_UPDATE_PRICE_INVALID(HttpStatus.BAD_REQUEST, "아이템의 가격은 0보다 커야합니다."),
-    DUPLICATE_LOGIN_ID(HttpStatus.BAD_REQUEST, "중복된 아이디가 존재합니다.");
-    
+    DUPLICATE_LOGIN_ID(HttpStatus.BAD_REQUEST, "중복된 아이디가 존재합니다."),
+    EMPTY_ORDER_LIST(HttpStatus.BAD_REQUEST, "주문 목록이 비어있습니다.");
+
     private final HttpStatus httpStatus;
     private final String message;
 }

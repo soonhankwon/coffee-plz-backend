@@ -3,6 +3,8 @@ package com.soonhankwon.coffeeplzbackend.entity;
 
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -55,6 +57,9 @@ public class Order extends BaseTimeEntity {
     }
 
     public static Order createOrder(User user, List<OrderRequestDto> orderRequests, long totalPrice, List<OrderItemDto> orderItemDtoList) {
+        if (orderRequests == null || orderRequests.isEmpty()) {
+            throw new RequestException(ErrorCode.EMPTY_ORDER_LIST);
+        }
         Order order = new Order();
         order.orderType = orderRequests.get(0).getOrderType();
         order.totalPrice = totalPrice;
@@ -67,8 +72,8 @@ public class Order extends BaseTimeEntity {
         return order;
     }
 
-    public static Long calculateTotalPrice(List<OrderItemDto> orderItemDtoList) {
-        long totalPrice = 0L;
+    public static long calculateTotalPrice(List<OrderItemDto> orderItemDtoList) {
+        long totalPrice = 0;
         for (OrderItemDto dto : orderItemDtoList) {
             totalPrice += dto.getOrderItemPrice() * dto.getQuantity();
         }

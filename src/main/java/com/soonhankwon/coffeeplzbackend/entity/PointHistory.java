@@ -1,13 +1,11 @@
 package com.soonhankwon.coffeeplzbackend.entity;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @Entity
 @Table(name = "point_history", indexes = @Index(name = "idx_user_id", columnList = "user_id"))
 public class PointHistory extends BaseTimeEntity {
@@ -25,6 +23,10 @@ public class PointHistory extends BaseTimeEntity {
 
     @Column(name = "point", nullable = false)
     private Long point;
+
+    public Long getPoint() {
+        return this.point;
+    }
 
     public enum PointType {
         CHARGE, USAGE

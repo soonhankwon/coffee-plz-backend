@@ -24,7 +24,7 @@ public class PointService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.CHARGE, chargePoint));
-        user.setUserPointWithValidChargePoint(user.getPoint(),chargePoint);
+        user.setUserPointWithValidChargePoint(chargePoint);
         return new PointResponseDto("포인트 충전 완료");
     }
 }

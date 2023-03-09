@@ -4,6 +4,8 @@ import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.UserResponseDto;
 import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,21 +21,22 @@ public class UserService {
 
     @Transactional
     public GlobalResponseDto signupUser(SignupRequestDto signupRequestDto) {
-        boolean duplicateCheck = userRepository.existsByLoginId(signupRequestDto.getLoginId());
-        if (duplicateCheck) {
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
-        }
-        else {
-            User user = new User(signupRequestDto.getLoginId(), signupRequestDto.getPassword(), signupRequestDto.getEmail(), 0L);
-            userRepository.save(user);
-        }
+        if (isLoginIdDuplicate(signupRequestDto.getLoginId()))
+            throw new RequestException(ErrorCode.DUPLICATE_LOGIN_ID);
+        userRepository.save(new User(signupRequestDto));
         return new GlobalResponseDto("Success");
     }
+
+    private boolean isLoginIdDuplicate(String userId){
+        return userRepository.existsByLoginId(userId);
+    }
+
     @Transactional(readOnly = true)
     public UserResponseDto findUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(NullPointerException::new);
         return new UserResponseDto(user);
     }
+
     @Transactional(readOnly = true)
     public List<UserResponseDto> findAllUsers() {
         List<User> list = userRepository.findAll();

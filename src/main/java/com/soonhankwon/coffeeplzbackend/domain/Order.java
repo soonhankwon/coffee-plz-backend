@@ -1,10 +1,11 @@
-package com.soonhankwon.coffeeplzbackend.entity;
+package com.soonhankwon.coffeeplzbackend.domain;
 
 
+import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
-import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
-import com.soonhankwon.coffeeplzbackend.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.exception;
+package com.soonhankwon.coffeeplzbackend.common.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

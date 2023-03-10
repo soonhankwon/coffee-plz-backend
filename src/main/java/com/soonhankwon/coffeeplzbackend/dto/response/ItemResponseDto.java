@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.dto.response;
 
-import com.soonhankwon.coffeeplzbackend.entity.Item;
+import com.soonhankwon.coffeeplzbackend.domain.Item;
 import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import lombok.AccessLevel;

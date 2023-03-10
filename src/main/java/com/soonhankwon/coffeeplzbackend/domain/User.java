@@ -1,8 +1,9 @@
-package com.soonhankwon.coffeeplzbackend.entity;
+package com.soonhankwon.coffeeplzbackend.domain;
 
+import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
-import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
-import com.soonhankwon.coffeeplzbackend.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,7 +51,7 @@ public class User extends BaseTimeEntity {
     public void setUserPointWithSufficientPoint(Long orderPoint) {
         if (this.point >= orderPoint)
             this.point -= orderPoint;
-        if (this.point < orderPoint)
+        else if (this.point < orderPoint)
             throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
     }
 

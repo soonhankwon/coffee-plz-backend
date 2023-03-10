@@ -20,7 +20,7 @@ public class OrderController {
     @PostMapping("/order/{id}")
     @Operation(summary = "주문 생성")
     public ResponseEntity<OrderResponseDto> orderProcessing(@PathVariable Long id, @RequestBody List<OrderRequestDto> orderRequestDto) {
-        return ResponseEntity.status(200).body(orderService.orderProcessingWithLock(id, orderRequestDto));
+        return ResponseEntity.status(200).body(orderService.placeOrder(id, orderRequestDto));
     }
 
     @GetMapping("/order/find")

@@ -1,8 +1,8 @@
 package com.soonhankwon.coffeeplzbackend;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soonhankwon.coffeeplzbackend.entity.QUser;
-import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.domain.QUser;
+import com.soonhankwon.coffeeplzbackend.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

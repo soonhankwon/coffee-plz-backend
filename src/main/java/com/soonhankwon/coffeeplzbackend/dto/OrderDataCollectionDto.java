@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.dto;
 
-import com.soonhankwon.coffeeplzbackend.factory.DataCollectionDtoFactory;
+import com.soonhankwon.coffeeplzbackend.dto.factory.DataCollectionDtoFactory;
 import java.util.List;
 
 public class OrderDataCollectionDto extends DataCollectionDtoFactory {

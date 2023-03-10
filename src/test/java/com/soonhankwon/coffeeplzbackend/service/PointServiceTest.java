@@ -1,9 +1,8 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
-import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
-import com.soonhankwon.coffeeplzbackend.entity.User;
-import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
+import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
+import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

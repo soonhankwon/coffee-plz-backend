@@ -1,7 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.dto.request;
 
-import com.soonhankwon.coffeeplzbackend.entity.Order;
-import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
+import com.soonhankwon.coffeeplzbackend.domain.Order;
+import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

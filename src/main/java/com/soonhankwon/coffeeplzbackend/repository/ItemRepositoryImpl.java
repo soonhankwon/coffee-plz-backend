@@ -1,7 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soonhankwon.coffeeplzbackend.entity.QOrderItem;
+import com.soonhankwon.coffeeplzbackend.domain.QOrderItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

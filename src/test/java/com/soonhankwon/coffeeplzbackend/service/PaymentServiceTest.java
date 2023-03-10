@@ -1,9 +1,9 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
-import com.soonhankwon.coffeeplzbackend.entity.Order;
-import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
-import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.domain.Order;
+import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
+import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;

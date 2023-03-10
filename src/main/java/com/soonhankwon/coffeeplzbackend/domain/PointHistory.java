@@ -1,5 +1,6 @@
-package com.soonhankwon.coffeeplzbackend.entity;
+package com.soonhankwon.coffeeplzbackend.domain;
 
+import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

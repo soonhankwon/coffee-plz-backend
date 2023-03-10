@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.exception;
+package com.soonhankwon.coffeeplzbackend.common.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

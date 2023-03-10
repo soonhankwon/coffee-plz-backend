@@ -4,13 +4,13 @@ import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
-import com.soonhankwon.coffeeplzbackend.entity.Item;
-import com.soonhankwon.coffeeplzbackend.entity.Order;
-import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
-import com.soonhankwon.coffeeplzbackend.entity.User;
-import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
-import com.soonhankwon.coffeeplzbackend.exception.RequestException;
-import com.soonhankwon.coffeeplzbackend.factory.DataCollectionDtoFactory;
+import com.soonhankwon.coffeeplzbackend.domain.Item;
+import com.soonhankwon.coffeeplzbackend.domain.Order;
+import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
+import com.soonhankwon.coffeeplzbackend.domain.User;
+import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.dto.factory.DataCollectionDtoFactory;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -42,7 +42,7 @@ public class OrderService {
     public List<OrderResponseDto> findAllOrders() {
         return orderRepository.findAll().stream().map(OrderResponseDto::new).collect(Collectors.toList());
     }
-    public OrderResponseDto orderProcessingWithLock(Long userId, List<OrderRequestDto> orderRequestDto) {
+    public OrderResponseDto placeOrder(Long userId, List<OrderRequestDto> orderRequestDto) {
         RLock lock = redissonClient.getLock(String.valueOf(userId));
         String worker = Thread.currentThread().getName();
         OrderResponseDto orderResponseDto;

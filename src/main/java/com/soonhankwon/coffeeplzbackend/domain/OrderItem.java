@@ -1,5 +1,6 @@
-package com.soonhankwon.coffeeplzbackend.entity;
+package com.soonhankwon.coffeeplzbackend.domain;
 
+import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import lombok.AccessLevel;

@@ -2,10 +2,10 @@ package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
-import com.soonhankwon.coffeeplzbackend.entity.Item;
-import com.soonhankwon.coffeeplzbackend.entity.Order;
-import com.soonhankwon.coffeeplzbackend.entity.OrderItem;
-import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.domain.Item;
+import com.soonhankwon.coffeeplzbackend.domain.Order;
+import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
+import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;

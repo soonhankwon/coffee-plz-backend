@@ -1,17 +1,17 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
-import com.soonhankwon.coffeeplzbackend.entity.PointHistory;
-import com.soonhankwon.coffeeplzbackend.entity.User;
-import com.soonhankwon.coffeeplzbackend.exception.ErrorCode;
-import com.soonhankwon.coffeeplzbackend.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
+import com.soonhankwon.coffeeplzbackend.domain.User;
+import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
+import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.soonhankwon.coffeeplzbackend.entity.PointHistory.createPointHistory;
+import static com.soonhankwon.coffeeplzbackend.domain.PointHistory.createPointHistory;
 
 @AllArgsConstructor
 @Service

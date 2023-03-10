@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.factory;
+package com.soonhankwon.coffeeplzbackend.dto.factory;
 
 import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
 

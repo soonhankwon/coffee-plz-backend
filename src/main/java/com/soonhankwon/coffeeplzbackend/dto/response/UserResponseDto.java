@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.dto.response;
 
-import com.soonhankwon.coffeeplzbackend.entity.User;
+import com.soonhankwon.coffeeplzbackend.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

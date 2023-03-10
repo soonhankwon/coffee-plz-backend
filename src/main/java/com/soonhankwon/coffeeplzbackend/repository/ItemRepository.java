@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.repository;
 
-import com.soonhankwon.coffeeplzbackend.entity.Item;
+import com.soonhankwon.coffeeplzbackend.domain.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

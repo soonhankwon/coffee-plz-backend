@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend;
 
-import com.soonhankwon.coffeeplzbackend.entity.Order;
+import com.soonhankwon.coffeeplzbackend.domain.Order;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -80,6 +80,6 @@ public class User extends BaseTimeEntity {
     private boolean isPointOverOrderPoint(Long orderPoint) {
         if (this.point < orderPoint)
             throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
-        return true;
+        return this.point >= orderPoint;
     }
 }

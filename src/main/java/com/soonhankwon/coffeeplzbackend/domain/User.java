@@ -56,18 +56,30 @@ public class User extends BaseTimeEntity {
     }
 
     public void setUserPointWithValidChargePoint(Long chargePoint) {
-        if (chargePoint <= 0)
-            throw new RequestException(ErrorCode.POINT_INVALID);
-        this.point += chargePoint;
+        if (isChargePointOverMinPoint(chargePoint)) {
+            this.point += chargePoint;
+        }
     }
 
     public void setUserPointWithSufficientPoint(Long orderPoint) {
-        if (this.point < orderPoint)
-            throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
-        this.point -= orderPoint;
+        if (isPointOverOrderPoint(orderPoint)) {
+            this.point -= orderPoint;
+        }
     }
 
     public static UserResponseDto createUserResDto(User user) {
         return new UserResponseDto(user.loginId, user.email, user.point);
+    }
+
+    private boolean isChargePointOverMinPoint(Long chargePoint) {
+        if (chargePoint <= MIN_POINT)
+            throw new RequestException(ErrorCode.POINT_INVALID);
+        return true;
+    }
+
+    private boolean isPointOverOrderPoint(Long orderPoint) {
+        if (this.point < orderPoint)
+            throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
+        return true;
     }
 }

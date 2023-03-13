@@ -50,22 +50,21 @@ public class OrderItem extends BaseTimeEntity {
     }
 
     public enum ItemSize {
-        S, M, L
+        S(0), M(500), L(1000);
+        private final int additionalFee;
+
+        ItemSize(int additionalFee) {
+            this.additionalFee = additionalFee;
+        }
     }
 
     public static Long calculatePrice(OrderRequestDto orderRequestDto) {
-        long price;
-        switch (orderRequestDto.getItemSize()) {
-            case M:
-                price = orderRequestDto.getOrderItemPrice() + 500L;
-                break;
-            case L:
-                price = orderRequestDto.getOrderItemPrice() + 1000L;
-                break;
-            default:
-                price = orderRequestDto.getOrderItemPrice();
-                break;
+        if (orderRequestDto.getItemSize().equals(ItemSize.M)) {
+            return orderRequestDto.getOrderItemPrice() + ItemSize.M.additionalFee;
         }
-        return price;
+        if (orderRequestDto.getItemSize().equals(ItemSize.L)) {
+            return orderRequestDto.getOrderItemPrice() + ItemSize.L.additionalFee;
+        }
+        return orderRequestDto.getOrderItemPrice();
     }
 }

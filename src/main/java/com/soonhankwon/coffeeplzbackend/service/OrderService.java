@@ -73,8 +73,8 @@ public class OrderService {
                 .map(dto -> {
                     Item item = getItemExistsOrThrowException(dto.getItemId());
                     Long price = OrderItem.calculatePrice(dto);
-                    return new OrderItemDto(item, price, dto.getItemSize(),dto.getQuantity());
-                }).collect(Collectors.toList());
+                    return new OrderItemDto(item, price, dto.getItemSize(),dto.getQuantity());})
+                .collect(Collectors.toList());
 
         long totalPrice = Order.calculateTotalPrice(orderItemList);
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);

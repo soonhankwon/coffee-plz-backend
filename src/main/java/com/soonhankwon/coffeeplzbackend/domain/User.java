@@ -4,13 +4,12 @@ import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
 import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.dto.response.UserResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
 public class User extends BaseTimeEntity {
     private static final Long MIN_POINT = 0L;
@@ -41,30 +40,34 @@ public class User extends BaseTimeEntity {
         this.point = MIN_POINT;
     }
 
+    public User(Long id, String loginId, String password, String email) {
+        this.id = id;
+        this.loginId = loginId;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(Long id, String loginId, String password, String email, Long point) {
+        this.id = id;
+        this.loginId = loginId;
+        this.password = password;
+        this.email = email;
+        this.point = point;
+    }
+
     public void setUserPointWithValidChargePoint(Long chargePoint) {
-        if (chargePoint > 0)
-            this.point += chargePoint;
         if (chargePoint <= 0)
             throw new RequestException(ErrorCode.POINT_INVALID);
+        this.point += chargePoint;
     }
 
     public void setUserPointWithSufficientPoint(Long orderPoint) {
-        if (this.point >= orderPoint)
-            this.point -= orderPoint;
-        else if (this.point < orderPoint)
+        if (this.point < orderPoint)
             throw new RequestException(ErrorCode.POINT_INSUFFICIENT);
+        this.point -= orderPoint;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-    public Long getPoint() {
-        return this.point;
-    }
-    public String getLoginId() {
-        return this.loginId;
-    }
-    public String getEmail() {
-        return this.email;
+    public static UserResponseDto createUserResDto(User user) {
+        return new UserResponseDto(user.loginId, user.email, user.point);
     }
 }

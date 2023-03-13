@@ -1,6 +1,5 @@
 package com.soonhankwon.coffeeplzbackend.dto.response;
 
-import com.soonhankwon.coffeeplzbackend.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,9 @@ public class UserResponseDto {
     private String email;
     private Long point;
 
-    public UserResponseDto(User user) {
-        this.loginId = user.getLoginId();
-        this.email = user.getEmail();
-        this.point = user.getPoint();
+    public UserResponseDto(String loginId, String email, Long point) {
+        this.loginId = loginId;
+        this.email = email;
+        this.point = point;
     }
 }

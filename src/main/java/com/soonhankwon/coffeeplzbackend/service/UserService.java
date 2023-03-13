@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.soonhankwon.coffeeplzbackend.domain.User.createUserResDto;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -33,13 +35,15 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponseDto findUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(NullPointerException::new);
-        return new UserResponseDto(user);
+        return createUserResDto(userRepository.findById(id)
+                .orElseThrow(NullPointerException::new));
     }
 
     @Transactional(readOnly = true)
     public List<UserResponseDto> findAllUsers() {
         List<User> list = userRepository.findAll();
-        return list.stream().map(UserResponseDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(User::createUserResDto)
+                .collect(Collectors.toList());
     }
 }

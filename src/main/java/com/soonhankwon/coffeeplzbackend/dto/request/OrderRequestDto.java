@@ -25,4 +25,8 @@ public class OrderRequestDto {
 
     private Integer quantity;
 
+    public OrderRequestDto(OrderItem.ItemSize size, Long orderItemPrice) {
+        this.itemSize = size;
+        this.orderItemPrice = orderItemPrice;
+    }
 }

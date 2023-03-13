@@ -13,6 +13,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "item")
 public class Item {
+    private static final int MIN_PRICE = 0;
+
     @Id
     @Column(name = "item_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +27,10 @@ public class Item {
     private Integer price;
 
     public void updateItemWithValidPrice(String name, Integer price) {
-        if (price > 0) {
-            this.name = name;
-            this.price = price;
-        } else {
+        if (price < MIN_PRICE) {
             throw new RequestException(ErrorCode.ITEM_UPDATE_PRICE_INVALID);
         }
+        this.name = name;
+        this.price = price;
     }
 }

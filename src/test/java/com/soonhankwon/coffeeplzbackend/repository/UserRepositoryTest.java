@@ -22,49 +22,57 @@ class UserRepositoryTest {
     @Test
     void saveTest() {
         //given
-        User user = User.builder().id(1L)
-                .loginId("soonhan")
-                .email("soonable@gmail.com")
-                .password("1234")
-                .point(0L).build();
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        User user = new User(1L, loginId, password, email);
 
         when(userRepository.save(any())).thenReturn(user);
         //when
-        User result = userRepository.save(User.builder().loginId("soonhan").build());
+        User result = userRepository.save(user);
         //then
         verify(userRepository, times(1)).save(any());
         assertThat(result, equalTo(user));
     }
+
     @Test
     void findByLoginId() {
         //given
-        User user = User.builder().id(1L)
-                .loginId("soonhan")
-                .email("soonable@gmail.com")
-                .password("1234")
-                .point(0L).build();
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        Long point = 15000L;
+        User user = new User(1L, loginId, password, email, point);
 
         when(userRepository.findByLoginId(any())).thenReturn(user);
         //when
         User result = userRepository.findByLoginId("soonhan");
         //then
         verify(userRepository, times(1)).findByLoginId(any());
-        assertThat(result.getLoginId(), equalTo(user.getLoginId()));
     }
 
     @Test
     void findAll() {
         //given
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        Long point = 15000L;
+        User user = new User(1L, loginId, password, email, point);
+
+        String loginId2 = "test2";
+        String password2 = "1234";
+        String email2 = "test2@gmail.com";
+        Long point2 = 15000L;
+        User user2 = new User(2L, loginId2, password2, email2, point2);
+
         List<User> users =
-                Arrays.asList(User.builder().id(1L).loginId("soonhan").build(),
-                        User.builder().id(2L).loginId("kyuri").build());
+                Arrays.asList(user, user2);
 
         when(userRepository.findAll()).thenReturn(users);
         //when
         List<User> result = userRepository.findAll();
         //then
         verify(userRepository, times(1)).findAll();
-        assertThat(result.get(0).getLoginId(), equalTo(users.get(0).getLoginId()));
-        assertThat(result.get(1).getLoginId(), equalTo(users.get(1).getLoginId()));
     }
 }

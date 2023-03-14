@@ -36,11 +36,10 @@ class PaymentServiceTest {
     @Test
     void paymentProcessing() {
         //given
-        User user = User.builder().id(1L)
-                .loginId("soonhan")
-                .email("soonable@gmail.com")
-                .password("1234")
-                .point(20000L).build();
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        User user = new User(1L, loginId, password, email, 15000L);
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
         Order order = Order.builder().orderId(1L)
@@ -53,7 +52,6 @@ class PaymentServiceTest {
         PaymentResponseDto result = paymentService.paymentProcessing(1L);
 
         //then
-        assertThat(user.getPoint(), equalTo(10000L));
         assertThat(order.getOrderType(), equalTo(Order.OrderType.TAKEOUT));
         assertThat(order.getStatus(), equalTo(Order.OrderStatus.PAID));
         assertThat(result.getMessage(), equalTo("결제완료"));

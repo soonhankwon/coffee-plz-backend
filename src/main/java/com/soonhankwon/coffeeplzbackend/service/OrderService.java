@@ -11,6 +11,7 @@ import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.dto.factory.DataCollectionDtoFactory;
+import com.soonhankwon.coffeeplzbackend.dto.response.OrderSheetResDto;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -22,7 +23,9 @@ import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -81,6 +84,15 @@ public class OrderService {
         orderRepository.save(order);
         eventPublisher.publishEvent(new OrderEvent(DataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
         return new OrderResponseDto(order);
+    }
+
+    @Transactional(readOnly = true)
+    public OrderSheetResDto findOrderSheet(Long userId) {
+        User user = getUserExistsOrThrowException(userId);
+        Order order = orderRepository.findOrderByUserAndStatus(user, Order.OrderStatus.ORDERED).orElseThrow(
+                () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
+        List<OrderItem> orderItems = order.getOrderItems();
+        return OrderItem.createOrderSheet(orderItems);
     }
 
     private boolean isPreviousOrderExist(Long userId) {

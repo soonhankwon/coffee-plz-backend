@@ -72,7 +72,10 @@ class OrderServiceTest {
     void testOrderProcessing_whenUserHasEnoughPoints() {
         // Given
         Long userId = 1L;
-        User user = User.builder().loginId("soonhan").point(10000L).build();
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        User user = new User(1L, loginId, password, email);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         List<OrderRequestDto> orderRequestDtoList = new ArrayList<>();

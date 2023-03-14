@@ -3,12 +3,16 @@ package com.soonhankwon.coffeeplzbackend.domain;
 import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.OrderSheetResDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -47,6 +51,30 @@ public class OrderItem extends BaseTimeEntity {
         this.quantity = orderItemDto.getQuantity();
         this.item = orderItemDto.getItem();
         this.order = order;
+    }
+
+    public static OrderSheetResDto createOrderSheet (List<OrderItem> orderItems) {
+        List<String> itemNames = orderItems.stream()
+                .map(orderItem -> orderItem.item.getName())
+                .collect(Collectors.toList());
+
+        List<OrderItem.ItemSize> itemSizes = orderItems.stream()
+                .map(orderItem -> orderItem.itemSize)
+                .collect(Collectors.toList());
+
+        List<Integer> itemQuantities = orderItems.stream()
+                .map(orderItem -> orderItem.quantity)
+                .collect(Collectors.toList());
+
+        List<Long> itemPrices = orderItems.stream()
+                .map(orderItem -> orderItem.orderItemPrice)
+                .collect(Collectors.toList());
+
+        long totalPrice = orderItems.stream()
+                .mapToLong(orderItem -> orderItem.quantity * orderItem.orderItemPrice)
+                .sum();
+
+        return new OrderSheetResDto(itemNames, itemSizes, itemQuantities, itemPrices, totalPrice);
     }
 
     public enum ItemSize {

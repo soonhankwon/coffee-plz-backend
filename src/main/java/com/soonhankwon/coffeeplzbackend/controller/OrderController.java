@@ -2,6 +2,7 @@ package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.OrderSheetResDto;
 import com.soonhankwon.coffeeplzbackend.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,5 +28,12 @@ public class OrderController {
     @Operation(summary = "전체 주문 조회")
     public ResponseEntity<List<OrderResponseDto>> findAllOrders() {
         return ResponseEntity.status(200).body(orderService.findAllOrders());
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/order/find/{id}")
+    @Operation(summary = "유저 결제시 주문서 조회")
+    public ResponseEntity<OrderSheetResDto> findAllOrderItems(@PathVariable Long id) {
+        return ResponseEntity.status(200).body(orderService.findOrderSheet(id));
     }
 }

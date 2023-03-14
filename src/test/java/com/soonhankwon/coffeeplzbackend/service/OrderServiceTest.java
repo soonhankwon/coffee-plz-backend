@@ -78,10 +78,9 @@ class OrderServiceTest {
         User user = new User(1L, loginId, password, email);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
+        Order.OrderType orderType = Order.OrderType.TAKEOUT;
         List<OrderRequestDto> orderRequestDtoList = new ArrayList<>();
         OrderRequestDto orderRequestDto = OrderRequestDto.builder()
-                .orderType(Order.OrderType.TAKEOUT)
-                .orderStatus(Order.OrderStatus.READY)
                 .itemId(1L)
                 .orderItemPrice(2000L)
                 .quantity(2).build();
@@ -97,7 +96,7 @@ class OrderServiceTest {
         long totalPrice = 0;
         totalPrice += orderRequestDto.getOrderItemPrice() * orderRequestDto.getQuantity();
 
-        Order order = Order.builder().orderId(1L).orderType(orderRequestDto.getOrderType())
+        Order order = Order.builder().orderId(1L).orderType(orderType)
                 .totalPrice(totalPrice).status(Order.OrderStatus.ORDERED).user(user).build();
 
         // When

@@ -16,7 +16,7 @@ import java.util.List;
 @Tag(name = "주문 API")
 public class OrderController {
     private final OrderService orderService;
-
+    @CrossOrigin(origins = "*")
     @PostMapping("/order/{id}")
     @Operation(summary = "주문 생성")
     public ResponseEntity<OrderResponseDto> orderProcessing(@PathVariable Long id, @RequestBody List<OrderRequestDto> orderRequestDto) {

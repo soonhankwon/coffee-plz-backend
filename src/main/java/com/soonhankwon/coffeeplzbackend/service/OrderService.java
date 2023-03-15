@@ -2,10 +2,7 @@ package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
-import com.soonhankwon.coffeeplzbackend.domain.Item;
-import com.soonhankwon.coffeeplzbackend.domain.Order;
-import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
-import com.soonhankwon.coffeeplzbackend.domain.User;
+import com.soonhankwon.coffeeplzbackend.domain.*;
 import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.factory.DataCollectionDtoFactory;
@@ -87,14 +84,14 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderSheetResDto findOrderSheet(Long userId) {
         User user = getUserExistsOrThrowException(userId);
-        Order order = orderRepository.findOrderByUserAndStatus(user, Order.OrderStatus.ORDERED).orElseThrow(
+        Order order = orderRepository.findOrderByUserAndStatus(user, OrderStatus.ORDERED).orElseThrow(
                 () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
         List<OrderItem> orderItems = order.getOrderItems();
         return OrderItem.createOrderSheet(orderItems);
     }
 
     private boolean isPreviousOrderExist(Long userId) {
-        return orderRepository.existsByUserIdAndStatus(userId, Order.OrderStatus.ORDERED);
+        return orderRepository.existsByUserIdAndStatus(userId, OrderStatus.ORDERED);
     }
 
     private void checkForPreviousOrder(Long userId) {

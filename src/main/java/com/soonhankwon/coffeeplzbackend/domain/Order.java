@@ -45,14 +45,6 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public enum OrderType {
-        TAKEOUT, STORE
-    }
-
-    public enum OrderStatus {
-        ORDERED, PAID
-    }
-
     public void setOrderStatus(OrderStatus status) {
         this.status = status;
     }
@@ -64,7 +56,7 @@ public class Order extends BaseTimeEntity {
         Order order = new Order();
         order.orderType = orderRequests.get(0).getOrderType();
         order.totalPrice = totalPrice;
-        order.status = Order.OrderStatus.ORDERED;
+        order.status = OrderStatus.ORDERED;
         order.user = user;
         order.orderItems = new ArrayList<>();
         for (OrderItemDto orderItemDto : orderItemDtoList) {

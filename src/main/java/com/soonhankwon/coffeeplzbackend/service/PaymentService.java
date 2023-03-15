@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.domain.OrderStatus;
 import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
 import com.soonhankwon.coffeeplzbackend.domain.Order;
 import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
@@ -26,13 +27,13 @@ public class PaymentService {
 
     @Transactional
     public PaymentResponseDto paymentProcessing(Long userId) {
-        Order order = orderRepository.findByUserIdAndStatus(userId, Order.OrderStatus.ORDERED).orElseThrow(
+        Order order = orderRepository.findByUserIdAndStatus(userId, OrderStatus.ORDERED).orElseThrow(
                 () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         user.setUserPointWithSufficientPoint(order.getTotalPrice());
         pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice()));
-        order.setOrderStatus(Order.OrderStatus.PAID);
+        order.setOrderStatus(OrderStatus.PAID);
         return new PaymentResponseDto("결제완료");
     }
 }

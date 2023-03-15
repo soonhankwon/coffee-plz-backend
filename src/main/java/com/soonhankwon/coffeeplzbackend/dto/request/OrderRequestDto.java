@@ -1,7 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.dto.request;
 
-import com.soonhankwon.coffeeplzbackend.domain.Order;
 import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
+import com.soonhankwon.coffeeplzbackend.domain.OrderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OrderRequestDto {
-    private Order.OrderType orderType;
+    private OrderType orderType;
 
     private Long itemId;
 

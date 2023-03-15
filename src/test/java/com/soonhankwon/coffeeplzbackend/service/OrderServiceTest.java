@@ -1,11 +1,8 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.domain.*;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
-import com.soonhankwon.coffeeplzbackend.domain.Item;
-import com.soonhankwon.coffeeplzbackend.domain.Order;
-import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
-import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
@@ -53,8 +50,8 @@ class OrderServiceTest {
     void findAllOrders() {
         //given
         List<Order> order =
-                Arrays.asList(Order.builder().orderId(1L).orderType(Order.OrderType.TAKEOUT).totalPrice(12000L).build(),
-                        Order.builder().orderId(2L).orderType(Order.OrderType.TAKEOUT).totalPrice(9000L).build());
+                Arrays.asList(Order.builder().orderId(1L).orderType(OrderType.TAKEOUT).totalPrice(12000L).build(),
+                        Order.builder().orderId(2L).orderType(OrderType.TAKEOUT).totalPrice(9000L).build());
 
         when(orderRepository.findAll()).thenReturn(order);
 
@@ -64,7 +61,7 @@ class OrderServiceTest {
         //then
         verify(orderRepository, times(1)).findAll();
         assertThat(result.get(0).getOrderId(), equalTo(1L));
-        assertThat(result.get(1).getType(), equalTo(Order.OrderType.TAKEOUT));
+        assertThat(result.get(1).getType(), equalTo(OrderType.TAKEOUT));
     }
 
     @Test
@@ -78,7 +75,7 @@ class OrderServiceTest {
         User user = new User(1L, loginId, password, email);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        Order.OrderType orderType = Order.OrderType.TAKEOUT;
+        OrderType orderType = OrderType.TAKEOUT;
         List<OrderRequestDto> orderRequestDtoList = new ArrayList<>();
         OrderRequestDto orderRequestDto = OrderRequestDto.builder()
                 .itemId(1L)
@@ -97,7 +94,7 @@ class OrderServiceTest {
         totalPrice += orderRequestDto.getOrderItemPrice() * orderRequestDto.getQuantity();
 
         Order order = Order.builder().orderId(1L).orderType(orderType)
-                .totalPrice(totalPrice).status(Order.OrderStatus.ORDERED).user(user).build();
+                .totalPrice(totalPrice).status(OrderStatus.ORDERED).user(user).build();
 
         // When
         OrderResponseDto orderResponseDto = orderService.orderProcessing(userId, orderRequestDtoList);

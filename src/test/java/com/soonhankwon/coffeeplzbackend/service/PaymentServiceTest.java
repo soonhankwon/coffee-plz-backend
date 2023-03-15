@@ -1,9 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.domain.*;
 import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
-import com.soonhankwon.coffeeplzbackend.domain.Order;
-import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
-import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -43,17 +41,17 @@ class PaymentServiceTest {
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
         Order order = Order.builder().orderId(1L)
-                .orderType(Order.OrderType.TAKEOUT)
-                .status(Order.OrderStatus.ORDERED)
+                .orderType(OrderType.TAKEOUT)
+                .status(OrderStatus.ORDERED)
                 .totalPrice(10000L).build();
-        when(orderRepository.findByUserIdAndStatus(1L, Order.OrderStatus.ORDERED)).thenReturn(Optional.of(order));
+        when(orderRepository.findByUserIdAndStatus(1L, OrderStatus.ORDERED)).thenReturn(Optional.of(order));
         PointHistory pointHistory = PointHistory.createPointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice());
         //when
         PaymentResponseDto result = paymentService.paymentProcessing(1L);
 
         //then
-        assertThat(order.getOrderType(), equalTo(Order.OrderType.TAKEOUT));
-        assertThat(order.getStatus(), equalTo(Order.OrderStatus.PAID));
+        assertThat(order.getOrderType(), equalTo(OrderType.TAKEOUT));
+        assertThat(order.getStatus(), equalTo(OrderStatus.PAID));
         assertThat(result.getMessage(), equalTo("결제완료"));
         assertThat(pointHistory.getPoint(), equalTo(10000L));
     }
@@ -64,9 +62,9 @@ class PaymentServiceTest {
         Long userId = 1L;
         Order order = Order.builder()
                 .orderId(1L)
-                .orderType(Order.OrderType.TAKEOUT)
+                .orderType(OrderType.TAKEOUT)
                 .totalPrice(10000L)
-                .status(Order.OrderStatus.PAID).build();
+                .status(OrderStatus.PAID).build();
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
         // Act and Assert
@@ -77,7 +75,7 @@ class PaymentServiceTest {
     void payment_throwsExceptionWhenOrderDoesNotExist() {
         // Arrange
         Long userId = 1L;
-        when(orderRepository.findByUserIdAndStatus(userId, Order.OrderStatus.PAID)).thenReturn(Optional.empty());
+        when(orderRepository.findByUserIdAndStatus(userId, OrderStatus.PAID)).thenReturn(Optional.empty());
 
         // Act and Assert
         assertThrows(NullPointerException.class, () -> paymentService.paymentProcessing(1L));

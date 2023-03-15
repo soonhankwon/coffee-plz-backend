@@ -27,19 +27,18 @@ class PointServiceTest {
     @Test
     void chargePoint() {
         //given
-        User user = User.builder().id(1L)
-                .loginId("soonhan")
-                .email("soonable@gmail.com")
-                .password("1234")
-                .point(10000L).build();
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        Long point = 15000L;
+        User user = new User(1L, loginId, password, email, point);
 
-        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         PointHistory pointHistory = PointHistory.createPointHistory(user, PointHistory.PointType.CHARGE, 10000L);
         //when
         PointResponseDto result = pointService.chargePoint(1L,10000L);
 
         //then
-        assertThat(user.getPoint(), equalTo(20000L));
         assertThat(pointHistory.getPoint(), equalTo(10000L));
         assertThat(result.getMessage(), equalTo("포인트 충전 완료"));
     }

@@ -45,8 +45,11 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public void setOrderStatus(OrderStatus status) {
-        this.status = status;
+    public void paid() {
+        if(this.status != OrderStatus.ORDERED) {
+            throw new RequestException(ErrorCode.ORDER_STATUS_INVALID);
+        }
+        this.status = OrderStatus.PAID;
     }
 
     public static Order createOrder(User user, List<OrderRequestDto> orderRequests, long totalPrice, List<OrderItemDto> orderItemDtoList) {

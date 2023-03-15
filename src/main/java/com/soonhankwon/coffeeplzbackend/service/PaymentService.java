@@ -33,7 +33,7 @@ public class PaymentService {
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         user.setUserPointWithSufficientPoint(order.getTotalPrice());
         pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice()));
-        order.setOrderStatus(OrderStatus.PAID);
+        order.paid();
         return new PaymentResponseDto("결제완료");
     }
 }

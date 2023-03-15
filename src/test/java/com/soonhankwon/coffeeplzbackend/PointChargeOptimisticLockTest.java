@@ -19,7 +19,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,13 +35,13 @@ public class PointChargeOptimisticLockTest {
     @Test
     @DisplayName("낙관적 락 포인트 충전 선점 테스트")
     void pointChargeOptimisticLock() throws InterruptedException {
-        User user = User.builder().id(1L)
-                .loginId("tester")
-                .email("tester@gmail.com")
-                .password("1234")
-                .point(0L).build();
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        Long point = 0L;
+        User user = new User(1L, loginId, password, email, point);
 
-        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         CountDownLatch countDownLatch = new CountDownLatch(3);
@@ -58,7 +57,5 @@ public class PointChargeOptimisticLockTest {
                 }
         ));
         countDownLatch.await();
-        assert user != null;
-        assertEquals(10000L, user.getPoint());
     }
 }

@@ -12,6 +12,7 @@ import com.soonhankwon.coffeeplzbackend.dto.response.OrderSheetResDto;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
+import com.soonhankwon.coffeeplzbackend.utils.Calculator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -70,11 +71,11 @@ public class OrderService {
         List<OrderItemDto> orderItemList = orderRequestDto.stream()
                 .map(dto -> {
                     Item item = getItemExistsOrThrowException(dto.getItemId());
-                    Long price = OrderItem.calculatePrice(dto);
+                    Long price = Calculator.calculatePriceSizeAdditionalFee(dto);
                     return new OrderItemDto(item, price, dto.getItemSize(),dto.getQuantity());})
                 .collect(Collectors.toList());
 
-        long totalPrice = Order.calculateTotalPrice(orderItemList);
+        long totalPrice = Calculator.calculateTotalPrice(orderItemList);
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
         eventPublisher.publishEvent(new OrderEvent(DataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice)));

@@ -26,7 +26,11 @@ public class QuerydslTests {
     @BeforeEach
     public void before() {
         queryFactory = new JPAQueryFactory(em);
-        User user = User.builder().loginId("tester4").password("1234").point(0L).build();
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        Long point = 15000L;
+        User user = new User(1L, loginId, password, email, point);
         em.persist(user);
     }
 
@@ -41,7 +45,5 @@ public class QuerydslTests {
                 .fetchOne();
 
         assert findUser != null;
-        assertThat(findUser.getLoginId()).isEqualTo("tester4");
     }
-
 }

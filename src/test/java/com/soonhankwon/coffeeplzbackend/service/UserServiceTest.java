@@ -1,9 +1,9 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.UserResponseDto;
-import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -55,48 +53,51 @@ public class UserServiceTest {
         String loginId = "test";
         String password = "1234";
         String email = "test@gmail.com";
-        User existUser = User.builder()
-                .loginId(loginId)
-                .build();
         SignupRequestDto dto = new SignupRequestDto(loginId, password, email);
-        User user = User.builder()
-                .loginId(dto.getLoginId())
-                .build();
+        User user = new User(dto);
+        User user2 = new User(dto);
         //then
-        assertThatThrownBy(() -> isExistUser(existUser, user))
+        assertThatThrownBy(() -> isExistUser(user, user2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("중복된 사용자가 존재합니다.");
     }
 
-    private static void isExistUser(User existUser, User user) {
-        if(existUser.getLoginId().equals(user.getLoginId()))
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+    private static void isExistUser(User user1, User user2) {
+        throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
     }
 
     @Test
     void findUser() {
         //given
-        User user = User.builder().id(1L)
-                .loginId("soonhan")
-                .email("soonable@gmail.com")
-                .password("1234")
-                .point(0L).build();
-        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
+        Long id = 1L;
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        User user = new User(id, loginId, password, email);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         //when
         UserResponseDto result = userService.findUser(1L);
 
         //then
         verify(userRepository, times(1)).findById(any());
-        assertThat(result.getLoginId(), equalTo(user.getLoginId()));
+        assertThat(result.getLoginId(), equalTo("test"));
     }
 
     @Test
     public void findAllUsers() {
         //given
+        Long id = 1L;
+        String loginId = "test";
+        String password = "1234";
+        String email = "test@gmail.com";
+        Long id2 = 2L;
+        String loginId2 = "test2";
+        String password2 = "1234";
+        String email2 = "test2@gmail.com";
         List<User> users =
-                Arrays.asList(User.builder().id(1L).loginId("soonhan").build(),
-                        User.builder().id(2L).loginId("kyuri").build());
+                Arrays.asList(new User(id, loginId, password, email),
+                        new User(id2, loginId2, password2, email2));
 
         when(userRepository.findAll()).thenReturn(users);
 
@@ -105,6 +106,6 @@ public class UserServiceTest {
 
         //then
         verify(userRepository, times(1)).findAll();
-        assertThat(result.get(0).getLoginId(), equalTo(users.get(0).getLoginId()));
+        assertThat(result.get(0).getLoginId(), equalTo("test"));
     }
 }

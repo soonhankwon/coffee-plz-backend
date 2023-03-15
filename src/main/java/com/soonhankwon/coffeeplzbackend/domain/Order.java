@@ -6,6 +6,7 @@ import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
+import com.soonhankwon.coffeeplzbackend.utils.Calculator;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,11 +46,17 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public void paid() {
+    public void setStatusPaid() {
+        if(isStatusOrdered()) {
+            this.status = OrderStatus.PAID;
+        }
+    }
+
+    private boolean isStatusOrdered() {
         if(this.status != OrderStatus.ORDERED) {
             throw new RequestException(ErrorCode.ORDER_STATUS_INVALID);
         }
-        this.status = OrderStatus.PAID;
+        return true;
     }
 
     public static Order createOrder(User user, List<OrderRequestDto> orderRequests, long totalPrice, List<OrderItemDto> orderItemDtoList) {
@@ -66,13 +73,5 @@ public class Order extends BaseTimeEntity {
             order.orderItems.add(new OrderItem(orderItemDto, order));
         }
         return order;
-    }
-
-    public static long calculateTotalPrice(List<OrderItemDto> orderItemDtoList) {
-        long totalPrice = 0;
-        for (OrderItemDto dto : orderItemDtoList) {
-            totalPrice += dto.getOrderItemPrice() * dto.getQuantity();
-        }
-        return totalPrice;
     }
 }

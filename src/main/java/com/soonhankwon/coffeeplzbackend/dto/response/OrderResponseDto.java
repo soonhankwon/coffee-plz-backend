@@ -1,6 +1,8 @@
 package com.soonhankwon.coffeeplzbackend.dto.response;
 
 import com.soonhankwon.coffeeplzbackend.domain.Order;
+import com.soonhankwon.coffeeplzbackend.domain.OrderStatus;
+import com.soonhankwon.coffeeplzbackend.domain.OrderType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class OrderResponseDto {
     private Long orderId;
-    private Order.OrderType type;
+    private OrderType type;
     private Long totalPrice;
-    private Order.OrderStatus status;
+    private OrderStatus status;
     public OrderResponseDto (Order order) {
         this.orderId = order.getOrderId();
         this.type = order.getOrderType();

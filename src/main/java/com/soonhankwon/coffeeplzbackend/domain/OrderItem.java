@@ -76,14 +76,4 @@ public class OrderItem extends BaseTimeEntity {
 
         return new OrderSheetResDto(itemNames, itemSizes, itemQuantities, itemPrices, totalPrice);
     }
-
-    public static Long calculatePrice(OrderRequestDto orderRequestDto) {
-        if (orderRequestDto.getItemSize().equals(ItemSize.M)) {
-            return orderRequestDto.getOrderItemPrice() + ItemSize.M.additionalFee;
-        }
-        if (orderRequestDto.getItemSize().equals(ItemSize.L)) {
-            return orderRequestDto.getOrderItemPrice() + ItemSize.L.additionalFee;
-        }
-        return orderRequestDto.getOrderItemPrice();
-    }
 }

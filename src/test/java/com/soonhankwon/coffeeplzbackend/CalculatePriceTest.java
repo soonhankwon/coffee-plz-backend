@@ -1,8 +1,8 @@
 package com.soonhankwon.coffeeplzbackend;
 
 import com.soonhankwon.coffeeplzbackend.domain.ItemSize;
-import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
+import com.soonhankwon.coffeeplzbackend.utils.Calculator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,9 +14,9 @@ public class CalculatePriceTest {
         OrderRequestDto orderRequestDto2 = new OrderRequestDto(ItemSize.M, 3000L);
         OrderRequestDto orderRequestDto3 = new OrderRequestDto(ItemSize.L, 3000L);
 
-        Long ret1 = OrderItem.calculatePrice(orderRequestDto1);
-        Long ret2 = OrderItem.calculatePrice(orderRequestDto2);
-        Long ret3 = OrderItem.calculatePrice(orderRequestDto3);
+        Long ret1 = Calculator.calculatePriceSizeAdditionalFee(orderRequestDto1);
+        Long ret2 = Calculator.calculatePriceSizeAdditionalFee(orderRequestDto2);
+        Long ret3 = Calculator.calculatePriceSizeAdditionalFee(orderRequestDto3);
 
         assertThat(ret1).isEqualTo(3000);
         assertThat(ret2).isEqualTo(3500);

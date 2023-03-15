@@ -58,7 +58,7 @@ public class OrderItem extends BaseTimeEntity {
                 .map(orderItem -> orderItem.item.getName())
                 .collect(Collectors.toList());
 
-        List<OrderItem.ItemSize> itemSizes = orderItems.stream()
+        List<ItemSize> itemSizes = orderItems.stream()
                 .map(orderItem -> orderItem.itemSize)
                 .collect(Collectors.toList());
 
@@ -75,15 +75,6 @@ public class OrderItem extends BaseTimeEntity {
                 .sum();
 
         return new OrderSheetResDto(itemNames, itemSizes, itemQuantities, itemPrices, totalPrice);
-    }
-
-    public enum ItemSize {
-        S(0), M(500), L(1000);
-        private final int additionalFee;
-
-        ItemSize(int additionalFee) {
-            this.additionalFee = additionalFee;
-        }
     }
 
     public static Long calculatePrice(OrderRequestDto orderRequestDto) {

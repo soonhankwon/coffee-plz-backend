@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.dto.request;
 
+import com.soonhankwon.coffeeplzbackend.domain.ItemSize;
 import com.soonhankwon.coffeeplzbackend.domain.OrderItem;
 import com.soonhankwon.coffeeplzbackend.domain.OrderType;
 import lombok.AllArgsConstructor;
@@ -17,13 +18,13 @@ public class OrderRequestDto {
 
     private Long itemId;
 
-    private OrderItem.ItemSize itemSize;
+    private ItemSize itemSize;
 
     private Long orderItemPrice;
 
     private Integer quantity;
 
-    public OrderRequestDto(OrderItem.ItemSize size, Long orderItemPrice) {
+    public OrderRequestDto(ItemSize size, Long orderItemPrice) {
         this.itemSize = size;
         this.orderItemPrice = orderItemPrice;
     }

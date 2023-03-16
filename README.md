@@ -36,6 +36,8 @@
 - Docker
 - Swagger 3.0
 - JUnit5
+- Thymeleaf
+- HTML5, CSS3, Javascript
 ---
 
 ## ☕️ 프로젝트 설계 내용 및 이유 

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class UserController {
         return ResponseEntity.status(200).body(userService.signupUser(signupRequestDto));
     }
     @GetMapping("/user/login")
-    @Operation(summary = "로그인")
-    public ResponseEntity<GlobalResponseDto> login() {
-        return ResponseEntity.status(200).build();
+    @Operation(summary = "로그인 화면")
+    public ModelAndView loginPage() {
+        return new ModelAndView("login");
     }
 
     @CrossOrigin("*")

@@ -1,5 +1,5 @@
 const myImage1 = document.getElementById('coffee-image1');
-myImage1.setAttribute("src", "/static/img/index.png");
+myImage1.setAttribute("src", "/img/index.png");
 
 let cart = [];
 let total = 0;
@@ -188,24 +188,24 @@ orderBtn.addEventListener("click", function () {
 
 // Espresso 버튼에 대한 마우스 오버 이벤트 핸들러
 espressoBtn.addEventListener("mouseover", function () {
-    document.getElementById("coffee-image1").src = "/static/img/espresso.jpeg";
+    document.getElementById("coffee-image1").src = "/img/espresso.jpeg";
 });
 
 // Americano 버튼에 대한 마우스 오버 이벤트 핸들러
 americanoBtn.addEventListener("mouseover", function () {
-    document.getElementById("coffee-image1").src = "/static/img/americano.png";
+    document.getElementById("coffee-image1").src = "/img/americano.png";
 });
 // Ice Americano 버튼에 대한 마우스 오버 이벤트 핸들러
 iceAmericanoBtn.addEventListener("mouseover", function () {
-    document.getElementById("coffee-image1").src = "/static/img/ice_americano.png";
+    document.getElementById("coffee-image1").src = "/img/ice_americano.png";
 });
 
 // Latte 버튼에 대한 마우스 오버 이벤트 핸들러
 latteBtn.addEventListener("mouseover", function () {
-    document.getElementById("coffee-image1").src = "/static/img/latte.png";
+    document.getElementById("coffee-image1").src = "/img/latte.png";
 });
 
 // choco frapuccino 버튼에 대한 마우스 오버 이벤트 핸들러
 chocoFrapuccinoBtn.addEventListener("mouseover", function () {
-    document.getElementById("coffee-image1").src = "/static/img/choco-frapuccino.png";
+    document.getElementById("coffee-image1").src = "/img/choco-frapuccino.png";
 });

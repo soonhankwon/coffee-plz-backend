@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Coffee Plz Online Shop</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link href="/static/css/index.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="container">
+    <div class="starter-template">
+        <h1>Coffee Plz!</h1>
+        <h2>Weekly Top 3 Menu</h2>
+        <ul id="favorite-items"></ul>
+        <br>
+        <img id="coffee-image1" src="" height="256" width="256">
+        <br>
+        <br>
+        <button id="order">Order!</button>
+        <br>
+        <br>
+        <select id="order-type">
+            <option value="take-out">TAKEOUT</option>
+            <option value="store">STORE</option>
+        </select>
+        <h3 id="message">
+            Add the coffee you want by clicking the button below.</h3>
+        <table class="table">
+            <tr>
+                <td class="col-md-2">
+                    <button class="btn btn-default" id="espresso">에스프레소</button>
+                    <br>
+                    <select id="espresso-size">
+                        <option value="S">S</option>
+                        <option value="M">M(+500)</option>
+                        <option value="L">L(+1000)</option>
+                    </select>
+                </td>
+                <td class="col-md-2">
+                    <button class="btn btn-default" id="americano">아메리카노</button>
+                    <br>
+                    <select id="americano-size">
+                        <option value="S">S</option>
+                        <option value="M">M(+500)</option>
+                        <option value="L">L(+1000)</option>
+                    </select>
+                </td>
+                <td class="col-md-2">
+                    <button class="btn btn-default" id="ice_americano">아이스 아메리카노</button>
+                    <br>
+                    <select id="ice_americano-size">
+                        <option value="S">S</option>
+                        <option value="M">M(+500)</option>
+                        <option value="L">L(+1000)</option>
+                    </select>
+                </td>
+                <td class="col-md-2">
+                    <button class="btn btn-default" id="latte">카페라떼</button>
+                    <br>
+                    <select id="latte-size">
+                        <option value="S">S</option>
+                        <option value="M">M(+500)</option>
+                        <option value="L">L(+1000)</option>
+                    </select>
+                </td>
+                <td class="col-md-2">
+                    <button class="btn btn-default" id="choco_frapuccino">초코 프라푸치노</button>
+                    <br>
+                    <select id="choco_frapuccino-size">
+                        <option value="S">S</option>
+                        <option value="M">M(+500)</option>
+                        <option value="L">L(+1000)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>2500WON</td>
+                <td>3000WON</td>
+                <td>3000WON</td>
+                <td>3500WON</td>
+                <td>4000WON</td>
+            </tr>
+        </table>
+        <div id="cart">
+            <h4>Your Order:</h4>
+            <ul id="cart-items"></ul>
+        </div>
+        <h4>Total: <span id="total"><!-- Total Message will show up here --></span></h4>
+        <br>
+    </div>
+</div>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/favorite.js"></script>
+</body>
+</html>

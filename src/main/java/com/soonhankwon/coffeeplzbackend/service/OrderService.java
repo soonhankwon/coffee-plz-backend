@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +35,7 @@ public class OrderService {
     private final RedissonClient redissonClient;
     private final TransactionService transactionService;
     private final ApplicationEventPublisher eventPublisher;
+    private final Calculator calculator;
 
     @Transactional(readOnly = true)
     public List<OrderResponseDto> findAllOrders() {
@@ -71,11 +71,11 @@ public class OrderService {
         List<OrderItemDto> orderItemList = orderRequestDto.stream()
                 .map(dto -> {
                     Item item = getItemExistsOrThrowException(dto.getItemId());
-                    Long price = Calculator.calculatePriceSizeAdditionalFee(dto);
+                    Long price = calculator.calculatePriceSizeAdditionalFee(dto);
                     return new OrderItemDto(item, price, dto.getItemSize(),dto.getQuantity());})
                 .collect(Collectors.toList());
 
-        long totalPrice = Calculator.calculateTotalPrice(orderItemList);
+        long totalPrice = calculator.calculateTotalPrice(orderItemList);
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
         eventPublisher.publishEvent(new OrderEvent(this, OrderDataCollectionDto.createOrderDataCollectionDto(userId, itemIds, totalPrice)));

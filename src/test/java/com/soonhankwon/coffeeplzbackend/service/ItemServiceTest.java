@@ -1,9 +1,9 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.domain.Item;
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
-import com.soonhankwon.coffeeplzbackend.domain.Item;
 import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -52,11 +52,10 @@ class ItemServiceTest {
     @Test
     public void findAllItem() {
         //given
-        List<Item> item =
-                Arrays.asList(Item.builder().id(1L).name("Espresso").build(),
-                        Item.builder().id(2L).name("Americano").build());
+        List<Item> list = Arrays.asList(new Item("Americano", 2500),
+                new Item("CaffeLatte", 3000));
 
-        when(itemRepository.findAll()).thenReturn(item);
+        when(itemRepository.findAll()).thenReturn(list);
 
         //when
         List<ItemResponseDto> result = itemService.findAllItem();
@@ -70,14 +69,14 @@ class ItemServiceTest {
     @Test
     void findItem() {
         //given
-        Item item = Item.builder().id(1L).name("Americano").price(3000).build();
+        Item item = new Item("Americano", 2500);
         when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
 
         //when
         ItemResponseDto result = itemService.findItem(1L);
 
         //then
-        assertThat(result.getName(), equalTo(item.getName()));
+        assertThat(result.getName(), equalTo("Americano"));
     }
 
     @Test
@@ -140,9 +139,8 @@ class ItemServiceTest {
         when(redissonClient.getLock("favoriteItemLock")).thenReturn(lock);
         when(lock.tryLock(1, 1, TimeUnit.SECONDS)).thenReturn(true);
         List<Long> ids = Arrays.asList(1L, 2L, 3L);
-        List<Item> list = Arrays.asList(Item.builder().id(1L).price(2000).name("Americano").build(),
-                Item.builder().id(2L).price(2500).name("Latte").build(),
-                Item.builder().id(1L).price(2000).name("Americano").build());
+        List<Item> list = Arrays.asList(new Item("Americano", 2500),
+                new Item("CaffeLatte", 3000));
 
         // when
         when(customItemRepository.favoriteItems()).thenReturn(ids);
@@ -153,6 +151,6 @@ class ItemServiceTest {
 
         // then
 //        verify(lock).unlock();
-        verify(favoriteItemService).favoriteItems();
+        verify(favoriteItemService).getFavoriteItems();
     }
 }

@@ -31,17 +31,21 @@ class ItemControllerTest {
     ItemRepository itemRepository;
 
     @MockBean
-    ItemService itemService;
+    ItemService regularItemService;
 
     @Test
     @DisplayName("커피 메뉴 목록 조회 테스트")
     void findAllItem() throws Exception {
-        List<Item> item = new ArrayList<>();
-        item.add(Item.builder().name("Americano").price(3000).build());
-        item.add(Item.builder().name("CafeLatte").price(3000).build());
-        List<ItemResponseDto> list = item.stream().map(ItemResponseDto::new).collect(Collectors.toList());
+        List<Item> items = new ArrayList<>();
+        Item item1 = new Item("Americano", 3000);
+        Item item2 = new Item("CafeLatte", 3000);
+        items.add(item1);
+        items.add(item2);
 
-        given(itemService.findAllItem()).willReturn(list);
+        List<ItemResponseDto> list = items.stream()
+                .map(Item::createItemResDto).collect(Collectors.toList());
+
+        given(regularItemService.findAllItem()).willReturn(list);
 
         //then
         mvc.perform(get("/item"))
@@ -54,11 +58,12 @@ class ItemControllerTest {
     @DisplayName("커피 메뉴 조회 테스트")
     void findItem() throws Exception {
         //given
-        Item item = Item.builder().id(1L).name("Americano").price(3000).build();
-        itemRepository.save(item);
-        ItemResponseDto result = new ItemResponseDto(item);
+        Item item1 = new Item("Americano", 3000);
+        Long itemId = 1L;
+        itemRepository.save(item1);
+        ItemResponseDto result = item1.createItemResDto();
 
-        given(itemService.findItem(item.getId())).willReturn(result);
+        given(regularItemService.findItem(itemId)).willReturn(result);
         //then
         mvc.perform(get("/item/1"))
                 .andExpect(status().isOk())

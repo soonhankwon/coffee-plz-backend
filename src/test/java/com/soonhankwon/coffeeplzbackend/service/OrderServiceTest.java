@@ -83,11 +83,7 @@ class OrderServiceTest {
                 .quantity(2).build();
         orderRequestDtoList.add(orderRequestDto);
 
-        Item item = Item.builder()
-                .id(1L)
-                .name("Americano")
-                .price(2000)
-                .build();
+        Item item = new Item("Americano", 2000);
         when(itemRepository.findById(1L)).thenReturn(Optional.of((item)));
 
         long totalPrice = 0;

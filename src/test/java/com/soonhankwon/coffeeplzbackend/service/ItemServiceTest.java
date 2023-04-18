@@ -45,6 +45,10 @@ class ItemServiceTest {
     @InjectMocks
     ItemService itemService;
 
+    @Spy
+    @InjectMocks
+    FavoriteItemService favoriteItemService;
+
     @Test
     public void findAllItem() {
         //given
@@ -145,10 +149,10 @@ class ItemServiceTest {
         when(itemRepository.findById(1L)).thenReturn(Optional.ofNullable(list.get(0)));
         when(itemRepository.findById(2L)).thenReturn(Optional.ofNullable(list.get(1)));
         when(itemRepository.findById(3L)).thenReturn(Optional.ofNullable(list.get(2)));
-        itemService.updateFavoriteItems();
+        favoriteItemService.updateFavoriteItems();
 
         // then
 //        verify(lock).unlock();
-        verify(itemService).favoriteItems();
+        verify(favoriteItemService).favoriteItems();
     }
 }

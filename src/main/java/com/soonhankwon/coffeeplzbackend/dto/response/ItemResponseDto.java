@@ -17,17 +17,18 @@ public class ItemResponseDto {
     private String name;
     private Integer price;
 
-    public ItemResponseDto(Item item) {
-        this.itemId = item.getId();
-        this.name = item.getName();
-        this.price = item.getPrice();
+    public ItemResponseDto(Long itemId, String name, Integer price) {
+        this.itemId = itemId;
+        this.name = name;
+        this.price = price;
     }
+
     public static List<ItemResponseDto> getItemResponseDtoList(CustomItemRepository customItemRepository, ItemRepository itemRepository) {
         List<Long> ids = customItemRepository.favoriteItems();
         List<ItemResponseDto> list = new ArrayList<>();
         for (Long id : ids) {
             Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
-            list.add(new ItemResponseDto(item));
+            list.add(item.createItemResDto());
         }
         return list;
     }

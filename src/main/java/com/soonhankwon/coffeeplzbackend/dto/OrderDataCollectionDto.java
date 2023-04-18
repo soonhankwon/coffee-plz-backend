@@ -1,9 +1,8 @@
 package com.soonhankwon.coffeeplzbackend.dto;
 
-import com.soonhankwon.coffeeplzbackend.dto.factory.DataCollectionDtoFactory;
 import java.util.List;
 
-public class OrderDataCollectionDto extends DataCollectionDtoFactory {
+public class OrderDataCollectionDto {
     private Long userId;
     private List<Long> itemIds;
     private Long totalPrice;

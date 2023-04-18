@@ -5,20 +5,20 @@ import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.domain.*;
 import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
-import com.soonhankwon.coffeeplzbackend.dto.factory.DataCollectionDtoFactory;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderSheetResDto;
+import com.soonhankwon.coffeeplzbackend.event.OrderEvent;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import com.soonhankwon.coffeeplzbackend.utils.Calculator;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +60,7 @@ public class OrderService {
         }
         return orderResponseDto;
     }
-    public OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
+    protected OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
         User user = getUserExistsOrThrowException(userId);
         checkForPreviousOrder(userId);
 
@@ -78,7 +78,7 @@ public class OrderService {
         long totalPrice = Calculator.calculateTotalPrice(orderItemList);
         Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
         orderRepository.save(order);
-        eventPublisher.publishEvent(new OrderEvent(DataCollectionDtoFactory.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
+        eventPublisher.publishEvent(new OrderEvent(this, OrderDataCollectionDto.createOrderDataCollectionDto(userId, itemIds, totalPrice)));
         return new OrderResponseDto(order);
     }
 
@@ -107,13 +107,5 @@ public class OrderService {
     private User getUserExistsOrThrowException(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    public static class OrderEvent {
-        @Getter
-        private final OrderDataCollectionDto orderDataCollectionDto;
-        public OrderEvent(OrderDataCollectionDto orderDataCollectionDto) {
-            this.orderDataCollectionDto = orderDataCollectionDto;
-        }
     }
 }

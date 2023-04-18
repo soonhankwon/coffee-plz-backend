@@ -3,6 +3,7 @@ package com.soonhankwon.coffeeplzbackend.controller;
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
+import com.soonhankwon.coffeeplzbackend.service.FavoriteItemService;
 import com.soonhankwon.coffeeplzbackend.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +18,8 @@ import java.util.List;
 @Tag(name = "커피 메뉴 조회 및 업데이트 API")
 public class ItemController {
     private final ItemService itemService;
+    private final FavoriteItemService favoriteItemService;
+
     @GetMapping("/item")
     @Operation(summary = "전체 메뉴 조회")
     public ResponseEntity<List<ItemResponseDto>> findAllItem() {
@@ -31,12 +34,12 @@ public class ItemController {
     @CrossOrigin(origins = "*")
     @Operation(summary = "7일간 인기메뉴 조회")
     public ResponseEntity<List<ItemResponseDto>> favoriteItems() {
-        return ResponseEntity.status(200).body(itemService.favoriteItems());
+        return ResponseEntity.status(200).body(favoriteItemService.getFavoriteItems());
     }
     @GetMapping("/item/favorite/test")
     @Operation(summary = "인기메뉴 조회 테스트")
     public void favoriteItemsTest() {
-        itemService.updateFavoriteItems();
+        favoriteItemService.updateFavoriteItems();
     }
 
     @PostMapping("/item/add")

@@ -26,6 +26,11 @@ public class Item {
     @Column(name = "price", nullable = false)
     private Integer price;
 
+    public Item(String name, Integer price) {
+        this.name = name;
+        this.price = price;
+    }
+
     public void updateItemWithValidPrice(String name, Integer price) {
         if (price < MIN_PRICE) {
             throw new RequestException(ErrorCode.ITEM_UPDATE_PRICE_INVALID);

@@ -28,9 +28,6 @@ import static com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto.getI
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
-    private final CustomItemRepository customItemRepository;
-    private final FavoriteItemService favoriteItemService;
-    private final RedissonClient redissonClient;
 
     @Transactional(readOnly = true)
     public List<ItemResponseDto> findAllItem() {
@@ -46,9 +43,7 @@ public class ItemService {
 
     @Transactional
     public ItemResponseDto addItem(ItemRequestDto itemRequestDto) {
-        Item item = Item.builder().name(itemRequestDto.getName())
-                .price(itemRequestDto.getPrice())
-                .build();
+        Item item = new Item(itemRequestDto.getName(), itemRequestDto.getPrice());
         itemRepository.save(item);
         return new ItemResponseDto(item);
     }
@@ -65,34 +60,6 @@ public class ItemService {
         Item item = getItemExistsOrThrowException(id);
         itemRepository.delete(item);
         return new GlobalResponseDto("삭제완료");
-    }
-
-    @Transactional(readOnly = true)
-    @Cacheable(value = "item", cacheManager = "cacheManager")
-    public List<ItemResponseDto> favoriteItems() {
-        log.info("cache ignore");
-        return getItemResponseDtoList(customItemRepository, itemRepository);
-    }
-
-    @Transactional
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void updateFavoriteItems() {
-        String lockName = "favoriteItemLock";
-        RLock lock = redissonClient.getLock(lockName);
-        String worker = Thread.currentThread().getName();
-
-        try {
-            boolean available = lock.tryLock(0, 10, TimeUnit.SECONDS);
-            if (!available) {
-                throw new RuntimeException("Lock 을 획득하지 못했습니다.");
-            }
-            log.info("현재 {}서버에서 업데이트 중입니다.", worker);
-            favoriteItemService.setFavoriteItemCache();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            lock.unlock();
-        }
     }
 
     private Item getItemExistsOrThrowException(Long itemId) {

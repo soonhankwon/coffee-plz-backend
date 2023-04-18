@@ -3,6 +3,7 @@ package com.soonhankwon.coffeeplzbackend.domain;
 import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,11 +31,19 @@ public class Item {
         this.price = price;
     }
 
+    public ItemResponseDto createItemResDto() {
+        return new ItemResponseDto(this.id, this.name, this.price);
+    }
+
     public void updateItemWithValidPrice(ItemRequestDto dto) {
         if (price < MIN_PRICE) {
             throw new RequestException(ErrorCode.ITEM_UPDATE_PRICE_INVALID);
         }
         this.name = dto.getName();
         this.price = dto.getPrice();
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

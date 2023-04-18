@@ -1,6 +1,5 @@
 package com.soonhankwon.coffeeplzbackend.event;
 
-import com.soonhankwon.coffeeplzbackend.event.OrderEvent;
 import com.soonhankwon.coffeeplzbackend.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

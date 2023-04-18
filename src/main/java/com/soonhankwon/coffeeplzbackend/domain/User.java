@@ -77,7 +77,7 @@ public class User extends BaseTimeEntity {
         this.point -= order.getTotalPrice();
     }
 
-    public static UserResponseDto createUserResDto(User user) {
-        return new UserResponseDto(user.loginId, user.email, user.point);
+    public UserResponseDto createUserResDto() {
+        return new UserResponseDto(this.loginId, this.email, this.point);
     }
 }

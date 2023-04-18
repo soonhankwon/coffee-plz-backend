@@ -7,7 +7,7 @@ import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import java.util.List;
 
 public class Calculator {
-    public static Long calculatePriceSizeAdditionalFee(OrderRequestDto orderRequestDto) {
+    public long calculatePriceSizeAdditionalFee(OrderRequestDto orderRequestDto) {
         if (orderRequestDto.getItemSize().equals(ItemSize.M)) {
             return orderRequestDto.getOrderItemPrice() + ItemSize.M.additionalFee;
         }
@@ -17,11 +17,9 @@ public class Calculator {
         return orderRequestDto.getOrderItemPrice();
     }
 
-    public static long calculateTotalPrice(List<OrderItemDto> orderItemDtoList) {
-        long totalPrice = 0;
-        for (OrderItemDto dto : orderItemDtoList) {
-            totalPrice += dto.getOrderItemPrice() * dto.getQuantity();
-        }
-        return totalPrice;
+    public long calculateTotalPrice(List<OrderItemDto> orderItemDtoList) {
+        return orderItemDtoList.stream()
+                .mapToLong(dto -> dto.getOrderItemPrice() * dto.getQuantity())
+                .sum();
     }
 }

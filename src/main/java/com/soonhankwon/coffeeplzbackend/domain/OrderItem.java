@@ -2,7 +2,6 @@ package com.soonhankwon.coffeeplzbackend.domain;
 
 import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
-import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderSheetResDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

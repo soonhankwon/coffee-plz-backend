@@ -3,9 +3,11 @@ package com.soonhankwon.coffeeplzbackend.utils;
 import com.soonhankwon.coffeeplzbackend.domain.ItemSize;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class Calculator {
     public long calculatePriceSizeAdditionalFee(OrderRequestDto orderRequestDto) {
         if (orderRequestDto.getItemSize().equals(ItemSize.M)) {

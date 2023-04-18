@@ -22,27 +22,29 @@ public class RegularItemService implements ItemService {
     @Transactional(readOnly = true)
     public List<ItemResponseDto> findAllItem() {
         List<Item> list = itemRepository.findAll();
-        return list.stream().map(ItemResponseDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(Item::createItemResDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ItemResponseDto findItem(Long id) {
         Item item = getItemExistsOrThrowException(id);
-        return new ItemResponseDto(item);
+        return item.createItemResDto();
     }
 
     @Transactional
     public ItemResponseDto addItem(ItemRequestDto itemRequestDto) {
         Item item = new Item(itemRequestDto.getName(), itemRequestDto.getPrice());
         itemRepository.save(item);
-        return new ItemResponseDto(item);
+        return item.createItemResDto();
     }
 
     @Transactional
     public ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto) {
         Item item = getItemExistsOrThrowException(id);
         item.updateItemWithValidPrice(itemRequestDto);
-        return new ItemResponseDto(item);
+        return item.createItemResDto();
     }
 
     @Transactional

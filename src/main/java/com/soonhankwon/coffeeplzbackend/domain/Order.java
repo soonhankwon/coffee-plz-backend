@@ -59,19 +59,19 @@ public class Order extends BaseTimeEntity {
         return true;
     }
 
-    public static Order createOrder(User user, List<OrderRequestDto> orderRequests, long totalPrice, List<OrderItemDto> orderItemDtoList) {
-        if (orderRequests == null || orderRequests.isEmpty()) {
+    public Order (User user, List<OrderRequestDto> orderRequests, List<OrderItemDto> orderItemDtoList) {
+        if (isOrderRequestNullOrEmpty(orderRequests)) {
             throw new RequestException(ErrorCode.EMPTY_ORDER_LIST);
         }
-        Order order = new Order();
-        order.orderType = orderRequests.get(0).getOrderType();
-        order.totalPrice = totalPrice;
-        order.status = OrderStatus.ORDERED;
-        order.user = user;
-        order.orderItems = new ArrayList<>();
-        for (OrderItemDto orderItemDto : orderItemDtoList) {
-            order.orderItems.add(new OrderItem(orderItemDto, order));
-        }
-        return order;
+        this.orderType = orderRequests.get(0).getOrderType();
+        this.totalPrice = new Calculator().calculateTotalPrice(orderItemDtoList);
+        this.status = OrderStatus.ORDERED;
+        this.user = user;
+        this.orderItems = new ArrayList<>();
+        orderItemDtoList.forEach(orderItemDto -> this.orderItems.add(new OrderItem(orderItemDto, this)));
+    }
+
+    private boolean isOrderRequestNullOrEmpty(List<OrderRequestDto> orderRequests) {
+        return orderRequests == null || orderRequests.isEmpty();
     }
 }

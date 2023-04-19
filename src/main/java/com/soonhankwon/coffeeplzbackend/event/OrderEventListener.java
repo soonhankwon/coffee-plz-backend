@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.event;
 
-import com.soonhankwon.coffeeplzbackend.service.KafkaProducerService;
+import com.soonhankwon.coffeeplzbackend.service.DataTransferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -9,7 +9,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 @RequiredArgsConstructor
 public class OrderEventListener {
-    private final KafkaProducerService kafkaProducerService;
+    private final DataTransferService kafkaProducerService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(OrderEvent event) {

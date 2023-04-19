@@ -1,6 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.domain.*;
+import com.soonhankwon.coffeeplzbackend.dto.OrderDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
@@ -39,7 +40,7 @@ class OrderServiceTest {
     OrderItemRepository orderItemRepository;
 
     @InjectMocks
-    OrderService orderService;
+    OrderServiceImpl orderService;
 
     @BeforeAll
     static void beforeAll() {
@@ -93,7 +94,7 @@ class OrderServiceTest {
                 .totalPrice(totalPrice).status(OrderStatus.ORDERED).user(user).build();
 
         // When
-        OrderResponseDto orderResponseDto = orderService.orderProcessing(userId, orderRequestDtoList);
+        OrderResponseDto orderResponseDto = orderService.orderProcessing(new OrderDto(userId, orderRequestDtoList));
 
         // Then
         verify(userRepository, times(1)).findById(userId);

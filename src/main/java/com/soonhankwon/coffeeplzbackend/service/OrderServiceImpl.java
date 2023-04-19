@@ -7,6 +7,7 @@ import com.soonhankwon.coffeeplzbackend.domain.Order;
 import com.soonhankwon.coffeeplzbackend.domain.OrderStatus;
 import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
+import com.soonhankwon.coffeeplzbackend.dto.OrderDto;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.request.OrderRequestDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderResponseDto;
@@ -14,7 +15,6 @@ import com.soonhankwon.coffeeplzbackend.event.OrderEvent;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
-import com.soonhankwon.coffeeplzbackend.utils.Calculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -31,52 +31,51 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
-    private final Calculator calculator;
     private final RedissonLockGenerator redissonLockService;
     private final ApplicationEventPublisher applicationEventPublisher;
-
 
     @Transactional(readOnly = true)
     public List<OrderResponseDto> findAllOrders() {
         return orderRepository.findAll().stream().map(OrderResponseDto::new).collect(Collectors.toList());
     }
 
-    public OrderResponseDto placeOrder(Long userId, List<OrderRequestDto> orderRequestDto) {
-        return redissonLockService.executeOrderWithLock(userId, orderRequestDto);
+    public OrderResponseDto placeOrder(OrderDto orderDto) {
+        return redissonLockService.executeOrderWithLock(orderDto);
     }
 
     @Transactional
-    public OrderResponseDto orderProcessing(Long userId, List<OrderRequestDto> orderRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow(
+    public OrderResponseDto orderProcessing(OrderDto orderDto) {
+        User user = userRepository.findById(orderDto.getUserId()).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
-        checkForPreviousOrder(userId);
+        validateOrderStatus(orderDto.getUserId());
 
-        List<Long> itemIds = orderRequestDto.stream()
-                .map(OrderRequestDto::getItemId)
-                .collect(Collectors.toList());
+        List<Long> itemIds = getItemIds(orderDto);
+        List<OrderItemDto> orderItems = getOrderItemDtos(orderDto);
 
-        List<OrderItemDto> orderItemList = orderRequestDto.stream()
-                .map(dto -> {
-                    Item item = getItemExistsOrThrowException(dto.getItemId());
-                    Long price = calculator.calculatePriceSizeAdditionalFee(dto);
-                    return new OrderItemDto(item, price, dto.getItemSize(), dto.getQuantity());
-                })
-                .collect(Collectors.toList());
-
-        long totalPrice = calculator.calculateTotalPrice(orderItemList);
-        Order order = Order.createOrder(user, orderRequestDto, totalPrice, orderItemList);
+        Order order = new Order(user, orderDto.getOrderRequestDto(), orderItems);
         orderRepository.save(order);
-        applicationEventPublisher.publishEvent(new OrderEvent(this, new OrderDataCollectionDto(userId, itemIds, totalPrice)));
+        applicationEventPublisher.publishEvent(new OrderEvent(this, new OrderDataCollectionDto(orderDto.getUserId(), itemIds, order.getTotalPrice())));
         return new OrderResponseDto(order);
     }
 
-    private void checkForPreviousOrder(Long userId) {
-        if (orderRepository.existsByUserIdAndStatus(userId, OrderStatus.ORDERED))
-            throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
+    private List<Long> getItemIds(OrderDto orderDto) {
+        return orderDto.getOrderRequestDto().stream()
+                .map(OrderRequestDto::getItemId)
+                .collect(Collectors.toList());
     }
 
-    private Item getItemExistsOrThrowException(Long itemId) {
-        return itemRepository.findById(itemId).orElseThrow(
-                () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
+    private List<OrderItemDto> getOrderItemDtos(OrderDto orderDto) {
+        return orderDto.getOrderRequestDto().stream()
+                .map(dto -> {
+                    Item item = itemRepository.findById(dto.getItemId()).orElseThrow(
+                            () -> new RequestException(ErrorCode.ITEM_NOT_FOUND));
+                    return new OrderItemDto().getCalculatedOrderItemDtos(item, dto);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private void validateOrderStatus(Long userId) {
+        if (orderRepository.existsByUserIdAndStatus(userId, OrderStatus.ORDERED))
+            throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
     }
 }

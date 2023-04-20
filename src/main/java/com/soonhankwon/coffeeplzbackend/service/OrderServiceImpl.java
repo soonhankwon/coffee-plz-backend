@@ -40,7 +40,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(readOnly = true)
     public List<OrderResponseDto> findAllOrders() {
-        return orderRepository.findAll().stream().map(OrderResponseDto::new).collect(Collectors.toList());
+        return orderRepository.findAll().stream()
+                .map(OrderResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     public OrderResponseDto placeOrder(OrderDto orderDto) {
@@ -49,14 +51,13 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderResponseDto executeOrderWithLock(OrderDto orderDto) {
         RLock lock = redissonClient.getLock(String.valueOf(orderDto.getUserId()));
-        String worker = Thread.currentThread().getName();
         OrderResponseDto orderResponseDto;
         try {
             boolean available = lock.tryLock(0, 2, TimeUnit.SECONDS);
             if (!available) {
                 throw new RuntimeException("Lock 을 획득하지 못했습니다.");
             }
-            log.info("현재 {}서버에서 작업중입니다.", worker);
+            log.info("현재 {}서버에서 작업중입니다.", Thread.currentThread().getName());
             orderResponseDto = transactionService.executeAsTransactional(() -> orderProcessing(orderDto));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -67,17 +68,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderResponseDto orderProcessing(OrderDto orderDto) {
-        User user = userRepository.findById(orderDto.getUserId()).orElseThrow(
-                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         validateOrderStatus(orderDto.getUserId());
-
         List<Long> itemIds = getItemIds(orderDto);
-        List<OrderItemDto> orderItems = getOrderItemDtos(orderDto);
-
-        Order order = new Order(user, orderDto.getOrderRequestDto(), orderItems);
+        Order order = new Order(findUser(orderDto), orderDto.getOrderRequestDto(), getOrderItemDtos(orderDto));
         orderRepository.save(order);
         applicationEventPublisher.publishEvent(new OrderEvent(this, new OrderDataCollectionDto(orderDto.getUserId(), itemIds, order.getTotalPrice())));
         return new OrderResponseDto(order);
+    }
+
+    private User findUser(OrderDto orderDto) {
+        return userRepository.findById(orderDto.getUserId()).orElseThrow(
+                () -> new RequestException(ErrorCode.USER_NOT_FOUND));
     }
 
     private List<Long> getItemIds(OrderDto orderDto) {

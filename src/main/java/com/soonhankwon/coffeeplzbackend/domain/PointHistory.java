@@ -1,12 +1,11 @@
 package com.soonhankwon.coffeeplzbackend.domain;
 
 import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Entity
 @Table(name = "point_history", indexes = @Index(name = "idx_user_id", columnList = "user_id"))
 public class PointHistory extends BaseTimeEntity {
@@ -29,15 +28,9 @@ public class PointHistory extends BaseTimeEntity {
         return this.point;
     }
 
-    public enum PointType {
-        CHARGE, USAGE
-    }
-    private PointHistory (User user, PointType type, Long point) {
+    public PointHistory (User user, PointType type, Long point) {
         this.user = user;
         this.pointType = type;
         this.point = point;
-    }
-    public static PointHistory createPointHistory(User user, PointHistory.PointType type, Long point) {
-        return new PointHistory(user, type, point);
     }
 }

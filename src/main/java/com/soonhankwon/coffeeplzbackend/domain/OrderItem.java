@@ -3,7 +3,6 @@ package com.soonhankwon.coffeeplzbackend.domain;
 import com.soonhankwon.coffeeplzbackend.common.domain.BaseTimeEntity;
 import com.soonhankwon.coffeeplzbackend.dto.OrderItemDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.OrderSheetResDto;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
@@ -51,7 +50,7 @@ public class OrderItem extends BaseTimeEntity {
         this.order = order;
     }
 
-    public static OrderSheetResDto createOrderSheet (List<OrderItem> orderItems) {
+    public OrderSheetResDto createOrderSheet (List<OrderItem> orderItems) {
         List<String> itemNames = orderItems.stream()
                 .map(orderItem -> orderItem.item.getName())
                 .collect(Collectors.toList());

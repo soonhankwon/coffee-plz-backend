@@ -1,12 +1,9 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
-import com.soonhankwon.coffeeplzbackend.domain.OrderStatus;
-import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
-import com.soonhankwon.coffeeplzbackend.domain.Order;
-import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
-import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
+import com.soonhankwon.coffeeplzbackend.domain.*;
+import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -14,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.soonhankwon.coffeeplzbackend.domain.PointHistory.createPointHistory;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -34,7 +29,7 @@ public class PaymentService {
         if (user.isUserHasEnoughPoint(order)) {
             user.paid(order);
             order.setStatusPaid();
-            pointHistoryRepository.save(createPointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice()));
+            pointHistoryRepository.save(new PointHistory(user, PointType.USAGE, order.getTotalPrice()));
         }
         return new PaymentResponseDto("결제완료");
     }

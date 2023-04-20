@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class ItemResponseDto {
     private Long itemId;
     private String name;
@@ -23,13 +24,9 @@ public class ItemResponseDto {
         this.price = price;
     }
 
-    public static List<ItemResponseDto> getItemResponseDtoList(CustomItemRepository customItemRepository, ItemRepository itemRepository) {
-        List<Long> ids = customItemRepository.favoriteItems();
-        List<ItemResponseDto> list = new ArrayList<>();
-        for (Long id : ids) {
-            Item item = itemRepository.findById(id).orElseThrow(NullPointerException::new);
-            list.add(item.createItemResDto());
-        }
-        return list;
+    public List<ItemResponseDto> getItemResponseDtoList(List<Item> items) {
+        return items.stream()
+                .map(Item::createItemResDto)
+                .collect(Collectors.toList());
     }
 }

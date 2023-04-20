@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class OrderSheetService {
@@ -27,7 +25,6 @@ public class OrderSheetService {
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));;
         Order order = orderRepository.findOrderByUserAndStatus(user, OrderStatus.ORDERED).orElseThrow(
                 () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
-        List<OrderItem> orderItems = order.getOrderItems();
-        return OrderItem.createOrderSheet(orderItems);
+        return new OrderItem().createOrderSheet(order.getOrderItems());
     }
 }

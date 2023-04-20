@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.domain.PointType;
 import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
 import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
 import com.soonhankwon.coffeeplzbackend.domain.User;
@@ -34,7 +35,7 @@ class PointServiceTest {
         User user = new User(1L, loginId, password, email, point);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        PointHistory pointHistory = PointHistory.createPointHistory(user, PointHistory.PointType.CHARGE, 10000L);
+        PointHistory pointHistory = new PointHistory(user, PointType.CHARGE, 10000L);
         //when
         PointResponseDto result = pointService.chargePoint(1L,10000L);
 

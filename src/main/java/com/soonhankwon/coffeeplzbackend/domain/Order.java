@@ -28,7 +28,7 @@ public class Order extends BaseTimeEntity {
     @Version
     private Long version;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

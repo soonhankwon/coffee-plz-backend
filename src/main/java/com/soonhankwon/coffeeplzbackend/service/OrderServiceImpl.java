@@ -17,11 +17,14 @@ import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,7 +34,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
-    private final RedissonLockGenerator redissonLockService;
+    private final RedissonClient redissonClient;
+    private final TransactionService transactionService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional(readOnly = true)
@@ -40,10 +44,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderResponseDto placeOrder(OrderDto orderDto) {
-        return redissonLockService.executeOrderWithLock(orderDto);
+        return executeOrderWithLock(orderDto);
     }
 
-    @Transactional
+    private OrderResponseDto executeOrderWithLock(OrderDto orderDto) {
+        RLock lock = redissonClient.getLock(String.valueOf(orderDto.getUserId()));
+        String worker = Thread.currentThread().getName();
+        OrderResponseDto orderResponseDto;
+        try {
+            boolean available = lock.tryLock(0, 2, TimeUnit.SECONDS);
+            if (!available) {
+                throw new RuntimeException("Lock 을 획득하지 못했습니다.");
+            }
+            log.info("현재 {}서버에서 작업중입니다.", worker);
+            orderResponseDto = transactionService.executeAsTransactional(() -> orderProcessing(orderDto));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            lock.unlock();
+        }
+        return orderResponseDto;
+    }
+
     public OrderResponseDto orderProcessing(OrderDto orderDto) {
         User user = userRepository.findById(orderDto.getUserId()).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));

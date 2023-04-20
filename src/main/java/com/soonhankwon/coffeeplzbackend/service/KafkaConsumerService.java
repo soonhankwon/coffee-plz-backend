@@ -10,7 +10,7 @@ import java.io.IOException;
 @Service
 public class KafkaConsumerService {
     @KafkaListener(topics = "orderData", groupId = "dataCollectionServer")
-    public void consume(String kafkaMessage) throws IOException {
+    public void consume(String kafkaMessage) {
         log.info("Consumed Message = " + kafkaMessage);
     }
 }

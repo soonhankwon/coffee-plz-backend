@@ -35,7 +35,7 @@ public class RegularItemService implements ItemService {
 
     @Transactional
     public ItemResponseDto addItem(ItemRequestDto itemRequestDto) {
-        Item item = new Item(itemRequestDto.getName(), itemRequestDto.getPrice());
+        Item item = new Item(itemRequestDto);
         itemRepository.save(item);
         return item.createItemResDto();
     }

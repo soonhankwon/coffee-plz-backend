@@ -17,16 +17,14 @@ public class KafkaProducerService implements DataTransferService{
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {
-        String topic = "orderData";
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String jsonInString;
         try {
-            jsonInString = objectMapper.writeValueAsString(orderDataCollectionDto);
+            jsonInString = new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+                    .writeValueAsString(orderDataCollectionDto);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        kafkaTemplate.send(topic, jsonInString);
+        kafkaTemplate.send("orderData", jsonInString);
         log.info("Kafka Producer sent data from the OrderService : " + orderDataCollectionDto);
     }
 }

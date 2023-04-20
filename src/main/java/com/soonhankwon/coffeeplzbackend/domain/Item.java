@@ -31,6 +31,11 @@ public class Item {
         this.price = price;
     }
 
+    public Item(ItemRequestDto dto) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+    }
+
     public ItemResponseDto createItemResDto() {
         return new ItemResponseDto(this.id, this.name, this.price);
     }

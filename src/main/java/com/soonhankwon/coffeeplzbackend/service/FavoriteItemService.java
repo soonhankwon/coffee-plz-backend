@@ -1,5 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
+import com.soonhankwon.coffeeplzbackend.domain.Item;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
@@ -15,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto.getItemResponseDtoList;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,22 +35,33 @@ public class FavoriteItemService {
     @Cacheable(value = "item", cacheManager = "cacheManager")
     public List<ItemResponseDto> getFavoriteItems() {
         log.info("cache ignore");
-        return getItemResponseDtoList(customItemRepository, itemRepository);
+        List<Long> ids = findFavoriteItems();
+        return new ItemResponseDto().getItemResponseDtoList(findItems(ids));
+    }
+
+    private List<Long> findFavoriteItems() {
+        return customItemRepository.favoriteItems();
+    }
+
+    private List<Item> findItems(List<Long> ids) {
+        return ids.stream()
+                .map(id -> itemRepository.findById(id).orElseThrow(NullPointerException::new))
+                .collect(Collectors.toList());
     }
 
     @Transactional
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateFavoriteItems() {
-        String lockName = "favoriteItemLock";
-        RLock lock = redissonClient.getLock(lockName);
-        String worker = Thread.currentThread().getName();
+        executeUpdateWithLock(redissonClient.getLock("favoriteItemLock"));
+    }
 
+    private void executeUpdateWithLock(RLock lock) {
         try {
             boolean available = lock.tryLock(0, 10, TimeUnit.SECONDS);
             if (!available) {
                 throw new RuntimeException("Lock 을 획득하지 못했습니다.");
             }
-            log.info("현재 {}서버에서 업데이트 중입니다.", worker);
+            log.info("현재 {}서버에서 업데이트 중입니다.", Thread.currentThread().getName());
             putFavoriteItemCache();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

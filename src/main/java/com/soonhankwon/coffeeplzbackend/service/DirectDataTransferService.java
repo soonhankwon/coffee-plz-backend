@@ -15,29 +15,41 @@ import java.nio.charset.StandardCharsets;
 public class DirectDataTransferService implements DataTransferService {
 
     public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {
+        loggingCurrentThread();
+        HttpHeaders httpHeaders = setHeader();
+        String orderJson = convertOrderObjectToJson(orderDataCollectionDto);
+        ResponseEntity<String> responseEntity = requestUrlUseRestTemplate(httpHeaders, orderJson);
+        loggingRequestResult(responseEntity);
+    }
+
+    private void loggingCurrentThread() {
         log.info(Thread.currentThread().getName());
-        //헤더 설정
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-        // Convert the order object to JSON
-        ObjectMapper objectMapper = new ObjectMapper();
-        String orderJson;
+    }
+
+    private void loggingRequestResult(ResponseEntity<String> responseEntity) {
+        log.info(responseEntity.getStatusCode().toString());
+        log.info(responseEntity.getBody());
+    }
+
+    private ResponseEntity<String> requestUrlUseRestTemplate(HttpHeaders httpHeaders, String orderJson) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.exchange("https://20eb4b5e-0251-47d8-8ec6-3325adb91535.mock.pstmn.io", HttpMethod.POST,
+                new HttpEntity<>(orderJson, httpHeaders), String.class);
+    }
+
+    private String convertOrderObjectToJson(OrderDataCollectionDto orderDataCollectionDto) {
+        String orderObject;
         try {
-            orderJson = objectMapper.writeValueAsString(orderDataCollectionDto);
+            orderObject = new ObjectMapper().writeValueAsString(orderDataCollectionDto);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        // HttpEntity 에 param 및 header 설정
-        HttpEntity entity = new HttpEntity(orderJson, httpHeaders);
+        return orderObject;
+    }
 
-        // RestTemplate exchange 메소드를 통해 URL 에 HttpEntity 와 함께 요청
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.exchange("https://20eb4b5e-0251-47d8-8ec6-3325adb91535.mock.pstmn.io", HttpMethod.POST,
-                entity, String.class);
-
-        // 요청 후 응답 확인
-        log.info(responseEntity.getStatusCode().toString());
-        log.info(responseEntity.getBody());
-
+    private HttpHeaders setHeader() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return httpHeaders;
     }
 }

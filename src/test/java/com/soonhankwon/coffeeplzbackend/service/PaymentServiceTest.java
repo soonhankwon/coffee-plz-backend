@@ -45,7 +45,7 @@ class PaymentServiceTest {
                 .status(OrderStatus.ORDERED)
                 .totalPrice(10000L).build();
         when(orderRepository.findByUserIdAndStatus(1L, OrderStatus.ORDERED)).thenReturn(Optional.of(order));
-        PointHistory pointHistory = PointHistory.createPointHistory(user, PointHistory.PointType.USAGE, order.getTotalPrice());
+        PointHistory pointHistory = new PointHistory(user, PointType.USAGE, order.getTotalPrice());
         //when
         PaymentResponseDto result = paymentService.paymentProcessing(1L);
 

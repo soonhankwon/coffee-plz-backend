@@ -61,7 +61,7 @@ public class User extends BaseTimeEntity {
         return true;
     }
 
-    public void setUserPointWithValidChargePoint(Long chargePoint) {
+    public void setUserPointValidChargePoint(Long chargePoint) {
         if (isChargePointOverMinPoint(chargePoint)) {
             this.point += chargePoint;
         }

@@ -16,13 +16,13 @@ import java.util.List;
 public class FavoriteItemController {
     private final FavoriteItemService favoriteItemService;
 
-    @GetMapping("/item/favorite")
+    @GetMapping("/items/favorite")
     @CrossOrigin(origins = "*")
     @Operation(summary = "7일간 인기메뉴 조회")
     public ResponseEntity<List<ItemResponseDto>> favoriteItems() {
         return ResponseEntity.status(200).body(favoriteItemService.getFavoriteItems());
     }
-    @GetMapping("/item/favorite/test")
+    @GetMapping("/items/favorite/test")
     @Operation(summary = "인기메뉴 조회 테스트")
     public void favoriteItemsTest() {
         favoriteItemService.updateFavoriteItems();

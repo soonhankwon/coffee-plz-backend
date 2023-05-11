@@ -18,25 +18,25 @@ import java.util.List;
 @Tag(name = "유저 API")
 public class UserController {
     private final UserService userService;
-    @PostMapping("/user/signup")
+    @PostMapping("/users/signup")
     @Operation(summary = "회원 가입")
     public ResponseEntity<GlobalResponseDto> signupUser(SignupRequestDto signupRequestDto) {
         return ResponseEntity.status(200).body(userService.signupUser(signupRequestDto));
     }
-    @GetMapping("/user/login")
+    @GetMapping("/users/login")
     @Operation(summary = "로그인 화면")
     public ModelAndView loginPage() {
         return new ModelAndView("login");
     }
 
     @CrossOrigin("*")
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     @Operation(summary = "단일 유저 검색")
     public ResponseEntity<UserResponseDto> findUser(@PathVariable Long id) {
         return ResponseEntity.status(200).body(userService.findUser(id));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     @Operation(summary = "전체 유저 검색")
     public ResponseEntity<List<UserResponseDto>>findAllUsers() {
         return ResponseEntity.status(200).body(userService.findAllUsers());

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PointController {
     private final PointService pointService;
 
-    @PatchMapping("/user/point/{id}")
+    @PatchMapping("/users/point/{id}")
     @Operation(summary = "포인트 충전")
     public ResponseEntity<PointResponseDto> chargePoint(@PathVariable Long id, Long chargePoint) {
         return ResponseEntity.status(200).body(pointService.chargePoint(id, chargePoint));

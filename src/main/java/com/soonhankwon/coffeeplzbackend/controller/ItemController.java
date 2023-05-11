@@ -30,7 +30,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(regularItemService.findItem(itemId));
     }
 
-    @PostMapping("/item/add")
+    @PostMapping("/item")
     @Operation(summary = "메뉴 추가")
     public ResponseEntity<ItemResponseDto> addItem(ItemRequestDto itemRequestDto) {
         return ResponseEntity.status(200).body(regularItemService.addItem(itemRequestDto));
@@ -42,7 +42,7 @@ public class ItemController {
         return ResponseEntity.status(200).body(regularItemService.updateItem(itemId, itemRequestDto));
     }
 
-    @DeleteMapping("/item/delete/{itemId}")
+    @DeleteMapping("/item/{itemId}")
     @Operation(summary = "메뉴 삭제")
     public ResponseEntity<GlobalResponseDto> deleteItem(@PathVariable Long itemId) {
         return ResponseEntity.status(200).body(regularItemService.deleteItem(itemId));

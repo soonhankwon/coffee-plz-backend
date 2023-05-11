@@ -26,14 +26,14 @@ public class OrderController {
         return ResponseEntity.status(200).body(orderServiceSystemImpl.placeOrder(new OrderDto(id, orderRequestDto)));
     }
 
-    @GetMapping("/order/find")
+    @GetMapping("/order/")
     @Operation(summary = "전체 주문 조회")
     public ResponseEntity<List<OrderResponseDto>> findAllOrders() {
         return ResponseEntity.status(200).body(orderServiceSystemImpl.findAllOrders());
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/order/find/{id}")
+    @GetMapping("/order/{id}")
     @Operation(summary = "유저 결제시 주문서 조회")
     public ResponseEntity<OrderSheetResDto> findAllOrderItems(@PathVariable Long id) {
         return ResponseEntity.status(200).body(orderServiceSystemImpl.findOrderSheet(id));

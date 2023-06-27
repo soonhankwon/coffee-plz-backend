@@ -76,6 +76,11 @@ public class OrderServiceImpl implements OrderService {
         return new OrderResponseDto(order);
     }
 
+    private void validateOrderStatus(Long userId) {
+        if (orderRepository.existsByUserIdAndStatus(userId, OrderStatus.ORDERED))
+            throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
+    }
+
     private User findUser(OrderDto orderDto) {
         return userRepository.findById(orderDto.getUserId()).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
@@ -97,8 +102,4 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    private void validateOrderStatus(Long userId) {
-        if (orderRepository.existsByUserIdAndStatus(userId, OrderStatus.ORDERED))
-            throw new RequestException(ErrorCode.PREVIOUS_ORDER_EXISTS);
-    }
 }

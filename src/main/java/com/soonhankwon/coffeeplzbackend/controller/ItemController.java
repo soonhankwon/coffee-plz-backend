@@ -16,35 +16,35 @@ import java.util.List;
 @RestController
 @Tag(name = "커피 메뉴 조회 및 업데이트 API")
 public class ItemController {
-    private final ItemService itemService;
+    private final ItemService itemServiceImpl;
 
     @GetMapping("/items")
     @Operation(summary = "전체 메뉴 조회")
     public ResponseEntity<List<ItemResponseDto>> findAllItem() {
-        return ResponseEntity.status(200).body(itemService.findAllItem());
+        return ResponseEntity.status(200).body(itemServiceImpl.findAllItem());
     }
 
     @GetMapping("/items/{itemId}")
     @Operation(summary = "단일 메뉴 검색")
     public ResponseEntity<ItemResponseDto> findItem(@PathVariable Long itemId) {
-        return ResponseEntity.status(200).body(itemService.findItem(itemId));
+        return ResponseEntity.status(200).body(itemServiceImpl.findItem(itemId));
     }
 
     @PostMapping("/items")
     @Operation(summary = "메뉴 추가")
     public ResponseEntity<ItemResponseDto> addItem(ItemRequestDto itemRequestDto) {
-        return ResponseEntity.status(200).body(itemService.addItem(itemRequestDto));
+        return ResponseEntity.status(200).body(itemServiceImpl.addItem(itemRequestDto));
     }
 
     @PatchMapping("/items/{itemId}")
     @Operation(summary = "메뉴 업데이트")
     public ResponseEntity<ItemResponseDto> updateItem(@PathVariable Long itemId, ItemRequestDto itemRequestDto) {
-        return ResponseEntity.status(200).body(itemService.updateItem(itemId, itemRequestDto));
+        return ResponseEntity.status(200).body(itemServiceImpl.updateItem(itemId, itemRequestDto));
     }
 
     @DeleteMapping("/items/{itemId}")
     @Operation(summary = "메뉴 삭제")
     public ResponseEntity<GlobalResDto> deleteItem(@PathVariable Long itemId) {
-        return ResponseEntity.status(200).body(itemService.deleteItem(itemId));
+        return ResponseEntity.status(200).body(itemServiceImpl.deleteItem(itemId));
     }
 }

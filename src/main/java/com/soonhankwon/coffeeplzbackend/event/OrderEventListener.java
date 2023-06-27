@@ -9,10 +9,10 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 @RequiredArgsConstructor
 public class OrderEventListener {
-    private final DataTransferService kafkaProducerService;
+    private final DataTransferService kafkaProducerDataTransferService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(OrderEvent event) {
-        kafkaProducerService.sendOrderData(event.getOrderDataCollectionDto());
+        kafkaProducerDataTransferService.sendOrderData(event.getOrderDataCollectionDto());
     }
 }

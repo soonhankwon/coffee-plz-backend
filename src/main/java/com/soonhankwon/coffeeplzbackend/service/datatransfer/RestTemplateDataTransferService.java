@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.service;
+package com.soonhankwon.coffeeplzbackend.service.datatransfer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Service
-public class DirectDataTransferService implements DataTransferService {
+public class RestTemplateDataTransferService implements DataTransferService {
 
     public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {
         loggingCurrentThread();

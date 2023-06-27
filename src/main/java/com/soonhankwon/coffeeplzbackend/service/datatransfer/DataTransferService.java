@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.service;
+package com.soonhankwon.coffeeplzbackend.service.datatransfer;
 
 import com.soonhankwon.coffeeplzbackend.dto.OrderDataCollectionDto;
 

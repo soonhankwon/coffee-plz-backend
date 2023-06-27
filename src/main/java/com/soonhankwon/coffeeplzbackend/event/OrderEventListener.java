@@ -1,6 +1,6 @@
 package com.soonhankwon.coffeeplzbackend.event;
 
-import com.soonhankwon.coffeeplzbackend.service.DataTransferService;
+import com.soonhankwon.coffeeplzbackend.service.datatransfer.DataTransferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;

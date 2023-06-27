@@ -1,4 +1,4 @@
-package com.soonhankwon.coffeeplzbackend.service;
+package com.soonhankwon.coffeeplzbackend.service.datatransfer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class KafkaProducerService implements DataTransferService{
+public class KafkaProducerDataTransferService implements DataTransferService {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     public void sendOrderData(OrderDataCollectionDto orderDataCollectionDto) {

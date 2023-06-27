@@ -1,9 +1,9 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.domain.PointType;
-import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
 import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
 import com.soonhankwon.coffeeplzbackend.domain.User;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,7 @@ class PointServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         PointHistory pointHistory = new PointHistory(user, PointType.CHARGE, 10000L);
         //when
-        PointResponseDto result = pointService.chargePoint(1L,10000L);
+        GlobalResDto result = pointService.chargePoint(1L,10000L);
 
         //then
         assertThat(pointHistory.getPoint(), equalTo(10000L));

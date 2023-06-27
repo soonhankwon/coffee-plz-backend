@@ -1,7 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.domain.*;
-import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -47,7 +47,7 @@ class PaymentServiceTest {
         when(orderRepository.findByUserIdAndStatus(1L, OrderStatus.ORDERED)).thenReturn(Optional.of(order));
         PointHistory pointHistory = new PointHistory(user, PointType.USAGE, order.getTotalPrice());
         //when
-        PaymentResponseDto result = paymentService.paymentProcessing(1L);
+        GlobalResDto result = paymentService.paymentProcessing(1L);
 
         //then
         assertThat(order.getOrderType(), equalTo(OrderType.TAKEOUT));

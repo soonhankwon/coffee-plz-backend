@@ -3,7 +3,7 @@ package com.soonhankwon.coffeeplzbackend.service;
 import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.domain.*;
-import com.soonhankwon.coffeeplzbackend.dto.response.PaymentResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.repository.OrderRepository;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
@@ -21,7 +21,7 @@ public class PaymentService {
     private final PointHistoryRepository pointHistoryRepository;
 
     @Transactional
-    public PaymentResponseDto paymentProcessing(Long userId) {
+    public GlobalResDto paymentProcessing(Long userId) {
         Order order = orderRepository.findByUserIdAndStatus(userId, OrderStatus.ORDERED).orElseThrow(
                 () -> new RequestException(ErrorCode.ORDER_NOT_FOUND));
         User user = userRepository.findById(userId).orElseThrow(
@@ -31,6 +31,6 @@ public class PaymentService {
             order.setStatusPaid();
             pointHistoryRepository.save(new PointHistory(user, PointType.USAGE, order.getTotalPrice()));
         }
-        return new PaymentResponseDto("결제완료");
+        return new GlobalResDto("결제완료");
     }
 }

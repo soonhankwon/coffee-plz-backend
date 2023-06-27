@@ -4,7 +4,7 @@ import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.domain.Item;
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
-import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
 import lombok.AllArgsConstructor;
@@ -46,9 +46,9 @@ public class RegularItemService implements ItemService {
     }
 
     @Transactional
-    public GlobalResponseDto deleteItem(Long id) {
+    public GlobalResDto deleteItem(Long id) {
         itemRepository.delete(getItemExistsOrThrowException(id));
-        return new GlobalResponseDto("삭제완료");
+        return new GlobalResDto("삭제완료");
     }
 
     private Item getItemExistsOrThrowException(Long itemId) {

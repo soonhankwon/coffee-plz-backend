@@ -8,12 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class OrderResponseDto {
     private Long orderId;
     private OrderType type;
     private Long totalPrice;
     private OrderStatus status;
+
     public OrderResponseDto (Order order) {
         this.orderId = order.getOrderId();
         this.type = order.getOrderType();

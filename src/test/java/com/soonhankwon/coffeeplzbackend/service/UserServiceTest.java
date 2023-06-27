@@ -2,7 +2,7 @@ package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
-import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.UserResponseDto;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,7 @@ public class UserServiceTest {
         when(userRepository.save(any())).thenReturn(user);
 
         //when
-        GlobalResponseDto result = userService.signupUser(dto);
+        GlobalResDto result = userService.signupUser(dto);
         //then
         verify(userRepository, times(1)).save(any());
         assertThat(result.getMessage(), equalTo("Success"));

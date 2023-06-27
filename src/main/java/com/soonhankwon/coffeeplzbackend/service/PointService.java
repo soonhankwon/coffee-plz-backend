@@ -5,7 +5,7 @@ import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.domain.PointHistory;
 import com.soonhankwon.coffeeplzbackend.domain.PointType;
 import com.soonhankwon.coffeeplzbackend.domain.User;
-import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.repository.PointHistoryRepository;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -19,11 +19,11 @@ public class PointService {
     private final PointHistoryRepository pointHistoryRepository;
 
     @Transactional
-    public PointResponseDto chargePoint(Long id, Long chargePoint) {
+    public GlobalResDto chargePoint(Long id, Long chargePoint) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new RequestException(ErrorCode.USER_NOT_FOUND));
         pointHistoryRepository.save(new PointHistory(user, PointType.CHARGE, chargePoint));
         user.setUserPointValidChargePoint(chargePoint);
-        return new PointResponseDto("포인트 충전 완료");
+        return new GlobalResDto("포인트 충전 완료");
     }
 }

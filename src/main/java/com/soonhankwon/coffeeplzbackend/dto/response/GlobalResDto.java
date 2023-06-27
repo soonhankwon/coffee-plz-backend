@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PaymentResponseDto {
-    private String message;
+public class GlobalResDto {
+    String message;
 }

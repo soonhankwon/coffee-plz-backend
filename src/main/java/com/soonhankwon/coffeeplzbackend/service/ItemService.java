@@ -1,7 +1,7 @@
 package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
-import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 
 import java.util.List;
@@ -11,5 +11,5 @@ public interface ItemService {
     ItemResponseDto findItem(Long id);
     ItemResponseDto addItem(ItemRequestDto itemRequestDto);
     ItemResponseDto updateItem(Long id, ItemRequestDto itemRequestDto);
-    GlobalResponseDto deleteItem(Long id);
+    GlobalResDto deleteItem(Long id);
 }

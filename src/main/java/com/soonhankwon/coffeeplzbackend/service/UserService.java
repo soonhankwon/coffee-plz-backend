@@ -4,7 +4,7 @@ import com.soonhankwon.coffeeplzbackend.common.exception.ErrorCode;
 import com.soonhankwon.coffeeplzbackend.common.exception.RequestException;
 import com.soonhankwon.coffeeplzbackend.domain.User;
 import com.soonhankwon.coffeeplzbackend.dto.request.SignupRequestDto;
-import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.UserResponseDto;
 import com.soonhankwon.coffeeplzbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public GlobalResponseDto signupUser(SignupRequestDto signupRequestDto) {
+    public GlobalResDto signupUser(SignupRequestDto signupRequestDto) {
         if (isLoginIdDuplicate(signupRequestDto.getLoginId()))
             throw new RequestException(ErrorCode.DUPLICATE_LOGIN_ID);
         else {
             userRepository.save(new User(signupRequestDto));
-            return new GlobalResponseDto("Success");
+            return new GlobalResDto("Success");
         }
     }
 

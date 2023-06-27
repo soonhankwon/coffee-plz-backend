@@ -2,7 +2,7 @@ package com.soonhankwon.coffeeplzbackend.service;
 
 import com.soonhankwon.coffeeplzbackend.domain.Item;
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
-import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
 import com.soonhankwon.coffeeplzbackend.repository.CustomItemRepository;
 import com.soonhankwon.coffeeplzbackend.repository.ItemRepository;
@@ -126,7 +126,7 @@ class ItemServiceTest {
         when(itemRepository.findById(id)).thenReturn(Optional.of(item));
 
         //when
-        GlobalResponseDto result = itemService.deleteItem(id);
+        GlobalResDto result = itemService.deleteItem(id);
 
         //then
         verify(itemRepository, times(1)).delete(item);

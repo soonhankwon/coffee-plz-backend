@@ -4,11 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @Getter
-//@Builder
 public class SignupRequestDto {
+
+    @NotNull
     private String loginId;
+
+    @NotEmpty
     private String password;
+
+    @NotEmpty
     private String email;
 }

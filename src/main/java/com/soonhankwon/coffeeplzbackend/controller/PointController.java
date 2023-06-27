@@ -1,13 +1,14 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
-import com.soonhankwon.coffeeplzbackend.dto.response.PointResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.service.PointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PointController {
     private final PointService pointService;
 
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/users/point/{id}")
     @Operation(summary = "포인트 충전")
-    public ResponseEntity<PointResponseDto> chargePoint(@PathVariable Long id, Long chargePoint) {
-        return ResponseEntity.status(200).body(pointService.chargePoint(id, chargePoint));
+    public GlobalResDto chargePoint(@PathVariable Long id, Long chargePoint) {
+        return pointService.chargePoint(id, chargePoint);
     }
 }

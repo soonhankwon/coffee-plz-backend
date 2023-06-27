@@ -1,9 +1,8 @@
 package com.soonhankwon.coffeeplzbackend.controller;
 
 import com.soonhankwon.coffeeplzbackend.dto.request.ItemRequestDto;
-import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResponseDto;
+import com.soonhankwon.coffeeplzbackend.dto.response.GlobalResDto;
 import com.soonhankwon.coffeeplzbackend.dto.response.ItemResponseDto;
-import com.soonhankwon.coffeeplzbackend.service.FavoriteItemService;
 import com.soonhankwon.coffeeplzbackend.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +43,7 @@ public class ItemController {
 
     @DeleteMapping("/items/{itemId}")
     @Operation(summary = "메뉴 삭제")
-    public ResponseEntity<GlobalResponseDto> deleteItem(@PathVariable Long itemId) {
+    public ResponseEntity<GlobalResDto> deleteItem(@PathVariable Long itemId) {
         return ResponseEntity.status(200).body(regularItemService.deleteItem(itemId));
     }
 }

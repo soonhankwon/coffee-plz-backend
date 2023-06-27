@@ -8,6 +8,7 @@ import com.soonhankwon.coffeeplzbackend.service.OrderServiceSystem;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +22,21 @@ public class OrderController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/orders/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "주문 생성")
-    public ResponseEntity<OrderResponseDto> orderProcessing(@PathVariable Long id, @RequestBody List<OrderRequestDto> orderRequestDto) {
-        return ResponseEntity.status(200).body(orderServiceSystemImpl.placeOrder(new OrderDto(id, orderRequestDto)));
+    public OrderResponseDto orderProcessing(@PathVariable Long id, @RequestBody List<OrderRequestDto> orderRequestDto) {
+        return orderServiceSystemImpl.placeOrder(new OrderDto(id, orderRequestDto));
     }
 
     @GetMapping("/orders/")
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "전체 주문 조회")
     public ResponseEntity<List<OrderResponseDto>> findAllOrders() {
         return ResponseEntity.status(200).body(orderServiceSystemImpl.findAllOrders());
     }
 
     @CrossOrigin(origins = "*")
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/orders/{id}")
     @Operation(summary = "유저 결제시 주문서 조회")
     public ResponseEntity<OrderSheetResDto> findAllOrderItems(@PathVariable Long id) {
